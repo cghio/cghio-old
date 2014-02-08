@@ -13,8 +13,8 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
-      index: {
-        files: [ 'public/index.html' ]
+      html: {
+        files: [ 'public/*.html' ]
       },
       js: {
         files: [ 'assets/js/*.js' ]
@@ -49,6 +49,12 @@ module.exports = function(grunt) {
         slug: slug,
         title: title
       });
+      grunt.file.write(path.join('public', 'help', slug + '.json'),
+        JSON.stringify({
+          slug: slug,
+          title: title,
+          content: file.split('\n')
+        }, null, 2) + '\n');
     });
     grunt.file.write(path.join('public', 'help.json'),
       JSON.stringify(index, null, 2) + '\n');
