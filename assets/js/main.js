@@ -22,6 +22,22 @@ CGH.filter('markdown', function() {
   };
 });
 
+CGH.directive('navbarLink', function($location) {
+  return function(scope, element, attrs) {
+    scope.$on('$routeChangeSuccess', function(event, current, previous) {
+      var links = element.find('a');
+      if (links.length === 0) return;
+      var href = links[0].getAttribute('href').replace(/^\/#!?/, '');
+      var url = $location.url();
+      if (url.substr(0, href.length) === href) {
+        element.addClass('active');
+      } else {
+        element.removeClass('active');
+      }
+    });
+  };
+});
+
 CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
 });
