@@ -46,6 +46,27 @@ CGH.factory('Helps', function($http) {
   return $http.get('/help.json');
 });
 
+CGH.service('HelpTopics', function($http) {
+  var self = this;
+  self.number_of_objects = 10;
+  self.help_topics = [];
+  self.help_topic_objs = [];
+  self.get = function(help_topic, callback) {
+    var index = self.help_topics.indexOf(help_topic);
+    if (index === -1) {
+      $http.get('/help/' + help_topic + '.json').success(function(help_topic) {
+        self.help_topics.unshift(help_topic.slug);
+        self.help_topic_objs.unshift(help_topic);
+        self.help_topics.splice(self.number_of_objects);
+        self.help_topic_objs.splice(self.number_of_objects);
+        if (callback) callback(help_topic);
+      });
+    } else {
+      if (callback) callback(self.help_topic_objs[index]);
+    }
+  };
+});
+
 function BuildsController($scope, Builds) {
   $scope.cryptos = [
     {
@@ -80,7 +101,7 @@ CGH.directive('crypto', function() {
   };
 });
 
-function HelpController($scope, Helps, $routeParams, $http) {
+function HelpController($scope, Helps, HelpTopics, $routeParams) {
   var help_topic = $routeParams.help_topic;
 
   // this variable determines whether to show the index page
@@ -90,8 +111,9 @@ function HelpController($scope, Helps, $routeParams, $http) {
   Helps.success(function(helps) {
     $scope.helps = helps;
   });
+
   if (help_topic) {
-    $http.get('/help/' + help_topic + '.json').success(function(help_topic) {
+    HelpTopics.get(help_topic, function(help_topic) {
       $scope.help_topic = help_topic;
     });
   }
