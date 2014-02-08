@@ -1,4 +1,17 @@
-var CGH = angular.module('CGH', []);
+var CGH = angular.module('CGH', [ 'ngRoute' ]);
+
+CGH.config(function($routeProvider, $locationProvider) {
+  $routeProvider.when('/builds', {
+    templateUrl: '/builds.html',
+    controller: BuildsController
+  });
+  $routeProvider.when('/help', {
+    templateUrl: '/help.html',
+    controller: HelpController
+  });
+  $locationProvider.html5Mode(false);
+  $locationProvider.hashPrefix('!');
+});
 
 CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
@@ -37,3 +50,7 @@ CGH.directive('crypto', function() {
     });
   };
 });
+
+function HelpController() {
+
+}

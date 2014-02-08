@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/css/vendor/bootstrap-theme.css">
   <link rel="stylesheet" href="/css/main.css">
   <script src="/js/vendor/angular.js"></script>
+  <script src="/js/vendor/angular-route.js"></script>
   <script src="/js/main.js"></script>
   <script src="http://localhost:35729/livereload.js"></script>
 </head>
@@ -28,43 +29,14 @@
           </div>
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li><a href="http://m.cgh.io/">Maintainer</a></li>
+              <li><a href="/#!/builds">Builds</a></li>
+              <li><a href="/#!/help">Help</a></li>
             </ul>
           </div>
         </div>
       </nav>
     </header>
-    <div id="content" class="container" ng-controller="BuildsController">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Version</th>
-            <th>Platform</th>
-            <th>Architecture</th>
-            <th>
-              Hash
-              <div class="btn-group btn-group-xs pull-right">
-                <input type="button" class="btn btn-default"
-                  ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
-                  ng-class="{active: crypto.active}" value="{{crypto.name}}">
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="build in builds">
-            <td>
-              <a href="{{build.url}}" target="_blank">{{build.name}}</a>
-            </td>
-            <td>{{build.version}}</td>
-            <td>{{build.platform}}</td>
-            <td>{{build.architecture}}</td>
-            <td>{{currentCrypto().name}}: {{build[currentCrypto().key]}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <div id="content" class="container" ng-view></div>
   </div>
   <footer>
     <div class="container">
