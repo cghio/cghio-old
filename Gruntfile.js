@@ -15,6 +15,9 @@ module.exports = function(grunt) {
       },
       index: {
         files: [ 'public/index.html' ]
+      },
+      js: {
+        files: [ 'assets/js/*.js' ]
       }
     }
   });

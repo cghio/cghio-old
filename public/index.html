@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="App">
 
 <head>
   <title>cgh.io</title>
   <link rel="stylesheet" href="/css/vendor/bootstrap.css">
   <link rel="stylesheet" href="/css/vendor/bootstrap-theme.css">
   <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/vendor/angular.js"></script>
+  <script src="/js/main.js"></script>
   <script src="http://localhost:35729/livereload.js"></script>
 </head>
 
@@ -32,8 +34,29 @@
         </div>
       </nav>
     </header>
-    <div id="content" class="container">
-      content
+    <div id="content" class="container" ng-controller="BuildsController">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Platform</th>
+            <th>Architecture</th>
+            <th>Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="build in builds">
+            <td>
+              <a href="{{build.url}}" target="_blank">{{build.name}}</a>
+            </td>
+            <td>{{build.version}}</td>
+            <td>{{build.platform}}</td>
+            <td>{{build.architecture}}</td>
+            <td>MD5: {{build.md5sum}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <footer>
