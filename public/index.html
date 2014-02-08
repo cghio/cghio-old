@@ -42,7 +42,14 @@
             <th>Version</th>
             <th>Platform</th>
             <th>Architecture</th>
-            <th>Hash</th>
+            <th>
+              Hash
+              <div class="btn-group btn-group-xs pull-right">
+                <input type="button" class="btn btn-default"
+                  ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
+                  ng-class="{active: crypto.active}" value="{{crypto.name}}">
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -53,7 +60,7 @@
             <td>{{build.version}}</td>
             <td>{{build.platform}}</td>
             <td>{{build.architecture}}</td>
-            <td>MD5: {{build.md5sum}}</td>
+            <td>{{currentCrypto().name}}: {{build[currentCrypto().key]}}</td>
           </tr>
         </tbody>
       </table>
