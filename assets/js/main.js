@@ -82,6 +82,11 @@ CGH.directive('crypto', function() {
 
 function HelpController($scope, Helps, $routeParams, $http) {
   var help_topic = $routeParams.help_topic;
+
+  // this variable determines whether to show the index page
+  // and prevents to show index page if help topic is loading
+  $scope.help_topic = help_topic;
+
   Helps.success(function(helps) {
     $scope.helps = helps;
   });
