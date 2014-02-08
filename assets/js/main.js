@@ -1,16 +1,25 @@
-var CGH = angular.module('CGH', [ 'ngRoute' ]);
+var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
 
 CGH.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/builds', {
     templateUrl: '/builds.html',
     controller: BuildsController
   });
-  $routeProvider.when('/help', {
+  $routeProvider.when('/help/:help_topic?', {
     templateUrl: '/help.html',
     controller: HelpController
   });
   $locationProvider.html5Mode(false);
   $locationProvider.hashPrefix('!');
+});
+
+CGH.filter('markdown', function() {
+  return function(content) {
+    if (!content) return '';
+    if (content instanceof Array) content = content.join('\n');
+    content = content.replace(/^---(.|\n)*---\n/, '');
+    return markdown.toHTML(content, 'Maruku');
+  };
 });
 
 CGH.factory('Builds', function($http) {
@@ -55,8 +64,14 @@ CGH.directive('crypto', function() {
   };
 });
 
-function HelpController($scope, Helps) {
+function HelpController($scope, Helps, $routeParams, $http) {
+  var help_topic = $routeParams.help_topic;
   Helps.success(function(helps) {
     $scope.helps = helps;
   });
+  if (help_topic) {
+    $http.get('/help/' + help_topic + '.json').success(function(help_topic) {
+      $scope.help_topic = help_topic;
+    });
+  }
 }

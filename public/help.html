@@ -1,12 +1,14 @@
 <div class="row">
   <div class="col-sm-4">
     <div class="list-group">
-      <a class="list-group-item" href="/#!/help/{{help.slug}}" ng-repeat="help in helps">
+      <a class="list-group-item" href="/#!/help/{{help.slug}}"
+        ng-repeat="help in helps"
+        ng-class="{active:help.slug===help_topic.slug}">
         {{help.title}}
       </a>
     </div>
   </div>
   <div class="col-sm-8">
-    outlet
+    <div ng-bind-html="help_topic.content|markdown"></div>
   </div>
 </div>
