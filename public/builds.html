@@ -11,6 +11,9 @@
           <input type="button" class="btn btn-default"
             ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
             ng-class="{active: crypto.active}" value="{{crypto.name}}">
+          <a href="/#!/help/checksums" class="btn btn-default">
+            <span class="glyphicon glyphicon-question-sign"></span>
+          </a>
         </div>
       </th>
     </tr>
