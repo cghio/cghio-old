@@ -17,6 +17,10 @@ CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
 });
 
+CGH.factory('Helps', function($http) {
+  return $http.get('/help.json');
+});
+
 function BuildsController($scope, Builds) {
   $scope.cryptos = [
     {
@@ -51,6 +55,8 @@ CGH.directive('crypto', function() {
   };
 });
 
-function HelpController() {
-
+function HelpController($scope, Helps) {
+  Helps.success(function(helps) {
+    $scope.helps = helps;
+  });
 }

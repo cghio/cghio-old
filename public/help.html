@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-sm-4">
+    <div class="list-group">
+      <a class="list-group-item" href="/#!/help/{{help.slug}}" ng-repeat="help in helps">
+        {{help.title}}
+      </a>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    outlet
+  </div>
+</div>
