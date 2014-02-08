@@ -1,6 +1,6 @@
-var App = angular.module('App', []);
+var CGH = angular.module('CGH', []);
 
-App.factory('Builds', function($http) {
+CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
 });
 
@@ -27,7 +27,7 @@ function BuildsController($scope, Builds) {
   });
 }
 
-App.directive('crypto', function() {
+CGH.directive('crypto', function() {
   return function(scope, element, attrs) {
     element.bind('click', function() {
       scope.cryptos.forEach(function(crypto) {
