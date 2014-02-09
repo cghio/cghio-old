@@ -25,7 +25,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', [ 'connect', 'watch' ]);
+  grunt.registerTask('default', [ 'copy_index', 'connect', 'watch' ]);
+
+  grunt.registerTask('copy_index', 'Copy index page', function() {
+    grunt.file.copy('index.html', 'public/index.html');
+  });
 
   grunt.registerTask('make_help_index', 'Generate help index JSON file', function() {
     var path = require('path');

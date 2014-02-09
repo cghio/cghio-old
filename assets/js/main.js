@@ -2,15 +2,15 @@ var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
 
 CGH.config(function($routeProvider, $locationProvider) {
   $routeProvider.when('/builds', {
-    templateUrl: '/builds.html',
+    templateUrl: 'builds.html',
     controller: BuildsController
   });
   $routeProvider.when('/links', {
-    templateUrl: '/links.html',
+    templateUrl: 'links.html',
     controller: LinksController
   });
   $routeProvider.when('/help/:help_topic?', {
-    templateUrl: '/help.html',
+    templateUrl: 'help.html',
     controller: HelpController
   });
   $locationProvider.html5Mode(false);

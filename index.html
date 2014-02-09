@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html ng-app="CGH">
+
+<head>
+  <title>cgh.io</title>
+  <link rel="stylesheet" href="/css/vendor/bootstrap.css">
+  <link rel="stylesheet" href="/css/vendor/bootstrap-theme.css">
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/vendor/angular.js"></script>
+  <script src="/js/vendor/angular-route.js"></script>
+  <script src="/js/vendor/angular-sanitize.js"></script>
+  <script src="/js/vendor/markdown.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="http://localhost:35729/livereload.js"></script>
+</head>
+
+<body>
+  <div id="wrap">
+    <header>
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+              data-target="#navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">cgh.io</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav">
+              <li navbar-link><a href="/#!/builds">Builds</a></li>
+              <li navbar-link><a href="/#!/links">Links</a></li>
+              <li navbar-link><a href="/#!/help">Help</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div id="content" class="container" ng-view></div>
+  </div>
+  <footer>
+    <div class="container">
+      <div class="footer">
+        cgh.io
+      </div>
+    </div>
+  </footer>
+  <script type="text/ng-template" id="builds.html">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Version</th>
+          <th>Platform</th>
+          <th>Architecture</th>
+          <th>
+            Hash
+            <div class="btn-group btn-group-xs pull-right">
+              <input type="button" class="btn btn-default"
+                ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
+                ng-class="{active: crypto.active}" value="{{crypto.name}}">
+              <a href="/#!/help/checksums" class="btn btn-default">
+                <span class="glyphicon glyphicon-question-sign"></span>
+              </a>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="build in builds">
+          <td>
+            <a href="{{build.url}}" target="_blank">{{build.name}}</a>
+          </td>
+          <td>{{build.version}}</td>
+          <td>{{build.platform}}</td>
+          <td>{{build.architecture}}</td>
+          <td>{{currentCrypto().name}}: {{build[currentCrypto().key]}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </script>
+  <script type="text/ng-template" id="links.html">
+    <div class="row" ng-repeat="link_row in links">
+      <div class="col-sm-4" ng-repeat="link_group_name in keys(link_row)">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{link_group_name}}</div>
+          <div class="list-group" ng-repeat="link in link_row[link_group_name]">
+            <a class="list-group-item" href="{{link.url}}" target="_blank">
+              {{link.title}}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script type="text/ng-template" id="help.html">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="list-group">
+          <a class="list-group-item" href="/#!/help/{{help.slug}}"
+            ng-if="helps.length"
+            ng-repeat="help in helps"
+            ng-class="{active:help.slug===help_topic.slug}">
+            {{help.title}}
+          </a>
+          <div class="list-group-item" ng-if="!helps.length">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            No help topics yet.
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div ng-if="help_topic" ng-bind-html="help_topic.content|markdown"></div>
+        <div ng-if="!help_topic">
+          <div class="jumbotron">
+            <h2 ng-pluralize
+              count="helps.length"
+              when="{'0': 'No help topic.',
+                     'one': 'Select a help topic.',
+                     'other': 'Select a help topic.'}"></h2>
+            <p ng-pluralize
+              count="helps.length"
+              when="{'0': 'No help topic at the moment.',
+                     'one': 'Get help from {} help topic on the left.',
+                     'other': 'Get help from {} help topics on the left.'}"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+</body>
+
+</html>
