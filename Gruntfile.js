@@ -25,7 +25,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', [ 'copy_index', 'connect', 'watch' ]);
+  grunt.registerTask('default', [
+    'copy_index',
+    'make_help_index',
+    'convert_ymls',
+    'connect',
+    'watch'
+  ]);
 
   grunt.registerTask('copy_index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
@@ -66,9 +72,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('convert_ymls', function() {
     var path = require('path');
-    var yml = grunt.file.readYAML('posts/links.yml');
-    grunt.file.write(path.join('public', 'links.json'),
-      JSON.stringify(yml, null, 2) + '\n');
+    var ymls = grunt.file.expand({
+      cwd: 'posts'
+    }, '*.yml');
+    ymls.forEach(function(yml) {
+      var file = grunt.file.readYAML(path.join('posts', yml));
+      grunt.file.write(path.join('public', path.basename(yml, '.yml') +
+        '.json'), JSON.stringify(file, null, 2) + '\n');
+    });
   });
 
 };
