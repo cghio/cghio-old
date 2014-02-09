@@ -24,3 +24,31 @@
     url: http://sass-lang.com/try.html
   - title: JS <-> CoffeeScript
     url: http://js2coffee.org/
+  Compressors:
+  - title: Closure Compiler
+    url: http://closure-compiler.appspot.com/
+  - title: UglifyJS
+    url: http://lisperator.net/uglifyjs/#demo
+  - title: JS Beautifier
+    url: http://jsbeautifier.org/
+  - title: CSS Minifier
+    url: http://cssminifier.com/
+  - title: Code Beautifier
+    url: http://www.codebeautifier.com/
+  - title: Compress JPG
+    url: http://compressjpg.com/
+  - title: Compress PNG
+    url: http://compresspng.com/
+  - title: JPEGMini
+    url: http://www.jpegmini.com/main/shrink_photo
+  - title: ImageOptim
+    url: http://imageoptim.com/
+  Validators/Viewers:
+  - title: YAML
+    url: http://yamllint.com/
+  - title: JSON
+    url: http://jsonlint.com/
+  - title: json.human.js
+    url: https://github.com/marianoguerra/json.human.js
+  - title: JSONMate
+    url: http://jsonmate.com/

@@ -18,6 +18,10 @@ module.exports = function(grunt) {
       },
       js: {
         files: [ 'assets/js/*.js' ]
+      },
+      yml: {
+        files: [ 'posts/*.yml' ],
+        tasks: [ 'convert_ymls' ]
       }
     }
   });
