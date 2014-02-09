@@ -134,6 +134,23 @@ CGH.directive('crypto', function() {
 });
 
 function LinksController($scope, Links) {
+  $scope.targets = [
+    {
+      name: 'the same',
+      target: '_self',
+      active: true
+    },
+    {
+      name: 'new',
+      target: '_blank'
+    }
+  ];
+  $scope.target = function() {
+    for (var i = 0; i < $scope.targets.length; i++) {
+      if ($scope.targets[i].active) return $scope.targets[i];
+    }
+    return $scope.targets[0];
+  };
   $scope.keys = function(obj) {
     return Object.keys(obj).filter(function(key) {
       return key[0] !== '$';
@@ -144,6 +161,17 @@ function LinksController($scope, Links) {
     $scope.links = links;
   });
 }
+
+CGH.directive('linkTarget', function() {
+  return function(scope, element, attrs) {
+    element.bind('click', function() {
+      scope.targets.forEach(function(target) {
+        target.active = (target.target === attrs.linkTarget);
+      });
+      scope.$apply();
+    });
+  };
+});
 
 function HelpController($scope, Helps, HelpTopics, $routeParams) {
   var help_topic = $routeParams.help_topic;

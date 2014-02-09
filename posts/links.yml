@@ -52,3 +52,14 @@ Validators/Viewers:
     url: https://github.com/marianoguerra/json.human.js
   - title: JSONMate
     url: http://jsonmate.com/
+JS Encode:
+  - title: JSFuck
+    url: http://utf-8.jp/public/jsfuck.html
+  - title: aaencode
+    url: http://utf-8.jp/public/aaencode.html
+  - title: jjencode
+    url: http://utf-8.jp/public/jjencode.html
+  - title: JsCrush
+    url: http://www.iteral.com/jscrush/
+  - title: jsPacker
+    url: http://dean.edwards.name/packer/
