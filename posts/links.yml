@@ -1,4 +1,4 @@
-- Ruby/Rails:
+Ruby/Rails:
   - title: Ruby Documentation
     url: http://ruby-doc.org/core-2.0.0/
   - title: Ruby on Rails Guides
@@ -13,7 +13,7 @@
     url: http://learnxinyminutes.com/docs/ruby/
   - title: Ruby coding style guide
     url: https://github.com/bbatsov/ruby-style-guide
-  Converters:
+Converters:
   - title: HTML -> HAML
     url: http://www.haml-converter.com/
   - title: HTML <-> JADE
@@ -24,7 +24,7 @@
     url: http://sass-lang.com/try.html
   - title: JS <-> CoffeeScript
     url: http://js2coffee.org/
-  Compressors:
+Compressors:
   - title: Closure Compiler
     url: http://closure-compiler.appspot.com/
   - title: UglifyJS
@@ -43,7 +43,7 @@
     url: http://www.jpegmini.com/main/shrink_photo
   - title: ImageOptim
     url: http://imageoptim.com/
-  Validators/Viewers:
+Validators/Viewers:
   - title: YAML
     url: http://yamllint.com/
   - title: JSON

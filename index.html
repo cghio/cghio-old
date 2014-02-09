@@ -83,11 +83,11 @@
     </table>
   </script>
   <script type="text/ng-template" id="links.html">
-    <div class="row" ng-repeat="link_row in links">
-      <div class="col-sm-4" ng-repeat="link_group_name in keys(link_row)">
-        <div class="panel panel-default">
-          <div class="panel-heading">{{link_group_name}}</div>
-          <div class="list-group" ng-repeat="link in link_row[link_group_name]">
+    <div class="row">
+      <div class="col-sm-4" ng-repeat="link_col in links">
+        <div class="panel panel-default" ng-repeat="link_row_name in keys(link_col)">
+          <div class="panel-heading">{{link_row_name}}</div>
+          <div class="list-group" ng-repeat="link in link_col[link_row_name]">
             <a class="list-group-item" href="{{link.url}}" target="_blank">
               {{link.title}}
             </a>

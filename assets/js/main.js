@@ -47,7 +47,31 @@ CGH.factory('Builds', function($http) {
 });
 
 CGH.factory('Links', function($http) {
-  return $http.get('/links.json');
+  var COLUMNS = 3;
+  return $http.get('/links.json').then(function(response) {
+    var links = response.data;
+    if (typeof links !== 'object') return links;
+
+    var links_keys = Object.keys(links);
+    var length = links_keys.length;
+    var floor = Math.floor(length / COLUMNS);
+    var ceil = Math.ceil(length / COLUMNS);
+    var mod = length % COLUMNS;
+    var count = 0;
+
+    var new_links = [];
+    for (var i = 0; i < COLUMNS; i++) {
+      new_links[i] = new_links[i] || [];
+      var ceil_or_floor = ceil;
+      if (i >= mod) ceil_or_floor = floor;
+      for (var j = 0; j < ceil_or_floor; j++) {
+        var name = links_keys[count];
+        new_links[i][name] = links[name];
+        count++;
+      }
+    }
+    return new_links;
+  });
 });
 
 CGH.factory('Helps', function($http) {
@@ -116,7 +140,7 @@ function LinksController($scope, Links) {
     });
   };
 
-  Links.success(function(links) {
+  Links.then(function(links) {
     $scope.links = links;
   });
 }

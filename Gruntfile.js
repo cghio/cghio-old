@@ -14,7 +14,8 @@ module.exports = function(grunt) {
         livereload: true
       },
       html: {
-        files: [ 'public/*.html' ]
+        files: [ 'index.html' ],
+        tasks: [ 'copy_index' ]
       },
       js: {
         files: [ 'assets/js/*.js' ]
@@ -81,6 +82,7 @@ module.exports = function(grunt) {
     }, '*.yml');
     ymls.forEach(function(yml) {
       var file = grunt.file.readYAML(path.join('posts', yml));
+      if (file === null) file = [];
       grunt.file.write(path.join('public', path.basename(yml, '.yml') +
         '.json'), JSON.stringify(file, null, 2) + '\n');
     });
