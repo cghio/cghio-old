@@ -96,8 +96,10 @@
       <div class="col-sm-4" ng-repeat="link_col in links">
         <div class="panel panel-default" ng-repeat="link_row_name in keys(link_col)">
           <div class="panel-heading">{{link_row_name}}</div>
-          <div class="list-group" ng-repeat="link in link_col[link_row_name]">
-            <a class="list-group-item" href="{{link.url}}" target="{{target().target}}">
+          <div class="list-group">
+            <a class="list-group-item" href="{{link.url}}"
+              ng-repeat="link in link_col[link_row_name]"
+              target="{{target().target}}">
               {{link.title}}
             </a>
           </div>
