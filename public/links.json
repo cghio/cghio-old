@@ -1,0 +1,56 @@
+[
+  {
+    "Ruby/Rails": [
+      {
+        "title": "Ruby Documentation",
+        "url": "http://ruby-doc.org/core-2.0.0/"
+      },
+      {
+        "title": "Ruby on Rails Guides",
+        "url": "http://guides.rubyonrails.org/"
+      },
+      {
+        "title": "Ruby on Rails 實戰聖經",
+        "url": "http://ihower.tw/rails3/index.html"
+      },
+      {
+        "title": "The Ruby Toolbox",
+        "url": "https://www.ruby-toolbox.com/"
+      },
+      {
+        "title": "Railscasts",
+        "url": "http://railscasts.com/"
+      },
+      {
+        "title": "Learn Ruby in Y Minutes",
+        "url": "http://learnxinyminutes.com/docs/ruby/"
+      },
+      {
+        "title": "Ruby coding style guide",
+        "url": "https://github.com/bbatsov/ruby-style-guide"
+      }
+    ],
+    "Converters": [
+      {
+        "title": "HTML -> HAML",
+        "url": "http://www.haml-converter.com/"
+      },
+      {
+        "title": "HTML <-> JADE",
+        "url": "http://html2jade.com/"
+      },
+      {
+        "title": "CSS -> SASS/SCSS",
+        "url": "http://css2sass.heroku.com/"
+      },
+      {
+        "title": "SCSS -> CSS",
+        "url": "http://sass-lang.com/try.html"
+      },
+      {
+        "title": "JS <-> CoffeeScript",
+        "url": "http://js2coffee.org/"
+      }
+    ]
+  }
+]

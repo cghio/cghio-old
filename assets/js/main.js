@@ -5,6 +5,10 @@ CGH.config(function($routeProvider, $locationProvider) {
     templateUrl: '/builds.html',
     controller: BuildsController
   });
+  $routeProvider.when('/links', {
+    templateUrl: '/links.html',
+    controller: LinksController
+  });
   $routeProvider.when('/help/:help_topic?', {
     templateUrl: '/help.html',
     controller: HelpController
@@ -40,6 +44,10 @@ CGH.directive('navbarLink', function($location) {
 
 CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
+});
+
+CGH.factory('Links', function($http) {
+  return $http.get('/links.json');
 });
 
 CGH.factory('Helps', function($http) {
@@ -100,6 +108,18 @@ CGH.directive('crypto', function() {
     });
   };
 });
+
+function LinksController($scope, Links) {
+  $scope.keys = function(obj) {
+    return Object.keys(obj).filter(function(key) {
+      return key[0] !== '$';
+    });
+  };
+
+  Links.success(function(links) {
+    $scope.links = links;
+  });
+}
 
 function HelpController($scope, Helps, HelpTopics, $routeParams) {
   var help_topic = $routeParams.help_topic;

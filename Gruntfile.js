@@ -60,4 +60,11 @@ module.exports = function(grunt) {
       JSON.stringify(index, null, 2) + '\n');
   });
 
+  grunt.registerTask('convert_ymls', function() {
+    var path = require('path');
+    var yml = grunt.file.readYAML('posts/links.yml');
+    grunt.file.write(path.join('public', 'links.json'),
+      JSON.stringify(yml, null, 2) + '\n');
+  });
+
 };
