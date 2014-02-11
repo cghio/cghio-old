@@ -73,11 +73,18 @@ module.exports = function(grunt) {
     'clean:templates'
   ]);
 
+  grunt.JSONStringify = function(obj) {
+    return JSON.stringify(obj, null, 2);
+  }
+
   grunt.registerTask('_production', function() {
     var less = grunt.config('less') || {};
     less.options = less.options || {};
     less.options.cleancss = true;
     grunt.config('less', less);
+    grunt.JSONStringify = function(obj) {
+      return JSON.stringify(obj);
+    }
     grunt.log.ok('Updated Grunt configs.');
   })
 
@@ -240,14 +247,14 @@ module.exports = function(grunt) {
         title: title
       });
       grunt.file.write(path.join('public', 'api', 'help', slug + '.json'),
-        JSON.stringify({
+        grunt.JSONStringify({
           slug: slug,
           title: title,
-          content: file.split('\n')
-        }, null, 2) + '\n');
+          content: file
+        }) + '\n');
     });
     grunt.file.write(path.join('public', 'api', 'help.json'),
-      JSON.stringify(index, null, 2) + '\n');
+      grunt.JSONStringify(index) + '\n');
     grunt.log.ok('Updated help index.');
   });
 
@@ -261,7 +268,7 @@ module.exports = function(grunt) {
       var to = path.join('public', 'api', path.basename(yml, '.yml') + '.json');
       var file = grunt.file.readYAML(from);
       if (file === null) file = [];
-      grunt.file.write(to, JSON.stringify(file, null, 2) + '\n');
+      grunt.file.write(to, grunt.JSONStringify(file) + '\n');
       grunt.log.ok('Converted ' + from + ' to ' + to);
     });
   });
