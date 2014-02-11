@@ -70,7 +70,7 @@ CGH.directive('navbarLink', function($location) {
 });
 
 CGH.factory('Repositories', function($http) {
-  return $http.get('/repositories.json');
+  return $http.get('/api/repositories.json');
 });
 
 function MainController($scope, Repositories) {
@@ -81,12 +81,12 @@ function MainController($scope, Repositories) {
 }
 
 CGH.factory('Builds', function($http) {
-  return $http.get('/builds.json');
+  return $http.get('/api/builds.json');
 });
 
 CGH.factory('Links', function($http) {
   var COLUMNS = 3;
-  return $http.get('/links.json').then(function(response) {
+  return $http.get('/api/links.json').then(function(response) {
     var links = response.data;
     if (typeof links !== 'object') return links;
 
@@ -113,7 +113,7 @@ CGH.factory('Links', function($http) {
 });
 
 CGH.factory('Helps', function($http) {
-  return $http.get('/help.json');
+  return $http.get('/api/help.json');
 });
 
 CGH.service('HelpTopics', function($http) {
@@ -124,7 +124,7 @@ CGH.service('HelpTopics', function($http) {
   self.get = function(help_topic, callback) {
     var index = self.help_topics.indexOf(help_topic);
     if (index === -1) {
-      $http.get('/help/' + help_topic + '.json').success(function(help_topic) {
+      $http.get('/api/help/' + help_topic + '.json').success(function(help_topic) {
         self.help_topics.unshift(help_topic.slug);
         self.help_topic_objs.unshift(help_topic);
         self.help_topics.splice(self.number_of_objects);

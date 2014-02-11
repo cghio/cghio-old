@@ -10,6 +10,7 @@ module.exports = function(grunt) {
       }
     },
     clean: {
+      api: [ 'public/api' ],
       public_css: [ 'public/css/*.css' ],
       public_css: [ 'public/js/*.js' ],
       templates: [ 'public/js/templates.js' ]
@@ -238,14 +239,14 @@ module.exports = function(grunt) {
         slug: slug,
         title: title
       });
-      grunt.file.write(path.join('public', 'help', slug + '.json'),
+      grunt.file.write(path.join('public', 'api', 'help', slug + '.json'),
         JSON.stringify({
           slug: slug,
           title: title,
           content: file.split('\n')
         }, null, 2) + '\n');
     });
-    grunt.file.write(path.join('public', 'help.json'),
+    grunt.file.write(path.join('public', 'api', 'help.json'),
       JSON.stringify(index, null, 2) + '\n');
     grunt.log.ok('Updated help index.');
   });
@@ -257,7 +258,7 @@ module.exports = function(grunt) {
     }, '*.yml');
     ymls.forEach(function(yml) {
       var from = path.join('posts', yml);
-      var to = path.join('public', path.basename(yml, '.yml') + '.json');
+      var to = path.join('public', 'api', path.basename(yml, '.yml') + '.json');
       var file = grunt.file.readYAML(from);
       if (file === null) file = [];
       grunt.file.write(to, JSON.stringify(file, null, 2) + '\n');
