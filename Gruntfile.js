@@ -9,6 +9,11 @@ module.exports = function(grunt) {
         }
       }
     },
+    clean: {
+      public_css: [ 'public/css/*.css' ],
+      public_css: [ 'public/js/*.js' ],
+      templates: [ 'public/js/templates.js' ]
+    },
     less: {
       app: {
         files: {
@@ -43,8 +48,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('default', [
+    'clean',
     'less',
     'copy_index',
     'make_help_index',
@@ -55,12 +62,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('production', [
     '_production',
+    'clean',
     'less',
     'make_help_index',
     'convert_ymls',
     'analyze',
     'uglify',
-    'concat'
+    'concat',
+    'clean:templates'
   ]);
 
   grunt.registerTask('_production', function() {
