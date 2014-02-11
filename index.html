@@ -27,7 +27,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">cgh.io</a>
+            <a class="navbar-brand" href="/#!/">cgh.io</a>
           </div>
           <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -48,6 +48,23 @@
       </div>
     </div>
   </footer>
+  <script type="text/ng-template" id="main.html">
+    <div class="row">
+      <div class="col-sm-5 col-md-4" ng-repeat="repo in repositories">
+        <div class="thumbnail">
+          <img ng-src="{{repo.image}}" alt="Maintainer">
+          <div class="caption">
+            <h4>{{repo.title}}</h4>
+            <p>{{repo.desc}}</p>
+            <p class="btn-group btn-group-sm">
+              <a ng-repeat="(name, url) in repo.buttons" target="_blank"
+                href="{{url}}" class="btn btn-default">{{name}}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
   <script type="text/ng-template" id="builds.html">
     <table class="table">
       <thead>

@@ -1,0 +1,7 @@
+- title: Maintainer
+  desc: |
+    Maintainer is a single-page web application managing routine scripts
+    that may run on local or remote server.
+  image: /images/Maintainer-600px.png
+  buttons:
+    Homepage: http://github.com/caiguanhao/Maintainer

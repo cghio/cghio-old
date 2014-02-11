@@ -1,6 +1,10 @@
 var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
 
 CGH.config(function($routeProvider, $locationProvider) {
+  $routeProvider.when('/', {
+    templateUrl: 'main.html',
+    controller: MainController
+  });
   $routeProvider.when('/builds', {
     templateUrl: 'builds.html',
     controller: BuildsController
@@ -41,6 +45,17 @@ CGH.directive('navbarLink', function($location) {
     });
   };
 });
+
+CGH.factory('Repositories', function($http) {
+  return $http.get('/repositories.json');
+});
+
+function MainController($scope, Repositories) {
+  Repositories.then(function(response) {
+    var repositories = response.data;
+    $scope.repositories = repositories;
+  });
+}
 
 CGH.factory('Builds', function($http) {
   return $http.get('/builds.json');
