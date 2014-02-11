@@ -30,6 +30,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('default', [
     'copy_index',
@@ -43,6 +44,7 @@ module.exports = function(grunt) {
     'make_help_index',
     'convert_ymls',
     'analyze',
+    'uglify',
     'concat'
   ]);
 

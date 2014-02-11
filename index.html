@@ -13,10 +13,11 @@
   <script concat="angular" production="/js/vendor/angular.min.js"></script>
   <script concat="angular" production="/js/vendor/angular-route.min.js"></script>
   <script concat="angular" production="/js/vendor/angular-sanitize.min.js"></script>
-  <script src="/js/vendor/markdown.js"></script>
-  <script concat="app" dest="/js/app.js"></script>
-  <script concat="app" src="/js/main.js"></script>
-  <script concat="app" real-src="public/js/templates.js"></script>
+  <script uglify="vendors" dest="/js/vendors.js"></script>
+  <script uglify="vendors" src="/js/vendor/markdown.js"></script>
+  <script uglify="app" dest="/js/app.js" options='{"mangle": false}'></script>
+  <script uglify="app" src="/js/main.js"></script>
+  <script uglify="app" real-src="public/js/templates.js"></script>
   <script development src="http://localhost:35729/livereload.js"></script>
 </head>
 
