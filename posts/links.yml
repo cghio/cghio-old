@@ -1,9 +1,20 @@
+Sublime Text:
+  - title: Package Control
+    url: https://sublime.wbond.net/installation
+  - title: Origami
+    url: https://github.com/SublimeText/Origami
+  - title: SideBarEnhancements
+    url: https://github.com/titoBouzout/SideBarEnhancements
+  - title: SublimeAllAutocomplete
+    url: https://github.com/alienhard/SublimeAllAutocomplete
+  - title: QuickThemes
+    url: https://github.com/chrislongo/QuickThemes
 Ruby/Rails:
   - title: Ruby Documentation
     url: http://ruby-doc.org/core-2.0.0/
   - title: Ruby on Rails Guides
     url: http://guides.rubyonrails.org/
-  - title: Ruby on Rails 實戰聖經
+  - title: Ruby on Rails Chinese Guides
     url: http://ihower.tw/rails3/index.html
   - title: The Ruby Toolbox
     url: https://www.ruby-toolbox.com/
@@ -24,6 +35,12 @@ Converters:
     url: http://sass-lang.com/try.html
   - title: JS <-> CoffeeScript
     url: http://js2coffee.org/
+  - title: LESS -> CSS
+    url: http://less2css.org/
+  - title: CSS -> LESS
+    url: http://css2less.cc/
+  - title: DataURI
+    url: http://daturi.me/
 Compressors:
   - title: Closure Compiler
     url: http://closure-compiler.appspot.com/
