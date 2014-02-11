@@ -149,7 +149,10 @@ module.exports = function(grunt) {
       },
       onend: function() {
         prod_index = prod_index.replace(/^\s*$/mg, '');
+        prod_index = prod_index.replace(/(<link.+?>)\n{2,}/mg, '$1\n');
         prod_index = prod_index.replace(/<\/script>\n{2,}/mg, '</script>\n');
+        prod_index = prod_index.replace(/^\s{1,}<\//mg, '</');
+        prod_index = prod_index.replace(/<\/(.+?)></g, '</$1>\n\n<');
         prod_index = prod_index.trim() + '\n';
         grunt.file.write('public/index.html', prod_index);
         grunt.log.ok('File public/index.html generated.');
