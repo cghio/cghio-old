@@ -9,6 +9,13 @@ module.exports = function(grunt) {
         }
       }
     },
+    less: {
+      app: {
+        files: {
+          'public/css/app.css': [ 'assets/css/app.less' ]
+        }
+      }
+    },
     watch: {
       options: {
         livereload: true
@@ -23,6 +30,10 @@ module.exports = function(grunt) {
       yml: {
         files: [ 'posts/*.yml' ],
         tasks: [ 'convert_ymls' ]
+      },
+      css: {
+        files: [ 'assets/css/**/*.css', 'assets/css/**/*.less' ],
+        tasks: [ 'less' ]
       }
     }
   });
@@ -31,8 +42,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   grunt.registerTask('default', [
+    'less',
     'copy_index',
     'make_help_index',
     'convert_ymls',
@@ -41,6 +54,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('production', [
+    '_production',
+    'less',
     'make_help_index',
     'convert_ymls',
     'analyze',
@@ -48,8 +63,17 @@ module.exports = function(grunt) {
     'concat'
   ]);
 
+  grunt.registerTask('_production', function() {
+    var less = grunt.config('less') || {};
+    less.options = less.options || {};
+    less.options.cleancss = true;
+    grunt.config('less', less);
+    grunt.log.ok('Updated Grunt configs.');
+  })
+
   grunt.registerTask('copy_index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
+    grunt.log.ok('Copied index.html to public/index.html.');
   });
 
   var htmlparser = require('htmlparser2');
@@ -214,6 +238,7 @@ module.exports = function(grunt) {
     });
     grunt.file.write(path.join('public', 'help.json'),
       JSON.stringify(index, null, 2) + '\n');
+    grunt.log.ok('Updated help index.');
   });
 
   grunt.registerTask('convert_ymls', function() {
@@ -222,10 +247,12 @@ module.exports = function(grunt) {
       cwd: 'posts'
     }, '*.yml');
     ymls.forEach(function(yml) {
-      var file = grunt.file.readYAML(path.join('posts', yml));
+      var from = path.join('posts', yml);
+      var to = path.join('public', path.basename(yml, '.yml') + '.json');
+      var file = grunt.file.readYAML(from);
       if (file === null) file = [];
-      grunt.file.write(path.join('public', path.basename(yml, '.yml') +
-        '.json'), JSON.stringify(file, null, 2) + '\n');
+      grunt.file.write(to, JSON.stringify(file, null, 2) + '\n');
+      grunt.log.ok('Converted ' + from + ' to ' + to);
     });
   });
 
