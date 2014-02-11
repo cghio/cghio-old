@@ -12,13 +12,13 @@ module.exports = function(grunt) {
     clean: {
       api: [ 'public/api' ],
       public_css: [ 'public/css/*.css' ],
-      public_css: [ 'public/js/*.js' ],
+      public_js: [ 'public/js/*.js' ],
       templates: [ 'public/js/templates.js' ]
     },
     less: {
-      app: {
+      cghio: {
         files: {
-          'public/css/app.css': [ 'assets/css/app.less' ]
+          'public/css/cghio.css': [ 'assets/css/app.less' ]
         }
       }
     },
