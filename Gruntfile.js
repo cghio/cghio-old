@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('default', [
     'copy_index',
@@ -38,8 +39,143 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
+  grunt.registerTask('production', [
+    'make_help_index',
+    'convert_ymls',
+    'analyze',
+    'concat'
+  ]);
+
   grunt.registerTask('copy_index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
+  });
+
+  var htmlparser = require('htmlparser2');
+  htmlparser.void_elements = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img',
+    'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+
+  grunt.registerTask('analyze', 'Analyze index.html', function() {
+    var index = grunt.file.read('index.html');
+
+    var templates = 'CGH.run(function($templateCache){';
+    var tpl = { name: '', content: '' };
+    var prod_index = '';
+    var prod_tasks = {
+      concat: { options: {}, dest: {}, src: {} },
+      uglify: { options: {}, dest: {}, src: {} }
+    };
+    var tasks = Object.keys(prod_tasks);
+    var skip_this_tag = false;
+
+    var parser = new htmlparser.Parser({
+      onopentag: function(name, attribs) {
+        var is_script = (name === 'script');
+        if (is_script) {
+          tpl.name = '';
+          tpl.content = '';
+
+          if (attribs.hasOwnProperty('development')) {
+            skip_this_tag = true;
+          }
+          if (attribs.hasOwnProperty('production')) {
+            attribs.src = attribs.production;
+            delete attribs.production;
+          }
+        }
+        if (is_script) {
+          for (var i = 0; i < tasks.length; i++) {
+            var task = tasks[i];
+            var target_name = attribs[task];
+            if (!target_name) continue;
+            prod_tasks[task].dest[target_name] = prod_tasks[task].dest[target_name] || [];
+            prod_tasks[task].src[target_name] = prod_tasks[task].src[target_name] || [];
+            if (attribs.dest) {
+              if (attribs.options) {
+                prod_tasks[task].options[target_name] = JSON.parse(attribs.options);
+              }
+              prod_tasks[task].dest[target_name].push(attribs.dest);
+            }
+            if (attribs.src || attribs['real-src']) {
+              var src = attribs['real-src'] || ('assets' + attribs.src);
+              src = src.replace(/[\n\s]{2,}/g, '');
+              prod_tasks[task].src[target_name].push(src);
+            }
+            if (attribs.dest) {
+              attribs = { src: attribs.dest };
+            } else {
+              skip_this_tag = true;
+            }
+          }
+        }
+        if (is_script && attribs.type === 'text/ng-template') {
+          tpl.name = attribs.id;
+        } else {
+          if (skip_this_tag === false) {
+            prod_index += '<' + name;
+            for (var attrib in attribs) {
+              prod_index += ' ' + attrib + '="' + attribs[attrib] + '"';
+            }
+            prod_index += '>';
+          }
+        }
+      },
+      ontext: function(text) {
+        if (tpl.name !== '') {
+          tpl.content += text;
+        } else {
+          if (skip_this_tag === false) {
+            prod_index += text;
+          }
+        }
+      },
+      onclosetag: function(name) {
+        if (name === 'script' && tpl.name !== '') {
+          tpl.content = tpl.content.replace(/^\s{2,}/mg, '');
+          templates += '$templateCache.put(' + JSON.stringify(tpl.name) + ',' +
+            JSON.stringify(tpl.content.trim()) + ');';
+        } else {
+          if (htmlparser.void_elements.indexOf(name.toLowerCase()) > -1) return;
+          if (skip_this_tag === false) {
+            prod_index += '</' + name + '>';
+          } else {
+            skip_this_tag = false;
+          }
+        }
+      },
+      onprocessinginstruction: function(name, data) {
+        prod_index += '<' + data + '>';
+      },
+      onend: function() {
+        prod_index = prod_index.replace(/^\s*$/mg, '');
+        prod_index = prod_index.replace(/<\/script>\n{2,}/mg, '</script>\n');
+        prod_index = prod_index.trim() + '\n';
+        grunt.file.write('public/index.html', prod_index);
+        grunt.log.ok('File public/index.html generated.');
+
+        templates += '})';
+        grunt.file.write('public/js/templates.js', ';' + templates + ';');
+
+        for (var i = 0; i < tasks.length; i++) {
+          var task = tasks[i];
+          var task_config = grunt.config(task) || {};
+          for (var pu in prod_tasks[task].src) {
+            var files = {};
+            for (var dest in prod_tasks[task].dest[pu]) {
+              files['public' + prod_tasks[task].dest[pu][dest]] = prod_tasks[task].src[pu];
+            }
+            task_config[pu] = {
+              options: prod_tasks[task].options[pu],
+              files: files
+            };
+          }
+          grunt.config(task, task_config);
+          // console.log(JSON.stringify(task_config, null, 2));
+          grunt.log.ok('Modified ' + task + ' tasks.');
+        }
+      }
+    });
+    parser.write(index);
+    parser.end();
   });
 
   grunt.registerTask('make_help_index', 'Generate help index JSON file', function() {

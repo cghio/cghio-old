@@ -6,12 +6,18 @@
   <link rel="stylesheet" href="/css/vendor/bootstrap.css">
   <link rel="stylesheet" href="/css/vendor/bootstrap-theme.css">
   <link rel="stylesheet" href="/css/main.css">
-  <script src="/js/vendor/angular.js"></script>
-  <script src="/js/vendor/angular-route.js"></script>
-  <script src="/js/vendor/angular-sanitize.js"></script>
+  <script development src="/js/vendor/angular.js"></script>
+  <script development src="/js/vendor/angular-route.js"></script>
+  <script development src="/js/vendor/angular-sanitize.js"></script>
+  <script concat="angular" dest="/js/angular.js"></script>
+  <script concat="angular" production="/js/vendor/angular.min.js"></script>
+  <script concat="angular" production="/js/vendor/angular-route.min.js"></script>
+  <script concat="angular" production="/js/vendor/angular-sanitize.min.js"></script>
   <script src="/js/vendor/markdown.js"></script>
-  <script src="/js/main.js"></script>
-  <script src="http://localhost:35729/livereload.js"></script>
+  <script concat="app" dest="/js/app.js"></script>
+  <script concat="app" src="/js/main.js"></script>
+  <script concat="app" real-src="public/js/templates.js"></script>
+  <script development src="http://localhost:35729/livereload.js"></script>
 </head>
 
 <body>
@@ -170,6 +176,7 @@
       </div>
     </div>
   </script>
+
 </body>
 
 </html>
