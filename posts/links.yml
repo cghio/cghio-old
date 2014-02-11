@@ -1,3 +1,18 @@
+JavaScript:
+  - title: NVM
+    url: https://github.com/creationix/nvm
+  - title: JavaScript News
+    url: http://www.echojs.com/
+  - title: JSDB
+    url: http://www.jsdb.io/
+  - title: Node.js Modules
+    url: https://nodejsmodules.org/
+  - title: Angular.js
+    url: http://angularjs.org/
+  - title: Ember.js
+    url: http://emberjs.com/
+  - title: Mongoose
+    url: http://mongoosejs.com/
 Sublime Text:
   - title: Package Control
     url: https://sublime.wbond.net/installation
@@ -24,6 +39,9 @@ Ruby/Rails:
     url: http://learnxinyminutes.com/docs/ruby/
   - title: Ruby coding style guide
     url: https://github.com/bbatsov/ruby-style-guide
+Python:
+  - title: Python Windows Packages
+    url: http://www.lfd.uci.edu/~gohlke/pythonlibs/
 Converters:
   - title: HTML -> HAML
     url: http://www.haml-converter.com/
@@ -41,6 +59,28 @@ Converters:
     url: http://css2less.cc/
   - title: DataURI
     url: http://daturi.me/
+Validators/Viewers:
+  - title: YAML
+    url: http://yamllint.com/
+  - title: JSON
+    url: http://jsonlint.com/
+  - title: json.human.js
+    url: https://github.com/marianoguerra/json.human.js
+  - title: JSONMate
+    url: http://jsonmate.com/
+Mac:
+  - title: Homebrew
+    url: http://brew.sh/
+  - title: ImageOptim
+    url: http://imageoptim.com/
+  - title: KeyRemap4MacBook
+    url: https://pqrs.org/macosx/keyremap4macbook/
+  - title: SpeedLimit
+    url: http://mschrag.github.io/
+  - title: DockApps
+    url: https://github.com/caiguanhao/DockApps
+  - title: iStat Menus
+    url: http://bjango.com/mac/istatmenus/
 Compressors:
   - title: Closure Compiler
     url: http://closure-compiler.appspot.com/
@@ -58,17 +98,6 @@ Compressors:
     url: http://compresspng.com/
   - title: JPEGMini
     url: http://www.jpegmini.com/main/shrink_photo
-  - title: ImageOptim
-    url: http://imageoptim.com/
-Validators/Viewers:
-  - title: YAML
-    url: http://yamllint.com/
-  - title: JSON
-    url: http://jsonlint.com/
-  - title: json.human.js
-    url: https://github.com/marianoguerra/json.human.js
-  - title: JSONMate
-    url: http://jsonmate.com/
 JS Encode:
   - title: JSFuck
     url: http://utf-8.jp/public/jsfuck.html
@@ -80,3 +109,10 @@ JS Encode:
     url: http://www.iteral.com/jscrush/
   - title: jsPacker
     url: http://dean.edwards.name/packer/
+Chrome:
+  - title: Currently
+    url: https://chrome.google.com/webstore/detail/currently/ojhmphdkpgbibohbnpbfiefkgieacjmh
+  - title: Ember Inspector
+    url: https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi
+  - title: AngularJS Batarang
+    url: https://chrome.google.com/webstore/detail/angularjs-batarang/ighdmehidhipcmcojjgiloacoafjmpfk
