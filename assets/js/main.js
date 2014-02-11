@@ -30,7 +30,14 @@ CGH.run(function($location, $rootScope) {
   });
 });
 
-CGH.directive('title', function($rootScope){
+CGH.directive('body', function($rootScope) {
+  return {
+    restrict: 'E',
+    templateUrl: 'index.html'
+  };
+});
+
+CGH.directive('title', function($rootScope) {
   return {
     restrict: 'E',
     template: '{{(title ? title + " &mdash; " : "") + "cgh.io"}}',
