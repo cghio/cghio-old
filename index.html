@@ -100,14 +100,25 @@
     </table>
   </script>
   <script type="text/ng-template" id="links.html">
-    <div class="form-group text-right small">
-      Links will be opened in
-      <span class="btn-group btn-group-xs">
-        <input type="button" class="btn btn-default"
-          ng-repeat="target in targets" link-target="{{target.target}}"
-          ng-class="{active: target.active}" value="{{target.name}}">
-      </span>
-      tab/window
+    <div class="row">
+      <div class="form-group col-sm-4">
+        <div class="input-group input-group-sm">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+          </span>
+          <input type="text" class="form-control" placeholder="Filter"
+            ng-model="keyword">
+        </div>
+      </div>
+      <div class="form-group col-sm-8 text-right small">
+        Links will be opened in
+        <span class="btn-group btn-group-xs">
+          <input type="button" class="btn btn-default"
+            ng-repeat="target in targets" link-target="{{target.target}}"
+            ng-class="{active: target.active}" value="{{target.name}}">
+        </span>
+        tab
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-4" ng-repeat="link_col in links">
@@ -115,7 +126,7 @@
           <div class="panel-heading">{{link_row_name}}</div>
           <div class="list-group">
             <a class="list-group-item" href="{{link.url}}"
-              ng-repeat="link in link_col[link_row_name]"
+              ng-repeat="link in link_col[link_row_name] | filter:keyword"
               target="{{target().target}}">
               {{link.title}}
             </a>
