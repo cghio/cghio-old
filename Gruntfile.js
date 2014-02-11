@@ -88,4 +88,62 @@ module.exports = function(grunt) {
     });
   });
 
+  grunt.registerTask('download_angular', 'Download Angular code', function(version) {
+    if (!version) grunt.fail.fatal('Please provide version! ' +
+      'Go to http://code.angularjs.org/ to see list of versions.');
+    var finish = this.async();
+    var base = 'http://code.angularjs.org/' + version + '/';
+    var needs = [
+      'angular.js',
+      'angular-route.js',
+      'angular-sanitize.js',
+    ];
+    var urls = [];
+    needs.forEach(function(need) {
+      urls.push(base + need);
+      urls.push(base + need.replace(/\.js$/, '.min.js'));
+    });
+    var http = require('http');
+    var fs = require('fs');
+    var path = require('path');
+
+    var url_index = 0;
+    function download(callback) {
+      var url = urls[url_index];
+      var filename = path.basename(url);
+      var file = fs.createWriteStream('assets/js/vendor/' + filename);
+      grunt.log.write('Start downloading ' + url);
+      http.get(url, function(response) {
+        if (response.statusCode !== 200) {
+          throw new Error('Fail to download. Status: ' + response.statusCode);
+        }
+        var total = parseInt(response.headers['content-length']);
+        var acc = 0;
+        response.on('data', function(data) {
+          file.write(data);
+          acc += data.length;
+          process.stdout.clearLine();
+          process.stdout.cursorTo(0);
+          process.stdout.write((acc / total * 100).toFixed(2) + '%, ' + acc +
+            ' of ' + total + ' bytes of ' + filename + ' downloaded... ');
+        });
+        response.on('end', function() {
+          process.stdout.clearLine();
+          process.stdout.cursorTo(0);
+          grunt.log.ok('Downloaded ' + url);
+
+          url_index++;
+          if (urls[url_index]) {
+            download(callback);
+          } else {
+            callback();
+          }
+        });
+      }).on('error', function(error) {
+        grunt.fail.fatal(error);
+      });
+    }
+    download(finish);
+  });
+
 };
