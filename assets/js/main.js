@@ -6,19 +6,35 @@ CGH.config(function($routeProvider, $locationProvider) {
     controller: MainController
   });
   $routeProvider.when('/builds', {
+    title: 'Builds',
     templateUrl: 'builds.html',
     controller: BuildsController
   });
   $routeProvider.when('/links', {
+    title: 'Links',
     templateUrl: 'links.html',
     controller: LinksController
   });
   $routeProvider.when('/help/:help_topic?', {
+    title: 'Help',
     templateUrl: 'help.html',
     controller: HelpController
   });
   $locationProvider.html5Mode(false);
   $locationProvider.hashPrefix('!');
+});
+
+CGH.run(function($location, $rootScope) {
+  $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+    $rootScope.title = current.$$route.title;
+  });
+});
+
+CGH.directive('title', function($rootScope){
+  return {
+    restrict: 'E',
+    template: '{{(title ? title + " &mdash; " : "") + "cgh.io"}}',
+  };
 });
 
 CGH.filter('markdown', function() {
@@ -188,7 +204,7 @@ CGH.directive('linkTarget', function() {
   };
 });
 
-function HelpController($scope, Helps, HelpTopics, $routeParams) {
+function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
   var help_topic = $routeParams.help_topic;
 
   // this variable determines whether to show the index page
@@ -202,6 +218,7 @@ function HelpController($scope, Helps, HelpTopics, $routeParams) {
   if (help_topic) {
     HelpTopics.get(help_topic, function(help_topic) {
       $scope.help_topic = help_topic;
+      $rootScope.title = help_topic.title;
     });
   }
 }
