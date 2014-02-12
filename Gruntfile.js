@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     connect: {
       server: {
         options: {
+          hostname: '*',
           port: 3000,
           base: [ 'assets', 'public' ]
         }
@@ -156,6 +157,9 @@ module.exports = function(grunt) {
       onprocessinginstruction: function(name, data) {
         prod_index += '<' + data + '>';
       },
+      oncomment: function(data) {
+        prod_index += '\n  <!--' + data + '-->\n';
+      },
       onend: function() {
         prod_index = prod_index.trim() + '\n';
         grunt.file.write('public/index.html', prod_index);
@@ -257,11 +261,14 @@ module.exports = function(grunt) {
       onprocessinginstruction: function(name, data) {
         prod_index += '<' + data + '>';
       },
+      oncomment: function(data) {
+        prod_index += '<!--' + data + '-->';
+      },
       onend: function() {
         prod_index = prod_index.replace(/^\s*$/mg, '');
         prod_index = prod_index.replace(/(<link.+?>)\n{2,}/mg, '$1\n');
         prod_index = prod_index.replace(/<\/script>\n{2,}/mg, '</script>\n');
-        prod_index = prod_index.replace(/^\s{1,}<\//mg, '</');
+        prod_index = prod_index.replace(/^\s{2}<\//mg, '</');
         prod_index = prod_index.replace(/<\/(.+?)></g, '</$1>\n\n<');
         prod_index = prod_index.trim() + '\n';
         grunt.file.write('public/index.html', prod_index);
@@ -281,6 +288,11 @@ module.exports = function(grunt) {
             task_config[pu] = {
               options: prod_tasks[task].options[pu],
               files: files
+            };
+          }
+          if (Object.keys(task_config).length === 0) {
+            task_config = {
+              no_need: {}
             };
           }
           grunt.config(task, task_config);
