@@ -158,7 +158,7 @@ module.exports = function(grunt) {
         prod_index += '<' + data + '>';
       },
       oncomment: function(data) {
-        prod_index += '\n  <!--' + data + '-->\n';
+        prod_index += '<!--' + data + '-->';
       },
       onend: function() {
         prod_index = prod_index.trim() + '\n';
@@ -262,12 +262,13 @@ module.exports = function(grunt) {
         prod_index += '<' + data + '>';
       },
       oncomment: function(data) {
-        prod_index += '<!--' + data + '-->';
+        prod_index += '\n  <!--' + data + '-->\n';
       },
       onend: function() {
         prod_index = prod_index.replace(/^\s*$/mg, '');
         prod_index = prod_index.replace(/(<link.+?>)\n{2,}/mg, '$1\n');
         prod_index = prod_index.replace(/<\/script>\n{2,}/mg, '</script>\n');
+        prod_index = prod_index.replace(/-->\n{2,}/g, '-->\n');
         prod_index = prod_index.replace(/^\s{2}<\//mg, '</');
         prod_index = prod_index.replace(/<\/(.+?)></g, '</$1>\n\n<');
         prod_index = prod_index.trim() + '\n';

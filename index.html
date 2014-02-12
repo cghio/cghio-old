@@ -8,6 +8,7 @@
   <meta name="description" content="this is caiguanhao's homepage.">
   <meta name="author" content="caiguanhao">
   <link rel="stylesheet" href="/css/cghio.css">
+  <!--[if gt IE 9]><!-->
   <script development src="/js/vendor/angular.js"></script>
   <script development src="/js/vendor/angular-route.js"></script>
   <script development src="/js/vendor/angular-sanitize.js"></script>
@@ -21,6 +22,7 @@
   <script uglify="app" src="/js/main.js"></script>
   <script uglify="app" real-src="public/js/templates.js"></script>
   <script development src="http://localhost:35729/livereload.js"></script>
+  <!--<![endif]-->
   <script type="text/ng-template" id="index.html">
     <div id="wrap">
       <header>
@@ -183,6 +185,8 @@
 <body>
   <!--[if lte IE 9]>
     <div class="ie-warnings">
+      <b>Your browser is out of date.</b>
+      <br>
       Please upgrade to IE 10 or use Chrome or Firefox browser.
       <br>
       Download Chrome from:
