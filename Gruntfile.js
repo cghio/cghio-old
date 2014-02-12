@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       public_css: [ 'public/css/*.css' ],
       public_js: [ 'public/js/*.js' ],
       compressed: [ 'public/**/*.gz' ],
-      templates: [ 'public/js/templates.js' ]
+      templates: [ 'public/js/templates.js', 'public/js/templates.js.gz' ]
     },
     less: {
       cghio: {
