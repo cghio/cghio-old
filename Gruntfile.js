@@ -13,6 +13,7 @@ module.exports = function(grunt) {
       api: [ 'public/api' ],
       public_css: [ 'public/css/*.css' ],
       public_js: [ 'public/js/*.js' ],
+      compressed: [ 'public/**/*.gz' ],
       templates: [ 'public/js/templates.js' ]
     },
     less: {
@@ -71,6 +72,7 @@ module.exports = function(grunt) {
     'uglify',
     'concat',
     'hash',
+    'compress',
     'clean:templates'
   ]);
 
@@ -92,6 +94,20 @@ module.exports = function(grunt) {
   grunt.registerTask('copy_index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
     grunt.log.ok('Copied index.html to public/index.html.');
+  });
+
+  grunt.registerTask('compress', 'Compress assets files', function() {
+    var finish = this.async();
+    var fs = require('fs');
+    var exec = require('child_process').exec;
+    exec('gzip -f1k css/*.css js/*.js', {
+      cwd: fs.realpathSync('public')
+    }, function(error, stdout, stderr) {
+      if (stderr) grunt.fail.fatal(stderr);
+      if (error) grunt.fail.fatal(error);
+      grunt.log.ok('Asset files compressed.')
+      finish();
+    })
   });
 
   var htmlparser = require('htmlparser2');
