@@ -24,6 +24,8 @@ Sublime Text:
     url: https://github.com/alienhard/SublimeAllAutocomplete
   - title: QuickThemes
     url: https://github.com/chrislongo/QuickThemes
+  - title: Sublime Guide
+    url: https://gist.github.com/davatron5000/7215566
 Ruby/Rails:
   - title: Ruby Documentation
     url: http://ruby-doc.org/core-2.0.0/

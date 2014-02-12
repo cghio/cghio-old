@@ -175,12 +175,12 @@ function LinksController($scope, Links) {
   $scope.targets = [
     {
       name: 'the same',
-      target: '_self',
-      active: true
+      target: '_self'
     },
     {
       name: 'new',
-      target: '_blank'
+      target: '_blank',
+      active: true
     }
   ];
   $scope.target = function() {
