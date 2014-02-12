@@ -20,6 +20,11 @@ CGH.config(function($routeProvider, $locationProvider) {
     templateUrl: 'help.html',
     controller: HelpController
   });
+  $routeProvider.when('/about', {
+    title: 'About',
+    templateUrl: 'about.html',
+    controller: LinksController
+  });
   $locationProvider.html5Mode(false);
   $locationProvider.hashPrefix('!');
 });
