@@ -67,8 +67,8 @@
             <h4>{{repo.title}}</h4>
             <p>{{repo.desc}}</p>
             <p class="btn-group btn-group-sm">
-              <a ng-repeat="(name, url) in repo.buttons" target="_blank"
-                href="{{url}}" class="btn btn-default">{{name}}</a>
+              <a ng-repeat="name in keys(repo.buttons)" target="_blank"
+                href="{{repo.buttons[name]}}" class="btn btn-default">{{name}}</a>
             </p>
           </div>
         </div>

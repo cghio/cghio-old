@@ -74,6 +74,7 @@ CGH.factory('Repositories', function($http) {
 });
 
 function MainController($scope, Repositories) {
+  $scope.keys = get_object_keys;
   Repositories.then(function(response) {
     var repositories = response.data;
     $scope.repositories = repositories;
@@ -189,11 +190,7 @@ function LinksController($scope, Links) {
     }
     return $scope.targets[0];
   };
-  $scope.keys = function(obj) {
-    return Object.keys(obj).filter(function(key) {
-      return key[0] !== '$';
-    });
-  };
+  $scope.keys = get_object_keys;
 
   Links.then(function(links) {
     $scope.links = links;
@@ -228,4 +225,11 @@ function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
       $rootScope.title = help_topic.title;
     });
   }
+}
+
+// shared methods:
+function get_object_keys(obj) {
+  return Object.keys(obj).filter(function(key) {
+    return key[0] !== '$';
+  });
 }
