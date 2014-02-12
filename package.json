@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "CGH.IO",
   "version": "0.0.0",
   "description": "The cgh.io website.",
