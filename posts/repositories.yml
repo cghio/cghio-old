@@ -4,4 +4,20 @@
     that may run on local or remote server.
   image: /images/Maintainer-600px.png
   buttons:
-    Homepage: http://github.com/caiguanhao/Maintainer
+    Homepage: https://github.com/caiguanhao/Maintainer
+- title: Portablizer
+  desc: |
+    Make Node.js desktop app with a simple cross-platform Webkit browser.
+    The app carries platform-specific Node.js binaries, so even if you
+    are using Windows XP, you are still able to run any HTML5 app.
+  buttons:
+    More: https://github.com/caiguanhao/portablizer
+- title: EasyJobs
+  desc: |
+    A simple Ruby on Rails SSH web interface to ease your workload.
+    Admins can create and run shell scripts on remote server.
+    It also has an Android client, which you can run the scripts directly
+    on your phone.
+  buttons:
+    Source: https://github.com/caiguanhao/EasyJobs
+    Android: https://github.com/caiguanhao/EasyJobs-android
