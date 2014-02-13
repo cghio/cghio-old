@@ -25,3 +25,48 @@ footer {
 .ie-warnings {
   text-align: center;
 }
+@media (max-width: 767px) {
+  .responsive-table {
+    display: block;
+    thead, tbody, th, td, tr {
+      display: block;
+    }
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+    tr {
+      border: 1px solid #ccc;
+    }
+    td {
+      border: none;
+      position: relative;
+      padding-left: 50% !important;
+      word-break: break-word;
+    }
+    td:first-of-type {
+      border-top: 0;
+    }
+    td:before {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+  .table-builds {
+    td {
+      padding-left: 120px !important;
+    }
+    td:nth-of-type(1):before { content: "Name"; }
+    td:nth-of-type(2):before { content: "Version"; }
+    td:nth-of-type(3):before { content: "Platform"; }
+    td:nth-of-type(4):before { content: "Architecture"; }
+    td:nth-of-type(5):before { content: "Hash"; }
+  }
+}
