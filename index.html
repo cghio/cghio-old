@@ -26,11 +26,12 @@
   <script type="text/ng-template" id="index.html">
     <div id="wrap">
       <header>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+           data-navbar-id="navbar">
           <div class="container">
             <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse"
-                data-target="#navbar-collapse-1">
+              <button type="button" class="navbar-toggle"
+                data-navbar-id="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -38,7 +39,7 @@
               </button>
               <a class="navbar-brand" href="/#!/">cgh.io</a>
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <div class="collapse navbar-collapse" id="navbar">
               <ul class="nav navbar-nav">
                 <li navbar-link><a href="/#!/builds">Builds</a></li>
                 <li navbar-link><a href="/#!/links">Links</a></li>

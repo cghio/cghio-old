@@ -49,6 +49,34 @@ CGH.directive('title', function($rootScope) {
   };
 });
 
+CGH.directive('navbarToggle', function(){
+  return {
+    restrict: 'C',
+    link: function($scope, element, attrs, controller) {
+      element.on('click', function() {
+        var navbar = document.getElementById(attrs.navbarId);
+        if (navbar.className.indexOf('collapse') === -1) {
+          navbar.className = navbar.className.replace(/\bin\b/g, 'collapse');
+        } else {
+          navbar.className = navbar.className.replace(/\bcollapse\b/g, 'in');
+        }
+      });
+    }
+  };
+});
+
+CGH.directive('nav', function() {
+  return {
+    restrict: 'E',
+    link: function($scope, element, attrs, controller) {
+      element.find('a').on('click', function() {
+        var navbar = document.getElementById(attrs.navbarId);
+        navbar.className = navbar.className.replace(/\bin\b/g, 'collapse');
+      });
+    }
+  };
+});
+
 CGH.filter('markdown', function() {
   return function(content) {
     if (!content) return '';
