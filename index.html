@@ -78,7 +78,7 @@
     </div>
   </script>
   <script type="text/ng-template" id="builds.html">
-    <table class="table">
+    <table class="table responsive-table table-builds">
       <thead>
         <tr>
           <th>Name</th>
@@ -86,7 +86,7 @@
           <th>Platform</th>
           <th>Architecture</th>
           <th>
-            Hash
+            Hash ({{currentCrypto().name}})
             <div class="btn-group btn-group-xs pull-right">
               <input type="button" class="btn btn-default"
                 ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
@@ -106,7 +106,7 @@
           <td>{{build.version}}</td>
           <td>{{build.platform}}</td>
           <td>{{build.architecture}}</td>
-          <td>{{currentCrypto().name}}: {{build[currentCrypto().key]}}</td>
+          <td>{{build[currentCrypto().key]}}</td>
         </tr>
       </tbody>
     </table>
