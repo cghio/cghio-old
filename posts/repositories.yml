@@ -5,6 +5,20 @@
   image: /images/Maintainer-600px.png
   buttons:
     Homepage: https://github.com/caiguanhao/Maintainer
+- title: CGHAssemble
+  desc: |
+    This is a handy cross-platform desktop app to use Assemble, a static
+    website generator written in Node.js. The app can download a Assemble
+    website git repository to local directory, install dependencies and
+    run grunt tasks.
+
+    Designed for those probably every-day Windows users
+    who know how to edit templates and HTML/CSS/JS files but don't know
+    much about the commands.
+  image: /images/CGHAssemble.png
+  buttons:
+    Homepage: https://github.com/caiguanhao/CGHAssemble
+    Downloads: /#!/builds
 - title: Portablizer
   desc: |
     Make Node.js desktop app with a simple cross-platform Webkit browser.

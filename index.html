@@ -67,7 +67,7 @@
           <img ng-if="repo.image" ng-src="{{repo.image}}" alt="{{repo.title}}">
           <div class="caption">
             <h4>{{repo.title}}</h4>
-            <p>{{repo.desc}}</p>
+            <p ng-repeat="desc in repo.desc.split('\n\n')" ng-bind="desc"></p>
             <p class="btn-group btn-group-sm">
               <a ng-repeat="name in keys(repo.buttons)" target="_blank"
                 href="{{repo.buttons[name]}}" class="btn btn-default">{{name}}</a>
