@@ -77,6 +77,12 @@ module.exports = function(grunt) {
     'clean:templates'
   ]);
 
+  grunt.registerTask('p', [
+    'production',
+    'connect',
+    'watch'
+  ]);
+
   grunt.JSONStringify = function(obj) {
     return JSON.stringify(obj, null, 2);
   }
