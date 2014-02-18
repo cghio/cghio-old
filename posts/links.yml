@@ -26,6 +26,13 @@ Sublime Text:
     url: https://github.com/chrislongo/QuickThemes
   - title: Sublime Guide
     url: https://gist.github.com/davatron5000/7215566
+Oneliners:
+  - title: Web server
+    url: https://gist.github.com/willurd/5720255
+  - title: Checksums
+    url: https://gist.github.com/steakknife/1807195
+  - title: commandlinefu.com
+    url: http://www.commandlinefu.com/
 Ruby/Rails:
   - title: Ruby Documentation
     url: http://ruby-doc.org/core-2.0.0/
@@ -39,8 +46,13 @@ Ruby/Rails:
     url: http://railscasts.com/
   - title: Learn Ruby in Y Minutes
     url: http://learnxinyminutes.com/docs/ruby/
+Style Guide:
+  - title: JavaScript style guide
+    url: https://github.com/airbnb/javascript
   - title: Ruby coding style guide
     url: https://github.com/bbatsov/ruby-style-guide
+  - title: Google style guide
+    url: https://code.google.com/p/google-styleguide/
 Python:
   - title: Python Windows Packages
     url: http://www.lfd.uci.edu/~gohlke/pythonlibs/
