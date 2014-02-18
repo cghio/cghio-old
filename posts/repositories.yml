@@ -18,7 +18,7 @@
   image: /images/CGHAssemble.png
   buttons:
     Homepage: https://github.com/caiguanhao/CGHAssemble
-    Downloads: /#!/builds
+    Downloads: "/#!/builds"
 - title: Portablizer
   desc: |
     Make Node.js desktop app with a simple cross-platform Webkit browser.
@@ -35,3 +35,9 @@
   buttons:
     Source: https://github.com/caiguanhao/EasyJobs
     Android: https://github.com/caiguanhao/EasyJobs-android
+- title: net.cn-utils
+  desc: |
+    An unofficial command line tool to manage net.cn virtual hosting.
+    You can get server info, backup database, upload and extract zip archive.
+  buttons:
+    Homepage: https://github.com/caiguanhao/net.cn-utils
