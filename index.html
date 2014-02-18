@@ -67,7 +67,11 @@
         <div class="thumbnail">
           <img ng-if="repo.image" ng-src="{{repo.image}}" alt="{{repo.title}}">
           <div class="caption">
-            <h4 ng-bind="repo.title"></h4>
+            <h4>
+              <span ng-bind="repo.title"></span>
+              <span class="label label-info" ng-bind="tag"
+                ng-repeat="tag in repo.tags.split(' ')"></span>
+            </h4>
             <p ng-repeat="desc in split(repo.desc)" ng-bind="desc"></p>
             <p class="btn-group btn-group-sm">
               <a ng-repeat="name in keys(repo.buttons)"
