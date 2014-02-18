@@ -67,11 +67,12 @@
         <div class="thumbnail">
           <img ng-if="repo.image" ng-src="{{repo.image}}" alt="{{repo.title}}">
           <div class="caption">
-            <h4>{{repo.title}}</h4>
-            <p ng-repeat="desc in repo.desc.split('\n\n')" ng-bind="desc"></p>
+            <h4 ng-bind="repo.title"></h4>
+            <p ng-repeat="desc in split(repo.desc)" ng-bind="desc"></p>
             <p class="btn-group btn-group-sm">
-              <a ng-repeat="name in keys(repo.buttons)" target="_blank"
-                href="{{repo.buttons[name]}}" class="btn btn-default">{{name}}</a>
+              <a ng-repeat="name in keys(repo.buttons)"
+                ng-init="url = repo.buttons[name]" target="{{target(url)}}"
+                href="{{url}}" class="btn btn-default" ng-bind="name"></a>
             </p>
           </div>
         </div>

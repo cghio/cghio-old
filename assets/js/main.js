@@ -108,6 +108,12 @@ CGH.factory('Repositories', function($http) {
 
 function MainController($scope, Repositories) {
   $scope.keys = get_object_keys;
+  $scope.split = function(content) {
+    return content.replace(/\\n/g, '\n').split(/\n{2,}/)
+  };
+  $scope.target = function(url) {
+    return /^https?:\/\//.test(url) ? '_blank' : '_self';
+  };
   Repositories.then(function(response) {
     var repositories = response.data;
     $scope.repositories = repositories;

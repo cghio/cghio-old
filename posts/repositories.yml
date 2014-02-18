@@ -11,7 +11,7 @@
     website generator written in Node.js. The app can download a Assemble
     website git repository to local directory, install dependencies and
     run grunt tasks.
-
+    \n
     Designed for those probably every-day Windows users
     who know how to edit templates and HTML/CSS/JS files but don't know
     much about the commands.
