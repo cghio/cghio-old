@@ -1,6 +1,7 @@
 var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
 
-CGH.config(function($routeProvider, $locationProvider) {
+CGH.config(['$routeProvider', '$locationProvider',
+  function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     templateUrl: 'main.html',
     controller: MainController
@@ -27,27 +28,27 @@ CGH.config(function($routeProvider, $locationProvider) {
   });
   $locationProvider.html5Mode(false);
   $locationProvider.hashPrefix('!');
-});
+}]);
 
-CGH.run(function($location, $rootScope) {
+CGH.run(['$location', '$rootScope', function($location, $rootScope) {
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     $rootScope.title = current.$$route.title;
   });
-});
+}]);
 
-CGH.directive('body', function($rootScope) {
+CGH.directive('body', [function() {
   return {
     restrict: 'E',
     templateUrl: 'index.html'
   };
-});
+}]);
 
-CGH.directive('title', function($rootScope) {
+CGH.directive('title', [function() {
   return {
     restrict: 'E',
     template: '{{(title ? title + " &mdash; " : "") + "cgh.io"}}',
   };
-});
+}]);
 
 CGH.directive('navbarToggle', function(){
   return {
@@ -86,7 +87,7 @@ CGH.filter('markdown', function() {
   };
 });
 
-CGH.directive('navbarLink', function($location) {
+CGH.directive('navbarLink', ['$location', function($location) {
   return function(scope, element, attrs) {
     scope.$on('$routeChangeSuccess', function(event, current, previous) {
       var links = element.find('a');
@@ -100,11 +101,11 @@ CGH.directive('navbarLink', function($location) {
       }
     });
   };
-});
+}]);
 
-CGH.factory('Repositories', function($http) {
+CGH.factory('Repositories', ['$http', function($http) {
   return $http.get('/api/repositories.json');
-});
+}]);
 
 function MainController($scope, Repositories) {
   $scope.keys = get_object_keys;
@@ -120,11 +121,13 @@ function MainController($scope, Repositories) {
   });
 }
 
-CGH.factory('Builds', function($http) {
-  return $http.get('/api/builds.json');
-});
+MainController.$inject = ['$scope', 'Repositories'];
 
-CGH.factory('Links', function($http) {
+CGH.factory('Builds', ['$http', function($http) {
+  return $http.get('/api/builds.json');
+}]);
+
+CGH.factory('Links', ['$http', function($http) {
   var COLUMNS = 3;
   return $http.get('/api/links.json').then(function(response) {
     var links = response.data;
@@ -150,13 +153,13 @@ CGH.factory('Links', function($http) {
     }
     return new_links;
   });
-});
+}]);
 
-CGH.factory('Helps', function($http) {
+CGH.factory('Helps', ['$http', function($http) {
   return $http.get('/api/help.json');
-});
+}]);
 
-CGH.service('HelpTopics', function($http) {
+CGH.service('HelpTopics', ['$http', function($http) {
   var self = this;
   self.number_of_objects = 10;
   self.help_topics = [];
@@ -175,7 +178,7 @@ CGH.service('HelpTopics', function($http) {
       if (callback) callback(self.help_topic_objs[index]);
     }
   };
-});
+}]);
 
 function BuildsController($scope, Builds) {
   $scope.cryptos = [
@@ -199,6 +202,8 @@ function BuildsController($scope, Builds) {
     $scope.builds = builds;
   });
 }
+
+BuildsController.$inject = ['$scope', 'Builds'];
 
 CGH.directive('crypto', function() {
   return function(scope, element, attrs) {
@@ -236,6 +241,8 @@ function LinksController($scope, Links) {
   });
 }
 
+LinksController.$inject = ['$scope', 'Links'];
+
 CGH.directive('linkTarget', function() {
   return function(scope, element, attrs) {
     element.bind('click', function() {
@@ -265,6 +272,9 @@ function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
     });
   }
 }
+
+HelpController.$inject = ['$scope', 'Helps', 'HelpTopics', '$routeParams',
+  '$rootScope'];
 
 // shared methods:
 function get_object_keys(obj) {

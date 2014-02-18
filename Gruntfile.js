@@ -179,7 +179,7 @@ module.exports = function(grunt) {
   grunt.registerTask('analyze', 'Analyze index.html', function() {
     var index = grunt.file.read('index.html');
 
-    var templates = 'CGH.run(function($templateCache){';
+    var templates = 'CGH.run([\'$templateCache\', function($templateCache){';
     var tpl = { name: '', content: '' };
     var prod_index = '';
     var prod_tasks = {
@@ -281,7 +281,7 @@ module.exports = function(grunt) {
         grunt.file.write('public/index.html', prod_index);
         grunt.log.ok('File public/index.html generated.');
 
-        templates += '})';
+        templates += '}])';
         grunt.file.write('public/js/templates.js', ';' + templates + ';');
 
         for (var i = 0; i < tasks.length; i++) {
