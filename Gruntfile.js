@@ -423,4 +423,23 @@ module.exports = function(grunt) {
     download(finish);
   });
 
+  grunt.registerTask('push', function() {
+    var finish = this.async();
+    var spawn = require('child_process').spawn;
+    var ssh = spawn('ssh', ['cgh.io', (function script_to_update() {
+      /*!
+        cd /srv/cghio
+        git fetch --all
+        git reset --hard origin/master
+        npm i
+        grunt production
+      */
+      return arguments.callee.toString().match(/\/\*!?([\S\s]*?)\*\//)[1]
+        .replace(/^\s{2,}/gm, '').trim();
+    })()]);
+    ssh.stdout.pipe(process.stdout);
+    ssh.stderr.pipe(process.stderr);
+    ssh.on('close', finish);
+  });
+
 };
