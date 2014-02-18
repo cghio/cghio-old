@@ -37,14 +37,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/#!/">cgh.io</a>
+              <a class="navbar-brand" href="/">cgh.io</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
               <ul class="nav navbar-nav">
-                <li navbar-link><a href="/#!/builds">Builds</a></li>
-                <li navbar-link><a href="/#!/links">Links</a></li>
-                <li navbar-link><a href="/#!/help">Help</a></li>
-                <li navbar-link><a href="/#!/about">About</a></li>
+                <li navbar-link><a href="/builds">Builds</a></li>
+                <li navbar-link><a href="/links">Links</a></li>
+                <li navbar-link><a href="/help">Help</a></li>
+                <li navbar-link><a href="/about">About</a></li>
               </ul>
             </div>
           </div>
@@ -55,7 +55,7 @@
     <footer>
       <div class="container">
         <div class="footer text-center">
-          <a href="/#!/">cgh.io</a> | <a href="/#!/about">about</a> |
+          <a href="/">cgh.io</a> | <a href="/about">about</a> |
           <a href="https://github.com/caiguanhao">github</a>
         </div>
       </div>
@@ -97,7 +97,7 @@
               <input type="button" class="btn btn-default"
                 ng-repeat="crypto in cryptos" crypto="{{crypto.key}}"
                 ng-class="{active: crypto.active}" value="{{crypto.name}}">
-              <a href="/#!/help/checksums" class="btn btn-default">
+              <a href="/help/checksums" class="btn btn-default">
                 <span class="glyphicon glyphicon-question-sign"></span>
               </a>
             </div>
@@ -157,7 +157,7 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="list-group">
-          <a class="list-group-item" href="/#!/help/{{help.slug}}"
+          <a class="list-group-item" href="/help/{{help.slug}}"
             ng-if="helps.length"
             ng-repeat="help in helps"
             ng-class="{active:help.slug===help_topic.slug}">

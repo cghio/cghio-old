@@ -24,6 +24,7 @@ NGINX
       listen 80;
       index index.html;
       root /srv/cghio/public;
+      try_files $uri $uri/ /index.html =404;
       gzip_static on;
     }
 

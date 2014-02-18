@@ -26,8 +26,7 @@ CGH.config(['$routeProvider', '$locationProvider',
     templateUrl: 'about',
     controller: LinksController
   });
-  $locationProvider.html5Mode(false);
-  $locationProvider.hashPrefix('!');
+  $locationProvider.html5Mode(true);
 }]);
 
 CGH.run(['$location', '$rootScope', function($location, $rootScope) {
