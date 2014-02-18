@@ -16,8 +16,12 @@ If you are using Ubuntu, you better move the following line from
 
     [ -s $HOME/.nvm/nvm.sh ] && . $HOME/.nvm/nvm.sh # This loads NVM
 
-Now, every time you log into the system you will have npm loaded. To load
-nvm immediately:
+Now, every time you log into the system you will have npm loaded. If you
+want nvm to also load in non-interactive shell, move that line before:
+
+    # If not running interactively, don't do anything
+
+To load nvm immediately:
 
     source ~/.nvm/nvm.sh
 
