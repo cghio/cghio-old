@@ -28,6 +28,10 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
+      md: {
+        files: [ 'posts/help/*.md' ],
+        tasks: [ 'make_help_index' ]
+      },
       html: {
         files: [ 'index.html' ],
         tasks: [ 'copy_index' ]
