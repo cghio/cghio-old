@@ -1,48 +1,51 @@
-- title: Maintainer
-  tags: Ember.js Node.js
-  desc: |
-    Maintainer is a single-page web application managing routine scripts
-    that may run on local or remote server.
-  image: /images/Maintainer-600px.png
-  buttons:
-    Homepage: https://github.com/caiguanhao/Maintainer
-- title: CGHAssemble
-  tags: Python
-  desc: |
-    This is a handy cross-platform desktop app to use Assemble, a static
-    website generator written in Node.js. The app can download a Assemble
-    website git repository to local directory, install dependencies and
-    run grunt tasks.
-    \n
-    Designed for those probably every-day Windows users
-    who know how to edit templates and HTML/CSS/JS files but don't know
-    much about the commands.
-  image: /images/CGHAssemble.png
-  buttons:
-    Homepage: https://github.com/caiguanhao/CGHAssemble
-    Downloads: "/#!/builds"
-- title: Portablizer
-  tags: Python
-  desc: |
-    Make Node.js desktop app with a simple cross-platform Webkit browser.
-    The app carries platform-specific Node.js binaries, so even if you
-    are using Windows XP, you are still able to run any HTML5 app.
-  buttons:
-    More: https://github.com/caiguanhao/portablizer
-- title: EasyJobs
-  tags: Rails
-  desc: |
-    A simple Ruby on Rails SSH web interface to ease your workload.
-    Admins can create and run shell scripts on remote server.
-    It also has an Android client, which you can run the scripts directly
-    on your phone.
-  buttons:
-    Source: https://github.com/caiguanhao/EasyJobs
-    Android: https://github.com/caiguanhao/EasyJobs-android
-- title: net.cn-utils
-  tags: Shell
-  desc: |
-    An unofficial command line tool to manage net.cn virtual hosting.
-    You can get server info, backup database, upload and extract zip archive.
-  buttons:
-    Homepage: https://github.com/caiguanhao/net.cn-utils
+-
+  - title: Maintainer
+    tags: Ember.js Node.js
+    desc: |
+      Maintainer is a single-page web application managing routine scripts
+      that may run on local or remote server.
+    image: /images/Maintainer-600px.png
+    buttons:
+      Homepage: https://github.com/caiguanhao/Maintainer
+-
+  - title: CGHAssemble
+    tags: Python
+    desc: |
+      This is a handy cross-platform desktop app to use Assemble, a static
+      website generator written in Node.js. The app can download a Assemble
+      website git repository to local directory, install dependencies and
+      run grunt tasks.
+      \n
+      Designed for those probably every-day Windows users
+      who know how to edit templates and HTML/CSS/JS files but don't know
+      much about the commands.
+    image: /images/CGHAssemble.png
+    buttons:
+      Homepage: https://github.com/caiguanhao/CGHAssemble
+      Downloads: "/#!/builds"
+-
+  - title: Portablizer
+    tags: Python
+    desc: |
+      Make Node.js desktop app with a simple cross-platform Webkit browser.
+      The app carries platform-specific Node.js binaries, so even if you
+      are using Windows XP, you are still able to run any HTML5 app.
+    buttons:
+      More: https://github.com/caiguanhao/portablizer
+  - title: EasyJobs
+    tags: Rails
+    desc: |
+      A simple Ruby on Rails SSH web interface to ease your workload.
+      Admins can create and run shell scripts on remote server.
+      It also has an Android client, which you can run the scripts directly
+      on your phone.
+    buttons:
+      Source: https://github.com/caiguanhao/EasyJobs
+      Android: https://github.com/caiguanhao/EasyJobs-android
+  - title: net.cn-utils
+    tags: Shell
+    desc: |
+      An unofficial command line tool to manage net.cn virtual hosting.
+      You can get server info, backup database, upload and extract zip archive.
+    buttons:
+      Homepage: https://github.com/caiguanhao/net.cn-utils

@@ -63,8 +63,8 @@
   </script>
   <script type="text/ng-template" id="main.html">
     <div class="row">
-      <div class="col-sm-5 col-md-4" ng-repeat="repo in repositories">
-        <div class="thumbnail">
+      <div class="col-sm-5 col-md-4" ng-repeat="repo_col in repositories">
+        <div class="thumbnail" ng-repeat="repo in repo_col">
           <img ng-if="repo.image" ng-src="{{repo.image}}" alt="{{repo.title}}">
           <div class="caption">
             <h4>
