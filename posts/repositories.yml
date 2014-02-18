@@ -7,6 +7,19 @@
     image: /images/Maintainer-600px.png
     buttons:
       Homepage: https://github.com/caiguanhao/Maintainer
+  - title: cgh.io
+    tags: Angular.js
+    desc: |
+      The new caiguanhao homepage uses Angular.js framework.
+    buttons:
+      Source: https://github.com/cghio/cghio
+  - title: qnn-weixin
+    tags: Node.js
+    desc: |
+      A full-featured Weixin application to create menus, query stores,
+      customize responses.
+    buttons:
+      Homepage: https://github.com/qnn/qnn-weixin
 -
   - title: CGHAssemble
     tags: Python
@@ -23,6 +36,12 @@
     buttons:
       Homepage: https://github.com/caiguanhao/CGHAssemble
       Downloads: "/#!/builds"
+  - title: qnnshop
+    tags: Node.js
+    desc: |
+      A simple online shop application supports Alipay payment.
+    buttons:
+      More: https://github.com/qnn/qnnshop
 -
   - title: Portablizer
     tags: Python
