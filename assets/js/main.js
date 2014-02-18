@@ -3,27 +3,27 @@ var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
 CGH.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
-    templateUrl: 'main.html',
+    templateUrl: 'main',
     controller: MainController
   });
   $routeProvider.when('/builds', {
     title: 'Builds',
-    templateUrl: 'builds.html',
+    templateUrl: 'builds',
     controller: BuildsController
   });
   $routeProvider.when('/links', {
     title: 'Links',
-    templateUrl: 'links.html',
+    templateUrl: 'links',
     controller: LinksController
   });
   $routeProvider.when('/help/:help_topic?', {
     title: 'Help',
-    templateUrl: 'help.html',
+    templateUrl: 'help',
     controller: HelpController
   });
   $routeProvider.when('/about', {
     title: 'About',
-    templateUrl: 'about.html',
+    templateUrl: 'about',
     controller: LinksController
   });
   $locationProvider.html5Mode(false);
@@ -39,7 +39,7 @@ CGH.run(['$location', '$rootScope', function($location, $rootScope) {
 CGH.directive('body', [function() {
   return {
     restrict: 'E',
-    templateUrl: 'index.html'
+    templateUrl: 'index'
   };
 }]);
 
