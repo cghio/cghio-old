@@ -42,6 +42,7 @@
             <div class="collapse navbar-collapse" id="navbar">
               <ul class="nav navbar-nav">
                 <li navbar-link><a href="/builds">Builds</a></li>
+                <li navbar-link><a href="/panoramas">Panos</a></li>
                 <li navbar-link><a href="/links">Links</a></li>
                 <li navbar-link><a href="/help">Help</a></li>
                 <li navbar-link><a href="/about">About</a></li>
@@ -69,7 +70,7 @@
           <div class="caption">
             <h4>
               <span ng-bind="repo.title"></span>
-              <span class="label label-info" ng-bind="tag"
+              <span class="label label-info smlabel" ng-bind="tag"
                 ng-repeat="tag in repo.tags.split(' ')"></span>
             </h4>
             <p ng-repeat="desc in split(repo.desc)" ng-bind="desc"></p>
@@ -116,6 +117,29 @@
         </tr>
       </tbody>
     </table>
+  </script>
+  <script type="text/ng-template" id="panoramas">
+    <div class="panoramas row" ng-repeat="pano in panoramas">
+      <div class="col-sm-6">
+        <img class="media-object" alt="{{pano.title}}" ng-src="{{pano.image}}">
+      </div>
+      <div class="col-sm-6">
+        <h4>
+          <span ng-bind="pano.title"></span>
+          <span class="label label-info smlabel" ng-pluralize
+            count="pano.scenes"
+            when="{'0': 'no scenes',
+                   'one': '{} scene',
+                   'other': '{} scenes'}"></span>
+        </h4>
+        <p ng-repeat="desc in split(pano.desc)" ng-bind="desc"></p>
+        <p class="btn-group btn-group-sm">
+          <a ng-repeat="name in keys(pano.buttons)"
+            ng-init="url = pano.buttons[name]" target="{{target(url)}}"
+            href="{{url}}" class="btn btn-default" ng-bind="name"></a>
+        </p>
+      </div>
+    </div>
   </script>
   <script type="text/ng-template" id="links">
     <div class="row">

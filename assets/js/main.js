@@ -11,6 +11,11 @@ CGH.config(['$routeProvider', '$locationProvider',
     templateUrl: 'builds',
     controller: BuildsController
   });
+  $routeProvider.when('/panoramas', {
+    title: 'Panoramas',
+    templateUrl: 'panoramas',
+    controller: PanoramasController
+  });
   $routeProvider.when('/links', {
     title: 'Links',
     templateUrl: 'links',
@@ -108,12 +113,8 @@ CGH.factory('Repositories', ['$http', function($http) {
 
 function MainController($scope, Repositories) {
   $scope.keys = get_object_keys;
-  $scope.split = function(content) {
-    return content.replace(/\\n/g, '\n').split(/\n{2,}/)
-  };
-  $scope.target = function(url) {
-    return /^https?:\/\//.test(url) ? '_blank' : '_self';
-  };
+  $scope.split = split_lines;
+  $scope.target = target_on_url;
   Repositories.then(function(response) {
     var repositories = response.data;
     $scope.repositories = repositories;
@@ -215,6 +216,22 @@ CGH.directive('crypto', function() {
   };
 });
 
+CGH.factory('Panoramas', ['$http', function($http) {
+  return $http.get('/api/panoramas.json');
+}]);
+
+function PanoramasController($scope, Panoramas) {
+  $scope.keys = get_object_keys;
+  $scope.split = split_lines;
+  $scope.target = target_on_url;
+  Panoramas.then(function(response) {
+    var panoramas = response.data;
+    $scope.panoramas = panoramas;
+  });
+}
+
+PanoramasController.$inject = ['$scope', 'Panoramas'];
+
 function LinksController($scope, Links) {
   $scope.targets = [
     {
@@ -280,4 +297,12 @@ function get_object_keys(obj) {
   return Object.keys(obj).filter(function(key) {
     return key[0] !== '$';
   });
+}
+
+function split_lines(content) {
+  return content.replace(/\\n/g, '\n').split(/\n{2,}/);
+}
+
+function target_on_url(url) {
+  return /^https?:\/\//.test(url) ? '_blank' : '_self';
 }
