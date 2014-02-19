@@ -35,7 +35,7 @@
     image: /images/CGHAssemble.png
     buttons:
       Homepage: https://github.com/caiguanhao/CGHAssemble
-      Downloads: "/#!/builds"
+      Downloads: /builds
   - title: qnnshop
     tags: Node.js
     desc: |
