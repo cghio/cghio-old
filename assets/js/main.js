@@ -70,7 +70,7 @@ CGH.directive('navbarToggle', function(){
   };
 });
 
-CGH.directive('nav', function() {
+CGH.directive('nav', function($location) {
   return {
     restrict: 'E',
     link: function($scope, element, attrs, controller) {
@@ -78,6 +78,31 @@ CGH.directive('nav', function() {
         var navbar = document.getElementById(attrs.navbarId);
         navbar.className = navbar.className.replace(/\bin\b/g, 'collapse');
       });
+      document.onkeypress = function(event) {
+        var left = event.keyCode === 91;
+        var right = event.keyCode === 93;
+        if (!left && !right) return;
+
+        var url = $location.url();
+        var links = angular.element(element).find('a');
+        for (var i = 0; i < links.length; i++) {
+          var href = links[i].getAttribute('href');
+          if (href.length > 1) {
+            if (url.substr(0, href.length) !== href) continue;
+          } else {
+            if (url !== href) continue;
+          }
+
+          var next;
+          if (left) next = links[--i] || links[links.length - 1];
+          if (right) next = links[++i] || links[0];
+          if (next) {
+            $location.path(next.getAttribute('href'));
+            $scope.$apply();
+          }
+          break;
+        };
+      };
     }
   };
 });

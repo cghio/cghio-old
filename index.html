@@ -126,9 +126,9 @@
     <div class="panoramas row" ng-repeat="pano in panoramas">
       <div class="col-sm-6" ng-init="link = first_link(pano.buttons)">
         <a href="{{link}}" target="{{target(link)}}"
-          remove-unless="link">
+          remove-unless="link" title="{{pano.title}}">
           <img class="media-object" alt="{{pano.title}}"
-            ng-src="{{pano.image}}">
+            ng-src="{{pano.image}}" title="{{pano.title}}">
         </a>
       </div>
       <div class="col-sm-6">
