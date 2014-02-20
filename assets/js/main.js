@@ -82,6 +82,16 @@ CGH.directive('nav', function() {
   };
 });
 
+CGH.directive('removeUnless', function() {
+  return function(scope, element, attrs) {
+    scope.$watch(attrs.removeUnless, function(value) {
+      if (!value) {
+        element.replaceWith(element.children());
+      }
+    });
+  }
+});
+
 CGH.filter('markdown', function() {
   return function(content) {
     if (!content) return '';
@@ -225,6 +235,11 @@ function PanoramasController($scope, Panoramas) {
   $scope.keys = get_object_keys;
   $scope.split = split_lines;
   $scope.target = target_on_url;
+  $scope.first_link = function(buttons) {
+    var keys = get_object_keys(buttons);
+    if (!(keys instanceof Array)) return null;
+    return buttons[keys[0]];
+  };
   Panoramas.then(function(response) {
     var panoramas = response.data;
     $scope.panoramas = panoramas;
@@ -295,6 +310,7 @@ HelpController.$inject = ['$scope', 'Helps', 'HelpTopics', '$routeParams',
 
 // shared methods:
 function get_object_keys(obj) {
+  if (typeof(obj) !== 'object') return null;
   return Object.keys(obj).filter(function(key) {
     return key[0] !== '$';
   });
