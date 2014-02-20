@@ -70,7 +70,7 @@ CGH.directive('navbarToggle', function(){
   };
 });
 
-CGH.directive('nav', function($location) {
+CGH.directive('nav', ['$location', function($location) {
   return {
     restrict: 'E',
     link: function($scope, element, attrs, controller) {
@@ -105,7 +105,7 @@ CGH.directive('nav', function($location) {
       };
     }
   };
-});
+}]);
 
 CGH.directive('removeUnless', function() {
   return function(scope, element, attrs) {
