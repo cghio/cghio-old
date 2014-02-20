@@ -167,7 +167,8 @@ CGH.service('HelpTopics', ['$http', function($http) {
   self.get = function(help_topic, callback) {
     var index = self.help_topics.indexOf(help_topic);
     if (index === -1) {
-      $http.get('/api/help/' + help_topic + '.json').success(function(help_topic) {
+      $http.get('/api/help/' + help_topic + '.json')
+        .success(function(help_topic) {
         self.help_topics.unshift(help_topic.slug);
         self.help_topic_objs.unshift(help_topic);
         self.help_topics.splice(self.number_of_objects);

@@ -14,8 +14,10 @@
   <script development src="/js/vendor/angular-sanitize.js"></script>
   <script concat="angular" dest="/js/angular.js"></script>
   <script concat="angular" production="/js/vendor/angular.min.js"></script>
-  <script concat="angular" production="/js/vendor/angular-route.min.js"></script>
-  <script concat="angular" production="/js/vendor/angular-sanitize.min.js"></script>
+  <script concat="angular"
+    production="/js/vendor/angular-route.min.js"></script>
+  <script concat="angular"
+    production="/js/vendor/angular-sanitize.min.js"></script>
   <script uglify="vendors" dest="/js/vendors.js"></script>
   <script uglify="vendors" src="/js/vendor/markdown.js"></script>
   <script uglify="app" dest="/js/cghio.js"></script>
@@ -166,7 +168,8 @@
     </div>
     <div class="row">
       <div class="col-sm-4" ng-repeat="link_col in links">
-        <div class="panel panel-default" ng-repeat="link_row_name in keys(link_col)">
+        <div class="panel panel-default"
+          ng-repeat="link_row_name in keys(link_col)">
           <div class="panel-heading">{{link_row_name}}</div>
           <div class="list-group">
             <a class="list-group-item" href="{{link.url}}"
@@ -196,7 +199,8 @@
         </div>
       </div>
       <div class="col-sm-8">
-        <div ng-if="help_topic" ng-bind-html="help_topic.content|markdown"></div>
+        <div ng-if="help_topic"
+          ng-bind-html="help_topic.content|markdown"></div>
         <div ng-if="!help_topic">
           <div class="jumbotron">
             <h2 ng-pluralize
