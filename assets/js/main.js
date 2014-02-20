@@ -31,12 +31,18 @@ CGH.config(['$routeProvider', '$locationProvider',
     templateUrl: 'about',
     controller: LinksController
   });
+  $routeProvider.otherwise({
+    title: '404 Page Not Found',
+    templateUrl: '_404'
+  });
   $locationProvider.html5Mode(true);
 }]);
 
-CGH.run(['$location', '$rootScope', function($location, $rootScope) {
+CGH.run(['$location', '$rootScope', '$route',
+  function($location, $rootScope, $route) {
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
-    $rootScope.title = current.$$route.title;
+    var route = current.$$route || $route.routes[null];
+    $rootScope.title = route.title;
   });
 }]);
 
@@ -78,30 +84,32 @@ CGH.directive('nav', ['$location', function($location) {
         var navbar = document.getElementById(attrs.navbarId);
         navbar.className = navbar.className.replace(/\bin\b/g, 'collapse');
       });
+      var links = angular.element(element).find('a');
+      var length = links.length;
       document.onkeypress = function(event) {
         var left = event.keyCode === 91;
         var right = event.keyCode === 93;
         if (!left && !right) return;
 
+        if (!length) return;
         var url = $location.url();
-        var links = angular.element(element).find('a');
-        for (var i = 0; i < links.length; i++) {
+        for (var i = 0; i < length; i++) {
           var href = links[i].getAttribute('href');
           if (href.length > 1) {
             if (url.substr(0, href.length) !== href) continue;
           } else {
             if (url !== href) continue;
           }
-
-          var next;
-          if (left) next = links[--i] || links[links.length - 1];
-          if (right) next = links[++i] || links[0];
-          if (next) {
-            $location.path(next.getAttribute('href'));
-            $scope.$apply();
-          }
           break;
-        };
+        }
+
+        var next;
+        if (left) next = links[--i] || links[length - 1];
+        if (right) next = links[++i] || links[0];
+        if (next) {
+          $location.path(next.getAttribute('href'));
+          $scope.$apply();
+        }
       };
     }
   };
