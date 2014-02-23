@@ -102,18 +102,21 @@ Compressors:
     url: http://closure-compiler.appspot.com/
   - title: UglifyJS
     url: http://lisperator.net/uglifyjs/#demo
-  - title: JS Beautifier
-    url: http://jsbeautifier.org/
   - title: CSS Minifier
     url: http://cssminifier.com/
-  - title: Code Beautifier
-    url: http://www.codebeautifier.com/
   - title: Compress JPG
     url: http://compressjpg.com/
   - title: Compress PNG
     url: http://compresspng.com/
   - title: JPEGMini
     url: http://www.jpegmini.com/main/shrink_photo
+Beautifier:
+  - title: JS Beautifier
+    url: http://jsbeautifier.org/
+  - title: Code Beautifier
+    url: http://www.codebeautifier.com/
+  - title: CSS Beautify
+    url: http://cssbeautify.com/
 JS Encode:
   - title: JSFuck
     url: http://utf-8.jp/public/jsfuck.html
@@ -125,6 +128,8 @@ JS Encode:
     url: http://www.iteral.com/jscrush/
   - title: jsPacker
     url: http://dean.edwards.name/packer/
+  - title: Javascript Obfuscator
+    url: http://www.javascriptobfuscator.com/
 Chrome:
   - title: Currently
     url: https://chrome.google.com/webstore/detail/currently/ojhmphdkpgbibohbnpbfiefkgieacjmh
