@@ -11,6 +11,11 @@ CGH.config(['$routeProvider', '$locationProvider',
     templateUrl: 'builds',
     controller: BuildsController
   });
+  $routeProvider.when('/sites', {
+    title: 'Sites',
+    templateUrl: 'sites',
+    controller: SitesController
+  });
   $routeProvider.when('/panoramas', {
     title: 'Panoramas',
     templateUrl: 'panoramas',
@@ -259,6 +264,22 @@ CGH.directive('crypto', function() {
     });
   };
 });
+
+CGH.factory('Sites', ['$http', function($http) {
+  return $http.get('/api/sites.json');
+}]);
+
+function SitesController($scope, Sites) {
+  $scope.keys = get_object_keys;
+  $scope.split = split_lines;
+  $scope.target = target_on_url;
+  Sites.then(function(response) {
+    var sites = response.data;
+    $scope.sites = sites;
+  });
+}
+
+SitesController.$inject = ['$scope', 'Sites'];
 
 CGH.factory('Panoramas', ['$http', function($http) {
   return $http.get('/api/panoramas.json');

@@ -44,6 +44,7 @@
             <div class="collapse navbar-collapse" id="navbar">
               <ul class="nav navbar-nav">
                 <li navbar-link><a href="/builds">Builds</a></li>
+                <li navbar-link><a href="/sites">Sites</a></li>
                 <li navbar-link><a href="/panoramas">Panos</a></li>
                 <li navbar-link><a href="/links">Links</a></li>
                 <li navbar-link><a href="/help">Help</a></li>
@@ -121,6 +122,28 @@
         </tr>
       </tbody>
     </table>
+  </script>
+  <script type="text/ng-template" id="sites">
+    <div class="row">
+      <div class="col-sm-5 col-md-4" ng-repeat="column in sites">
+        <div class="thumbnail" ng-repeat="site in column">
+          <img ng-if="site.image" ng-src="{{site.image}}" alt="{{site.title}}">
+          <div class="caption">
+            <h4>
+              <span ng-bind="site.title"></span>
+              <span class="label label-info smlabel" ng-bind="tag"
+                ng-repeat="tag in site.tags.split(' ')"></span>
+            </h4>
+            <p ng-repeat="desc in split(site.desc)" ng-bind="desc"></p>
+            <p class="btn-group btn-group-sm">
+              <a ng-repeat="name in keys(site.buttons)"
+                ng-init="url = site.buttons[name]" target="{{target(url)}}"
+                href="{{url}}" class="btn btn-default" ng-bind="name"></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </script>
   <script type="text/ng-template" id="panoramas">
     <div class="panoramas row" ng-repeat="pano in panoramas">
