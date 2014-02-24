@@ -164,8 +164,7 @@ function MainController($scope, Repositories) {
   $scope.split = split_lines;
   $scope.target = target_on_url;
   Repositories.then(function(response) {
-    var repositories = response.data;
-    $scope.repositories = repositories;
+    $scope.items = response.data;
   });
 }
 
@@ -274,8 +273,7 @@ function SitesController($scope, Sites) {
   $scope.split = split_lines;
   $scope.target = target_on_url;
   Sites.then(function(response) {
-    var sites = response.data;
-    $scope.sites = sites;
+    $scope.items = response.data;
   });
 }
 
