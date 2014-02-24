@@ -139,6 +139,18 @@ CGH.filter('markdown', function() {
   };
 });
 
+CGH.filter('buttonify', function() {
+  return function(content) {
+    var glyphicon = content.match(/^\.(glyphicon-[\S]*)(.*)/);
+    if (glyphicon) {
+      return '<span class="glyphicon ' + glyphicon[1] + '"></span>' +
+        (glyphicon[2] ? ' ' + glyphicon[2] : '');
+    } else {
+      return content;
+    }
+  };
+});
+
 CGH.directive('navbarLink', ['$location', function($location) {
   return function(scope, element, attrs) {
     scope.$on('$routeChangeSuccess', function(event, current, previous) {
