@@ -51,6 +51,8 @@ CGH.run(['$location', '$rootScope', '$route',
   });
 }]);
 
+/* directives */
+
 CGH.directive('body', [function() {
   return {
     restrict: 'E',
@@ -131,6 +133,46 @@ CGH.directive('removeUnless', function() {
   }
 });
 
+CGH.directive('navbarLink', ['$location', function($location) {
+  return function(scope, element, attrs) {
+    scope.$on('$routeChangeSuccess', function(event, current, previous) {
+      var links = element.find('a');
+      if (links.length === 0) return;
+      var href = links[0].getAttribute('href').replace(/^\/#!?/, '');
+      var url = $location.url();
+      if (url.substr(0, href.length) === href) {
+        element.addClass('active');
+      } else {
+        element.removeClass('active');
+      }
+    });
+  };
+}]);
+
+CGH.directive('crypto', function() {
+  return function(scope, element, attrs) {
+    element.bind('click', function() {
+      scope.cryptos.forEach(function(crypto) {
+        crypto.active = (crypto.key === attrs.crypto);
+      });
+      scope.$apply();
+    });
+  };
+});
+
+CGH.directive('linkTarget', function() {
+  return function(scope, element, attrs) {
+    element.bind('click', function() {
+      scope.targets.forEach(function(target) {
+        target.active = (target.target === attrs.linkTarget);
+      });
+      scope.$apply();
+    });
+  };
+});
+
+/* filters */
+
 CGH.filter('markdown', function() {
   return function(content) {
     if (!content) return '';
@@ -152,39 +194,22 @@ CGH.filter('buttonify', function() {
   };
 });
 
-CGH.directive('navbarLink', ['$location', function($location) {
-  return function(scope, element, attrs) {
-    scope.$on('$routeChangeSuccess', function(event, current, previous) {
-      var links = element.find('a');
-      if (links.length === 0) return;
-      var href = links[0].getAttribute('href').replace(/^\/#!?/, '');
-      var url = $location.url();
-      if (url.substr(0, href.length) === href) {
-        element.addClass('active');
-      } else {
-        element.removeClass('active');
-      }
-    });
-  };
-}]);
+/* factories */
 
 CGH.factory('Repositories', ['$http', function($http) {
   return $http.get('/api/repositories.json');
 }]);
 
-function MainController($scope, Repositories) {
-  $scope.keys = get_object_keys;
-  $scope.split = split_lines;
-  $scope.target = target_on_url;
-  Repositories.then(function(response) {
-    $scope.items = response.data;
-  });
-}
-
-MainController.$inject = ['$scope', 'Repositories'];
-
 CGH.factory('Builds', ['$http', function($http) {
   return $http.get('/api/builds.json');
+}]);
+
+CGH.factory('Sites', ['$http', function($http) {
+  return $http.get('/api/sites.json');
+}]);
+
+CGH.factory('Panoramas', ['$http', function($http) {
+  return $http.get('/api/panoramas.json');
 }]);
 
 CGH.factory('Links', ['$http', function($http) {
@@ -241,6 +266,18 @@ CGH.service('HelpTopics', ['$http', function($http) {
   };
 }]);
 
+/* controllers */
+
+function MainController($scope, Repositories) {
+  $scope.keys = get_object_keys;
+  $scope.split = split_lines;
+  $scope.target = target_on_url;
+  Repositories.then(function(response) {
+    $scope.items = response.data;
+  });
+}
+MainController.$inject = ['$scope', 'Repositories'];
+
 function BuildsController($scope, Builds) {
   $scope.cryptos = [
     {
@@ -263,23 +300,7 @@ function BuildsController($scope, Builds) {
     $scope.builds = builds;
   });
 }
-
 BuildsController.$inject = ['$scope', 'Builds'];
-
-CGH.directive('crypto', function() {
-  return function(scope, element, attrs) {
-    element.bind('click', function() {
-      scope.cryptos.forEach(function(crypto) {
-        crypto.active = (crypto.key === attrs.crypto);
-      });
-      scope.$apply();
-    });
-  };
-});
-
-CGH.factory('Sites', ['$http', function($http) {
-  return $http.get('/api/sites.json');
-}]);
 
 function SitesController($scope, Sites) {
   $scope.keys = get_object_keys;
@@ -289,12 +310,7 @@ function SitesController($scope, Sites) {
     $scope.items = response.data;
   });
 }
-
 SitesController.$inject = ['$scope', 'Sites'];
-
-CGH.factory('Panoramas', ['$http', function($http) {
-  return $http.get('/api/panoramas.json');
-}]);
 
 function PanoramasController($scope, Panoramas) {
   $scope.keys = get_object_keys;
@@ -310,7 +326,6 @@ function PanoramasController($scope, Panoramas) {
     $scope.panoramas = panoramas;
   });
 }
-
 PanoramasController.$inject = ['$scope', 'Panoramas'];
 
 function LinksController($scope, Links) {
@@ -337,19 +352,7 @@ function LinksController($scope, Links) {
     $scope.links = links;
   });
 }
-
 LinksController.$inject = ['$scope', 'Links'];
-
-CGH.directive('linkTarget', function() {
-  return function(scope, element, attrs) {
-    element.bind('click', function() {
-      scope.targets.forEach(function(target) {
-        target.active = (target.target === attrs.linkTarget);
-      });
-      scope.$apply();
-    });
-  };
-});
 
 function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
   var help_topic = $routeParams.help_topic;
@@ -369,11 +372,11 @@ function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
     });
   }
 }
-
 HelpController.$inject = ['$scope', 'Helps', 'HelpTopics', '$routeParams',
   '$rootScope'];
 
-// shared methods:
+/* shared methods */
+
 function get_object_keys(obj) {
   if (typeof(obj) !== 'object') return null;
   return Object.keys(obj).filter(function(key) {
