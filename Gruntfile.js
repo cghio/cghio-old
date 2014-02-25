@@ -370,32 +370,96 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('download-angular', 'Download Angular code', function(version) {
-    if (!version) grunt.fail.fatal('Please provide version! ' +
-      'Go to http://code.angularjs.org/ to see list of versions.');
-    var finish = this.async();
-    var base = 'http://code.angularjs.org/' + version + '/';
-    var needs = [
-      'angular.js',
-      'angular-route.js',
-      'angular-sanitize.js',
-    ];
-    var urls = [];
-    needs.forEach(function(need) {
-      urls.push(base + need);
-      urls.push(base + need.replace(/\.js$/, '.min.js'));
-    });
     var http = require('http');
     var fs = require('fs');
     var path = require('path');
-
+    var finish = this.async();
+    var base = 'http://code.angularjs.org/';
+    var urls = [];
     var url_index = 0;
+    var need_latest = false;
+    if (version === 'latest') {
+      version = '';
+      need_latest = true;
+    }
+
+    function get_versions(callback) {
+      grunt.log.write('Getting list of Angular versions... ');
+      http.get(base, function(response) {
+        var list = '';
+        response.on('data', function(data) {
+          list += data;
+        });
+        response.on('end', function() {
+          var versions = list.replace(/(<([^>]+)>)/ig, '').match(/\d+\.\d+\.[^\/]+/g);
+          var max_width = 0;
+          versions.sort(function(a, b) {
+            if (a.length > max_width) max_width = a.length;
+            var _a = a.split(/[^\d]+/), _b = b.split(/[^\d]+/), _l = Math.min(_a.length, _b.length);
+            for (var i = 0; i < _l; i++) {
+              if (+_a[i] === +_b[i]) {
+                continue;
+              } else if (+_a[i] > +_b[i]) {
+                return 1;
+              } else {
+                return -1;
+              }
+            }
+            return 0;
+          });
+          var vers_l = versions.length;
+          var item_width = max_width + 1;
+          var columns = process.stdout.columns;
+          var cols = Math.floor(columns / item_width);
+          var start = Math.max(vers_l - 3 * cols, 0);
+          process.stdout.clearLine();
+          process.stdout.cursorTo(0);
+          if (need_latest) {
+            if (callback) callback(versions[vers_l - 1]);
+            return;
+          }
+          console.log('List of some versions of Angular available for download:');
+          for (var i = start; i < vers_l; i++) {
+            var ver = versions[i];
+            process.stdout.write(ver + Array(item_width - ver.length + 1).join(' '));
+            if ((i - start) % cols === cols - 1 && i !== vers_l - 1) {
+              process.stdout.write('\n');
+            }
+          }
+          process.stdout.write('\n');
+          var readline = require('readline');
+          var rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+          });
+          rl.setPrompt('Enter one version number to download: ');
+          rl.prompt();
+          rl.write(versions[vers_l - 1]);
+          rl.on('line', function(v) {
+            v = v.trim();
+            if (versions.indexOf(v) === -1) {
+              rl.prompt();
+            } else {
+              rl.close()
+              if (callback) callback(v);
+            }
+          });
+        });
+      });
+    }
+    function numfmt(n) {
+      return n.toString().split('').reverse().join('')
+              .replace(/(\d{3})/g, '$1,').split('')
+              .reverse().join('').replace(/^,/, '');
+    }
     function download(callback) {
       var url = urls[url_index];
       var filename = path.basename(url);
       var file = fs.createWriteStream('assets/js/vendor/' + filename);
-      grunt.log.write('Start downloading ' + url);
+      grunt.log.write('Start downloading ' + url + '...');
       http.get(url, function(response) {
         if (response.statusCode !== 200) {
+          process.stdout.write('\n');
           throw new Error('Fail to download. Status: ' + response.statusCode);
         }
         var total = parseInt(response.headers['content-length']);
@@ -405,8 +469,9 @@ module.exports = function(grunt) {
           acc += data.length;
           process.stdout.clearLine();
           process.stdout.cursorTo(0);
-          process.stdout.write((acc / total * 100).toFixed(2) + '%, ' + acc +
-            ' of ' + total + ' bytes of ' + filename + ' downloaded... ');
+          process.stdout.write((acc / total * 100).toFixed(2) + '%, ' +
+            numfmt(acc) + ' of ' + numfmt(total) + ' bytes of ' + filename +
+            ' downloaded... ');
         });
         response.on('end', function() {
           process.stdout.clearLine();
@@ -424,7 +489,27 @@ module.exports = function(grunt) {
         grunt.fail.fatal(error);
       });
     }
-    download(finish);
+    function to_download(callback) {
+      base += version + '/';
+      var needs = [
+        'angular.js',
+        'angular-route.js',
+        'angular-sanitize.js',
+      ];
+      needs.forEach(function(need) {
+        urls.push(base + need);
+        urls.push(base + need.replace(/\.js$/, '.min.js'));
+      });
+      download(callback);
+    }
+    if (!version) {
+      get_versions(function(v) {
+        version = v;
+        to_download(finish);
+      });
+    } else {
+      to_download(finish);
+    }
   });
 
   grunt.registerTask('push', 'Tell server to update website.', function() {
