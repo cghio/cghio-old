@@ -1,10 +1,24 @@
 -
-  - title: QNNSAFE.COM
+  - title: qnnsafe.com
     tags: Jekyll Responsive
-    desc: |
-      New QNNSAFE.COM website.
     image: /images/qnnsafe.com-v1.jpg
     buttons:
       View: http://www.qnnsafe.com/
       Source: https://github.com/qnn/qnnsafe.com-v1
       .glyphicon-zoom-in: https://f.cloud.github.com/assets/1284703/2060169/0483416c-8bff-11e3-9999-cb1b589fafcd.jpg
+-
+  - title: hotelsafe.com
+    tags: Jekyll Responsive
+    image: /images/hotelsafe.jpg
+    buttons:
+      View: http://www.hotelsafe.cn/
+      Source: https://github.com/qnn/hotelsafe.cn
+      .glyphicon-zoom-in: https://f.cloud.github.com/assets/1284703/2060158/da5079f6-8bfd-11e3-9edb-53ea60a62b19.jpg
+-
+  - title: jetone.cn
+    tags: Assemble
+    image: /images/jetone.jpg
+    buttons:
+      View: http://www.jetone.cn/
+      Source: https://github.com/8html/jetone.cn
+      .glyphicon-zoom-in: https://f.cloud.github.com/assets/1284703/2255268/cb42bb44-9df1-11e3-9493-d205e8b16d84.png
