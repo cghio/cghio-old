@@ -354,7 +354,7 @@ module.exports = function(grunt) {
     grunt.log.ok('Updated help index.');
   });
 
-  grunt.registerTask('convert-ymls', function() {
+  grunt.registerTask('convert-ymls', 'Convert YAML files to JSON files', function() {
     var path = require('path');
     var ymls = grunt.file.expand({
       cwd: 'posts'
@@ -369,7 +369,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('download-angular', 'Download Angular code', function(version) {
+  grunt.registerTask('download-angular', 'Download Angular', function(version) {
     var http = require('http');
     var fs = require('fs');
     var path = require('path');
@@ -377,6 +377,11 @@ module.exports = function(grunt) {
     var base = 'http://code.angularjs.org/';
     var urls = [];
     var url_index = 0;
+    var needs = [
+      'angular.js',
+      'angular-route.js',
+      'angular-sanitize.js',
+    ];
     var need_latest = false;
     if (version === 'latest') {
       version = '';
@@ -491,11 +496,6 @@ module.exports = function(grunt) {
     }
     function to_download(callback) {
       base += version + '/';
-      var needs = [
-        'angular.js',
-        'angular-route.js',
-        'angular-sanitize.js',
-      ];
       needs.forEach(function(need) {
         urls.push(base + need);
         urls.push(base + need.replace(/\.js$/, '.min.js'));
