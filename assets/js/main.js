@@ -385,6 +385,7 @@ function get_object_keys(obj) {
 }
 
 function split_lines(content) {
+  if (typeof content !== 'string' || !content) return '';
   return content.replace(/\\n/g, '\n').split(/\n{2,}/);
 }
 
