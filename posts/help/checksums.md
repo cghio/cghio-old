@@ -11,6 +11,7 @@ these GUI applications:
 * [HashCheck](http://code.kliu.org/hashcheck/)
 * [SummerProperties](http://www.frozenlogic.org/summerproperties.shtml)
 * [HashMyFiles](http://www.nirsoft.net/utils/hash_my_files.html)
+* HashTab
 
 Or a command line application:
 
