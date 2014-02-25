@@ -92,8 +92,9 @@ CGH.directive('nav', ['$location', function($location) {
       var links = angular.element(element).find('a');
       var length = links.length;
       document.onkeypress = function(event) {
-        var left = event.keyCode === 91;
-        var right = event.keyCode === 93;
+        var key = typeof event.which === 'number' ? 'which' : 'keyCode';
+        var left = event[key] === 91;
+        var right = event[key] === 93;
         if (!left && !right) return;
 
         if (!length) return;
