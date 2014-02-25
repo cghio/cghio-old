@@ -30,18 +30,18 @@ module.exports = function(grunt) {
       },
       md: {
         files: [ 'posts/help/*.md' ],
-        tasks: [ 'make_help_index' ]
+        tasks: [ 'make-help-index' ]
       },
       html: {
         files: [ 'index.html' ],
-        tasks: [ 'copy_index' ]
+        tasks: [ 'copy-index' ]
       },
       js: {
         files: [ 'assets/js/*.js' ]
       },
       yml: {
         files: [ 'posts/*.yml' ],
-        tasks: [ 'convert_ymls' ]
+        tasks: [ 'convert-ymls' ]
       },
       css: {
         files: [ 'assets/css/**/*.css', 'assets/css/**/*.less' ],
@@ -60,9 +60,9 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'clean',
     'less',
-    'copy_index',
-    'make_help_index',
-    'convert_ymls',
+    'copy-index',
+    'make-help-index',
+    'convert-ymls',
     'connect',
     'watch'
   ]);
@@ -71,14 +71,18 @@ module.exports = function(grunt) {
     '_production',
     'clean',
     'less',
-    'make_help_index',
-    'convert_ymls',
+    'make-help-index',
+    'convert-ymls',
     'analyze',
     'uglify',
     'concat',
     'hash',
     'compress',
     'clean:templates'
+  ]);
+
+  grunt.registerTask('make', [
+    'production'
   ]);
 
   grunt.registerTask('p', [
@@ -91,7 +95,7 @@ module.exports = function(grunt) {
     return JSON.stringify(obj, null, 2);
   }
 
-  grunt.registerTask('_production', function() {
+  grunt.registerTask('_production', 'Update configs for production mode.', function() {
     var less = grunt.config('less') || {};
     less.options = less.options || {};
     less.options.cleancss = true;
@@ -102,7 +106,7 @@ module.exports = function(grunt) {
     grunt.log.ok('Updated Grunt configs.');
   })
 
-  grunt.registerTask('copy_index', 'Copy index page', function() {
+  grunt.registerTask('copy-index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
     grunt.log.ok('Copied index.html to public/index.html.');
   });
@@ -316,7 +320,7 @@ module.exports = function(grunt) {
     parser.end();
   });
 
-  grunt.registerTask('make_help_index', 'Generate help index JSON file', function() {
+  grunt.registerTask('make-help-index', 'Generate help index JSON file', function() {
     var path = require('path');
     var help_dir = 'posts/help';
     var help_files = grunt.file.expand({
@@ -350,7 +354,7 @@ module.exports = function(grunt) {
     grunt.log.ok('Updated help index.');
   });
 
-  grunt.registerTask('convert_ymls', function() {
+  grunt.registerTask('convert-ymls', function() {
     var path = require('path');
     var ymls = grunt.file.expand({
       cwd: 'posts'
@@ -365,7 +369,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('download_angular', 'Download Angular code', function(version) {
+  grunt.registerTask('download-angular', 'Download Angular code', function(version) {
     if (!version) grunt.fail.fatal('Please provide version! ' +
       'Go to http://code.angularjs.org/ to see list of versions.');
     var finish = this.async();
@@ -423,7 +427,7 @@ module.exports = function(grunt) {
     download(finish);
   });
 
-  grunt.registerTask('push', function() {
+  grunt.registerTask('push', 'Tell server to update website.', function() {
     var finish = this.async();
     var spawn = require('child_process').spawn;
     var ssh = spawn('ssh', ['cgh.io', (function script_to_update() {
