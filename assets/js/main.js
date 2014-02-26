@@ -1,6 +1,6 @@
-var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]);
+var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]).
 
-CGH.config(['$routeProvider', '$locationProvider',
+config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     templateUrl: 'main',
@@ -41,33 +41,33 @@ CGH.config(['$routeProvider', '$locationProvider',
     templateUrl: '_404'
   });
   $locationProvider.html5Mode(true);
-}]);
+}]).
 
-CGH.run(['$location', '$rootScope', '$route',
+run(['$location', '$rootScope', '$route',
   function($location, $rootScope, $route) {
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     var route = current.$$route || $route.routes[null];
     $rootScope.title = route.title;
   });
-}]);
+}]).
 
 /* directives */
 
-CGH.directive('body', [function() {
+directive('body', [function() {
   return {
     restrict: 'E',
     templateUrl: 'index'
   };
-}]);
+}]).
 
-CGH.directive('title', [function() {
+directive('title', [function() {
   return {
     restrict: 'E',
     template: '{{(title ? title + " &mdash; " : "") + "cgh.io"}}',
   };
-}]);
+}]).
 
-CGH.directive('navbarToggle', function(){
+directive('navbarToggle', function(){
   return {
     restrict: 'C',
     link: function($scope, element, attrs, controller) {
@@ -81,9 +81,9 @@ CGH.directive('navbarToggle', function(){
       });
     }
   };
-});
+}).
 
-CGH.directive('nav', ['$location', function($location) {
+directive('nav', ['$location', function($location) {
   return {
     restrict: 'E',
     link: function($scope, element, attrs, controller) {
@@ -121,9 +121,9 @@ CGH.directive('nav', ['$location', function($location) {
       };
     }
   };
-}]);
+}]).
 
-CGH.directive('removeUnless', function() {
+directive('removeUnless', function() {
   return function(scope, element, attrs) {
     scope.$watch(attrs.removeUnless, function(value) {
       if (!value) {
@@ -131,9 +131,9 @@ CGH.directive('removeUnless', function() {
       }
     });
   }
-});
+}).
 
-CGH.directive('navbarLink', ['$location', function($location) {
+directive('navbarLink', ['$location', function($location) {
   return function(scope, element, attrs) {
     scope.$on('$routeChangeSuccess', function(event, current, previous) {
       var links = element.find('a');
@@ -147,9 +147,9 @@ CGH.directive('navbarLink', ['$location', function($location) {
       }
     });
   };
-}]);
+}]).
 
-CGH.directive('crypto', function() {
+directive('crypto', function() {
   return function(scope, element, attrs) {
     element.bind('click', function() {
       scope.cryptos.forEach(function(crypto) {
@@ -158,9 +158,9 @@ CGH.directive('crypto', function() {
       scope.$apply();
     });
   };
-});
+}).
 
-CGH.directive('linkTarget', function() {
+directive('linkTarget', function() {
   return function(scope, element, attrs) {
     element.bind('click', function() {
       scope.targets.forEach(function(target) {
@@ -169,20 +169,20 @@ CGH.directive('linkTarget', function() {
       scope.$apply();
     });
   };
-});
+}).
 
 /* filters */
 
-CGH.filter('markdown', function() {
+filter('markdown', function() {
   return function(content) {
     if (!content) return '';
     if (content instanceof Array) content = content.join('\n');
     content = content.replace(/^---(.|\n)*---\n/, '');
     return markdown.toHTML(content, 'Maruku');
   };
-});
+}).
 
-CGH.filter('buttonify', function() {
+filter('buttonify', function() {
   return function(content) {
     var glyphicon = content.match(/^\.(glyphicon-[\S]*)(.*)/);
     if (glyphicon) {
@@ -192,27 +192,27 @@ CGH.filter('buttonify', function() {
       return content;
     }
   };
-});
+}).
 
 /* factories */
 
-CGH.factory('Repositories', ['$http', function($http) {
+factory('Repositories', ['$http', function($http) {
   return $http.get('/api/repositories.json');
-}]);
+}]).
 
-CGH.factory('Builds', ['$http', function($http) {
+factory('Builds', ['$http', function($http) {
   return $http.get('/api/builds.json');
-}]);
+}]).
 
-CGH.factory('Sites', ['$http', function($http) {
+factory('Sites', ['$http', function($http) {
   return $http.get('/api/sites.json');
-}]);
+}]).
 
-CGH.factory('Panoramas', ['$http', function($http) {
+factory('Panoramas', ['$http', function($http) {
   return $http.get('/api/panoramas.json');
-}]);
+}]).
 
-CGH.factory('Links', ['$http', function($http) {
+factory('Links', ['$http', function($http) {
   var COLUMNS = 3;
   return $http.get('/api/links.json').then(function(response) {
     var links = response.data;
@@ -238,13 +238,13 @@ CGH.factory('Links', ['$http', function($http) {
     }
     return new_links;
   });
-}]);
+}]).
 
-CGH.factory('Helps', ['$http', function($http) {
+factory('Helps', ['$http', function($http) {
   return $http.get('/api/help.json');
-}]);
+}]).
 
-CGH.service('HelpTopics', ['$http', function($http) {
+service('HelpTopics', ['$http', function($http) {
   var self = this;
   self.number_of_objects = 10;
   self.help_topics = [];
@@ -264,9 +264,9 @@ CGH.service('HelpTopics', ['$http', function($http) {
       if (callback) callback(self.help_topic_objs[index]);
     }
   };
-}]);
+}]).
 
-CGH.service('SharedMethods', [function() {
+service('SharedMethods', [function() {
   this.keys = function get_object_keys(obj) {
     if (typeof(obj) !== 'object') return null;
     return Object.keys(obj).filter(function(key) {
@@ -280,19 +280,19 @@ CGH.service('SharedMethods', [function() {
   this.target = function target_on_url(url) {
     return /^https?:\/\//.test(url) ? '_blank' : '_self';
   };
-}]);
+}]).
 
 /* controllers */
 
-CGH.controller('MainController', ['$scope', 'Repositories', 'SharedMethods',
+controller('MainController', ['$scope', 'Repositories', 'SharedMethods',
   function($scope, Repositories, SharedMethods) {
   angular.extend($scope, SharedMethods);
   Repositories.then(function(response) {
     $scope.items = response.data;
   });
-}]);
+}]).
 
-CGH.controller('BuildsController', ['$scope', 'Builds',
+controller('BuildsController', ['$scope', 'Builds',
   function($scope, Builds) {
   $scope.cryptos = [
     {
@@ -314,17 +314,17 @@ CGH.controller('BuildsController', ['$scope', 'Builds',
   Builds.success(function(builds) {
     $scope.builds = builds;
   });
-}]);
+}]).
 
-CGH.controller('SitesController', ['$scope', 'Sites', 'SharedMethods',
+controller('SitesController', ['$scope', 'Sites', 'SharedMethods',
   function($scope, Sites, SharedMethods) {
   angular.extend($scope, SharedMethods);
   Sites.then(function(response) {
     $scope.items = response.data;
   });
-}]);
+}]).
 
-CGH.controller('PanoramasController', ['$scope', 'Panoramas', 'SharedMethods',
+controller('PanoramasController', ['$scope', 'Panoramas', 'SharedMethods',
   function($scope, Panoramas, SharedMethods) {
   angular.extend($scope, SharedMethods);
   $scope.first_link = function(buttons) {
@@ -336,9 +336,9 @@ CGH.controller('PanoramasController', ['$scope', 'Panoramas', 'SharedMethods',
     var panoramas = response.data;
     $scope.panoramas = panoramas;
   });
-}]);
+}]).
 
-CGH.controller('LinksController', ['$scope', 'Links', 'SharedMethods',
+controller('LinksController', ['$scope', 'Links', 'SharedMethods',
   function($scope, Links, SharedMethods) {
   $scope.targets = [
     {
@@ -361,9 +361,9 @@ CGH.controller('LinksController', ['$scope', 'Links', 'SharedMethods',
   Links.then(function(links) {
     $scope.links = links;
   });
-}]);
+}]).
 
-CGH.controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
+controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
   '$routeParams', '$rootScope',
   function($scope, Helps, HelpTopics, $routeParams, $rootScope) {
   var help_topic = $routeParams.help_topic;
@@ -382,4 +382,8 @@ CGH.controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
       $rootScope.title = help_topic.title;
     });
   }
+}]).
+
+run([function(){
+  if (console) console.info('git clone https://github.com/cghio/cghio.git');
 }]);
