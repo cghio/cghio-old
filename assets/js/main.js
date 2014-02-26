@@ -266,17 +266,31 @@ CGH.service('HelpTopics', ['$http', function($http) {
   };
 }]);
 
+CGH.service('SharedMethods', [function(){
+  this.keys = function get_object_keys(obj) {
+    if (typeof(obj) !== 'object') return null;
+    return Object.keys(obj).filter(function(key) {
+      return key[0] !== '$';
+    });
+  };
+  this.split = function split_lines(content) {
+    if (typeof content !== 'string' || !content) return '';
+    return content.replace(/\\n/g, '\n').split(/\n{2,}/);
+  };
+  this.target = function target_on_url(url) {
+    return /^https?:\/\//.test(url) ? '_blank' : '_self';
+  };
+}]);
+
 /* controllers */
 
-function MainController($scope, Repositories) {
-  $scope.keys = get_object_keys;
-  $scope.split = split_lines;
-  $scope.target = target_on_url;
+function MainController($scope, Repositories, SharedMethods) {
+  angular.extend($scope, SharedMethods);
   Repositories.then(function(response) {
     $scope.items = response.data;
   });
 }
-MainController.$inject = ['$scope', 'Repositories'];
+MainController.$inject = ['$scope', 'Repositories', 'SharedMethods'];
 
 function BuildsController($scope, Builds) {
   $scope.cryptos = [
@@ -302,22 +316,18 @@ function BuildsController($scope, Builds) {
 }
 BuildsController.$inject = ['$scope', 'Builds'];
 
-function SitesController($scope, Sites) {
-  $scope.keys = get_object_keys;
-  $scope.split = split_lines;
-  $scope.target = target_on_url;
+function SitesController($scope, Sites, SharedMethods) {
+  angular.extend($scope, SharedMethods);
   Sites.then(function(response) {
     $scope.items = response.data;
   });
 }
-SitesController.$inject = ['$scope', 'Sites'];
+SitesController.$inject = ['$scope', 'Sites', 'SharedMethods'];
 
-function PanoramasController($scope, Panoramas) {
-  $scope.keys = get_object_keys;
-  $scope.split = split_lines;
-  $scope.target = target_on_url;
+function PanoramasController($scope, Panoramas, SharedMethods) {
+  angular.extend($scope, SharedMethods);
   $scope.first_link = function(buttons) {
-    var keys = get_object_keys(buttons);
+    var keys = SharedMethods.keys(buttons);
     if (!(keys instanceof Array)) return null;
     return buttons[keys[0]];
   };
@@ -326,9 +336,9 @@ function PanoramasController($scope, Panoramas) {
     $scope.panoramas = panoramas;
   });
 }
-PanoramasController.$inject = ['$scope', 'Panoramas'];
+PanoramasController.$inject = ['$scope', 'Panoramas', 'SharedMethods'];
 
-function LinksController($scope, Links) {
+function LinksController($scope, Links, SharedMethods) {
   $scope.targets = [
     {
       name: 'the same',
@@ -346,13 +356,13 @@ function LinksController($scope, Links) {
     }
     return $scope.targets[0];
   };
-  $scope.keys = get_object_keys;
+  $scope.keys = SharedMethods.keys;
 
   Links.then(function(links) {
     $scope.links = links;
   });
 }
-LinksController.$inject = ['$scope', 'Links'];
+LinksController.$inject = ['$scope', 'Links', 'SharedMethods'];
 
 function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
   var help_topic = $routeParams.help_topic;
@@ -374,21 +384,3 @@ function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
 }
 HelpController.$inject = ['$scope', 'Helps', 'HelpTopics', '$routeParams',
   '$rootScope'];
-
-/* shared methods */
-
-function get_object_keys(obj) {
-  if (typeof(obj) !== 'object') return null;
-  return Object.keys(obj).filter(function(key) {
-    return key[0] !== '$';
-  });
-}
-
-function split_lines(content) {
-  if (typeof content !== 'string' || !content) return '';
-  return content.replace(/\\n/g, '\n').split(/\n{2,}/);
-}
-
-function target_on_url(url) {
-  return /^https?:\/\//.test(url) ? '_blank' : '_self';
-}
