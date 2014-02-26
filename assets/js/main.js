@@ -4,37 +4,37 @@ CGH.config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
   $routeProvider.when('/', {
     templateUrl: 'main',
-    controller: MainController
+    controller: 'MainController'
   });
   $routeProvider.when('/builds', {
     title: 'Builds',
     templateUrl: 'builds',
-    controller: BuildsController
+    controller: 'BuildsController'
   });
   $routeProvider.when('/sites', {
     title: 'Sites',
     templateUrl: 'sites',
-    controller: SitesController
+    controller: 'SitesController'
   });
   $routeProvider.when('/panoramas', {
     title: 'Panoramas',
     templateUrl: 'panoramas',
-    controller: PanoramasController
+    controller: 'PanoramasController'
   });
   $routeProvider.when('/links', {
     title: 'Links',
     templateUrl: 'links',
-    controller: LinksController
+    controller: 'LinksController'
   });
   $routeProvider.when('/help/:help_topic?', {
     title: 'Help',
     templateUrl: 'help',
-    controller: HelpController
+    controller: 'HelpController'
   });
   $routeProvider.when('/about', {
     title: 'About',
     templateUrl: 'about',
-    controller: LinksController
+    controller: 'LinksController'
   });
   $routeProvider.otherwise({
     title: '404 Page Not Found',
@@ -266,7 +266,7 @@ CGH.service('HelpTopics', ['$http', function($http) {
   };
 }]);
 
-CGH.service('SharedMethods', [function(){
+CGH.service('SharedMethods', [function() {
   this.keys = function get_object_keys(obj) {
     if (typeof(obj) !== 'object') return null;
     return Object.keys(obj).filter(function(key) {
@@ -284,15 +284,16 @@ CGH.service('SharedMethods', [function(){
 
 /* controllers */
 
-function MainController($scope, Repositories, SharedMethods) {
+CGH.controller('MainController', ['$scope', 'Repositories', 'SharedMethods',
+  function($scope, Repositories, SharedMethods) {
   angular.extend($scope, SharedMethods);
   Repositories.then(function(response) {
     $scope.items = response.data;
   });
-}
-MainController.$inject = ['$scope', 'Repositories', 'SharedMethods'];
+}]);
 
-function BuildsController($scope, Builds) {
+CGH.controller('BuildsController', ['$scope', 'Builds',
+  function($scope, Builds) {
   $scope.cryptos = [
     {
       key: 'md5sum',
@@ -313,18 +314,18 @@ function BuildsController($scope, Builds) {
   Builds.success(function(builds) {
     $scope.builds = builds;
   });
-}
-BuildsController.$inject = ['$scope', 'Builds'];
+}]);
 
-function SitesController($scope, Sites, SharedMethods) {
+CGH.controller('SitesController', ['$scope', 'Sites', 'SharedMethods',
+  function($scope, Sites, SharedMethods) {
   angular.extend($scope, SharedMethods);
   Sites.then(function(response) {
     $scope.items = response.data;
   });
-}
-SitesController.$inject = ['$scope', 'Sites', 'SharedMethods'];
+}]);
 
-function PanoramasController($scope, Panoramas, SharedMethods) {
+CGH.controller('PanoramasController', ['$scope', 'Panoramas', 'SharedMethods',
+  function($scope, Panoramas, SharedMethods) {
   angular.extend($scope, SharedMethods);
   $scope.first_link = function(buttons) {
     var keys = SharedMethods.keys(buttons);
@@ -335,10 +336,10 @@ function PanoramasController($scope, Panoramas, SharedMethods) {
     var panoramas = response.data;
     $scope.panoramas = panoramas;
   });
-}
-PanoramasController.$inject = ['$scope', 'Panoramas', 'SharedMethods'];
+}]);
 
-function LinksController($scope, Links, SharedMethods) {
+CGH.controller('LinksController', ['$scope', 'Links', 'SharedMethods',
+  function($scope, Links, SharedMethods) {
   $scope.targets = [
     {
       name: 'the same',
@@ -357,14 +358,14 @@ function LinksController($scope, Links, SharedMethods) {
     return $scope.targets[0];
   };
   $scope.keys = SharedMethods.keys;
-
   Links.then(function(links) {
     $scope.links = links;
   });
-}
-LinksController.$inject = ['$scope', 'Links', 'SharedMethods'];
+}]);
 
-function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
+CGH.controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
+  '$routeParams', '$rootScope',
+  function($scope, Helps, HelpTopics, $routeParams, $rootScope) {
   var help_topic = $routeParams.help_topic;
 
   // this variable determines whether to show the index page
@@ -381,6 +382,4 @@ function HelpController($scope, Helps, HelpTopics, $routeParams, $rootScope) {
       $rootScope.title = help_topic.title;
     });
   }
-}
-HelpController.$inject = ['$scope', 'Helps', 'HelpTopics', '$routeParams',
-  '$rootScope'];
+}]);
