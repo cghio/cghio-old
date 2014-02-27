@@ -7,11 +7,28 @@
     area where these safes are made and packaged.
   buttons:
     View: http://www.qnnsafe.com/360-panoramas/
+    Source: https://github.com/qnn/qnnsafe.com-v1/blob/master/pages/~panorama.haml
 - title: Ronggui Bridge
   scenes: 4
   image: /images/Ronggui-Bridge.jpg
   desc: |
     The under-construction Ronggui bridge at a glance.
   buttons:
-    View Ronggui Bridge: http://caiguanhao.github.io/panoramas/ronggui-bridge/
-    Source: https://github.com/caiguanhao/panoramas
+    View: http://caiguanhao.github.io/panoramas/ronggui-bridge/
+    Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/ronggui-bridge
+- title: Sheraton Hotel
+  scenes: 3
+  image: /images/sheraton-hotel.jpg
+  desc: |
+    A visit to Sheraton Hotel.
+  buttons:
+    View: http://caiguanhao.github.io/panoramas/sheraton-hotel/
+    Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/sheraton-hotel
+- title: Ronggui Collection
+  scenes: 14
+  image: /images/ronggui-collection.jpg
+  desc: |
+    Panorama collection of some places in Ronggui.
+  buttons:
+    View: http://caiguanhao.github.io/panoramas/ronggui-collection/
+    Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/ronggui-collection
