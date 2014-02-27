@@ -136,8 +136,8 @@
       <div class="col-sm-6" ng-init="link = first_link(pano.buttons)">
         <a href="{{link}}" target="{{target(link)}}"
           remove-unless="link" title="{{pano.title}}">
-          <img class="media-object" alt="{{pano.title}}"
-            ng-src="{{pano.image}}" title="{{pano.title}}">
+          <span class="img-tape"
+            style="background-image: url({{pano.image}});"></span>
         </a>
       </div>
       <div class="col-sm-6">
