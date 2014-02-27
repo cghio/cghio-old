@@ -6,7 +6,7 @@
     room that shows all kinds of safes the company has made, and the factory
     area where these safes are made and packaged.
   buttons:
-    View: http://www.qnnsafe.com/360-panoramas/
+    .glyphicon-new-window View: http://www.qnnsafe.com/360-panoramas/
     Source: https://github.com/qnn/qnnsafe.com-v1/blob/master/pages/~panorama.haml
 - title: Ronggui Bridge
   scenes: 4
@@ -14,7 +14,7 @@
   desc: |
     The under-construction Ronggui bridge at a glance.
   buttons:
-    View: http://caiguanhao.github.io/panoramas/ronggui-bridge/
+    .glyphicon-new-window View: http://caiguanhao.github.io/panoramas/ronggui-bridge/
     Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/ronggui-bridge
 - title: Sheraton Hotel
   scenes: 3
@@ -22,7 +22,7 @@
   desc: |
     A visit to Sheraton Hotel.
   buttons:
-    View: http://caiguanhao.github.io/panoramas/sheraton-hotel/
+    .glyphicon-new-window View: http://caiguanhao.github.io/panoramas/sheraton-hotel/
     Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/sheraton-hotel
 - title: Ronggui Collection
   scenes: 14
@@ -30,5 +30,5 @@
   desc: |
     Panorama collection of some places in Ronggui.
   buttons:
-    View: http://caiguanhao.github.io/panoramas/ronggui-collection/
+    .glyphicon-new-window View: http://caiguanhao.github.io/panoramas/ronggui-collection/
     Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/ronggui-collection

@@ -153,7 +153,8 @@
         <p class="btn-group btn-group-sm">
           <a ng-repeat="name in keys(pano.buttons)"
             ng-init="url = pano.buttons[name]" target="{{target(url)}}"
-            href="{{url}}" class="btn btn-default" ng-bind="name"></a>
+            href="{{url}}" class="btn btn-default"
+            ng-bind-html="name|buttonify"></a>
         </p>
       </div>
     </div>
