@@ -29,6 +29,8 @@ Sublime Text:
 Oneliners:
   - title: Web server
     url: https://gist.github.com/willurd/5720255
+  - title: Useful one-line scripts for sed
+    url: http://sed.sourceforge.net/sed1line.txt
   - title: Checksums
     url: https://gist.github.com/steakknife/1807195
   - title: commandlinefu.com
