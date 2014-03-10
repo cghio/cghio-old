@@ -384,6 +384,6 @@ controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
   }
 }]).
 
-run([function(){
+run([function() {
   if (console) console.info('git clone https://github.com/cghio/cghio.git');
 }]);
