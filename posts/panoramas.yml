@@ -32,3 +32,11 @@
   buttons:
     .glyphicon-new-window View: http://caiguanhao.github.io/panoramas/ronggui-collection/
     Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/ronggui-collection
+- title: Wenta Park
+  scenes: 20
+  image: /images/wenta-park.jpg
+  desc: |
+    Visit Wenta Park with Google Maps.
+  buttons:
+    .glyphicon-new-window View: http://caiguanhao.github.io/panoramas/wenta-park/
+    Source: https://github.com/caiguanhao/panoramas/tree/gh-pages/wenta-park
