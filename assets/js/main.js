@@ -2,41 +2,41 @@ var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]).
 
 config(['$routeProvider', '$locationProvider',
   function($routeProvider, $locationProvider) {
-  $routeProvider.when('/', {
+  $routeProvider.
+  when('/', {
     templateUrl: 'main',
     controller: 'MainController'
-  });
-  $routeProvider.when('/builds', {
+  }).
+  when('/builds', {
     title: 'Builds',
     templateUrl: 'builds',
     controller: 'BuildsController'
-  });
-  $routeProvider.when('/sites', {
+  }).
+  when('/sites', {
     title: 'Sites',
     templateUrl: 'sites',
     controller: 'SitesController'
-  });
-  $routeProvider.when('/panoramas', {
+  }).
+  when('/panoramas', {
     title: 'Panoramas',
     templateUrl: 'panoramas',
     controller: 'PanoramasController'
-  });
-  $routeProvider.when('/links', {
+  }).
+  when('/links', {
     title: 'Links',
     templateUrl: 'links',
     controller: 'LinksController'
-  });
-  $routeProvider.when('/help/:help_topic?', {
+  }).
+  when('/help/:help_topic?', {
     title: 'Help',
     templateUrl: 'help',
     controller: 'HelpController'
-  });
-  $routeProvider.when('/about', {
+  }).
+  when('/about', {
     title: 'About',
-    templateUrl: 'about',
-    controller: 'LinksController'
-  });
-  $routeProvider.otherwise({
+    templateUrl: 'about'
+  }).
+  otherwise({
     title: '404 Page Not Found',
     templateUrl: '_404'
   });
