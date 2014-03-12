@@ -384,6 +384,9 @@ controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
   }
 }]).
 
-run([function() {
+run(['$window', function($window) {
+  $window.addEventListener('load', function() {
+    $window.FastClick.attach($window.document.body);
+  }, false);
   if (console) console.info('git clone https://github.com/cghio/cghio.git');
 }]);
