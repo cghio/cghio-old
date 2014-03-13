@@ -49,6 +49,8 @@ Ruby/Rails:
   - title: Learn Ruby in Y Minutes
     url: http://learnxinyminutes.com/docs/ruby/
 Style Guide:
+  - title: HTML and CSS code guide
+    url: http://mdo.github.io/code-guide/
   - title: JavaScript style guide
     url: https://github.com/airbnb/javascript
   - title: Ruby coding style guide
@@ -139,3 +141,10 @@ Chrome:
     url: https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi
   - title: AngularJS Batarang
     url: https://chrome.google.com/webstore/detail/angularjs-batarang/ighdmehidhipcmcojjgiloacoafjmpfk
+Objective-C:
+  - title: Best practices and advanced techniques in Objective-C
+    url: http://www.objc.io/
+  - title: Ry’s Objective-C Tutorial
+    url: http://rypress.com/tutorials/objective-c/
+  - title: CocoaControls
+    url: https://www.cocoacontrols.com/
