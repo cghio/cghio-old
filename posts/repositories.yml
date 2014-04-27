@@ -1,12 +1,27 @@
 -
-  - title: Maintainer
-    tags: Ember.js Node.js
+  - title: xen-monitor
+    tags: Angular.js Socket.IO
     desc: |
-      Maintainer is a single-page web application managing routine scripts
-      that may run on local or remote server.
-    image: /images/Maintainer-600px.png
+      Gather real-time network statistics from XenServer virtual machines.
+    image: /images/xen-monitor.png
     buttons:
-      Homepage: https://github.com/caiguanhao/Maintainer
+      Homepage: https://github.com/caiguanhao/xen-monitor
+      X: http://x.cgh.io/
+      X2: http://x2.cgh.io/
+  - title: xen-config
+    tags: Shell
+    desc: |
+      Some useful shell scripts to accelerate XenServer deployment.
+    buttons:
+      Homepage: https://github.com/caiguanhao/xen-config
+  - title: grunt-ziti
+    tags: Grunt
+    desc: |
+      Subsetting, optimizing and converting large font files to smaller web
+      fonts.
+    buttons:
+      Source: https://github.com/caiguanhao/grunt-ziti
+      NPM: https://www.npmjs.org/package/grunt-ziti
   - title: cgh.io
     tags: Angular.js
     desc: |
@@ -21,6 +36,13 @@
     buttons:
       Homepage: https://github.com/qnn/qnn-weixin
 -
+  - title: llks-monitor
+    tags: Angular.js Socket.IO
+    desc: |
+      Gather statistics from multiple LLKS accounts.
+    image: /images/llks-monitor.png
+    buttons:
+      Homepage: https://github.com/caiguanhao/llks-monitor
   - title: CGHAssemble
     tags: Python
     desc: |
@@ -43,6 +65,14 @@
     buttons:
       More: https://github.com/qnn/qnnshop
 -
+  - title: Maintainer
+    tags: Ember.js Node.js
+    desc: |
+      Maintainer is a single-page web application managing routine scripts
+      that may run on local or remote server.
+    image: /images/Maintainer-600px.png
+    buttons:
+      Homepage: https://github.com/caiguanhao/Maintainer
   - title: Portablizer
     tags: Python
     desc: |
