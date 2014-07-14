@@ -11,11 +11,8 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      api: [ 'public/api' ],
-      public_css: [ 'public/css/*.css' ],
-      public_js: [ 'public/js/*.js' ],
-      compressed: [ 'public/**/*.gz' ],
-      templates: [ 'public/js/templates.js', 'public/js/templates.js.gz' ]
+      public: [ 'public/css', 'public/js' ],
+      javascript: [ 'public/js/*.javascript.js' ]
     },
     less: {
       cghio: {
@@ -28,9 +25,9 @@ module.exports = function(grunt) {
       options: {
         livereload: true
       },
-      md: {
-        files: [ 'posts/help/*.md' ],
-        tasks: [ 'make-help-index' ]
+      posts: {
+        files: [ 'posts/**/*' ],
+        tasks: [ 'values' ]
       },
       html: {
         files: [ 'index.html' ],
@@ -39,13 +36,61 @@ module.exports = function(grunt) {
       js: {
         files: [ 'assets/js/*.js' ]
       },
-      yml: {
-        files: [ 'posts/*.yml' ],
-        tasks: [ 'convert-ymls' ]
-      },
       css: {
         files: [ 'assets/css/**/*.css', 'assets/css/**/*.less' ],
         tasks: [ 'less' ]
+      }
+    },
+    uglify: {
+      vendors: {
+        files: {
+          'public/js/vendors.js': [
+            'assets/js/vendor/fastclick.js',
+            'assets/js/vendor/markdown.js'
+          ]
+        }
+      },
+      app: {
+        files: {
+          'public/js/cghio.js': [
+            'assets/js/main.js',
+            'public/js/templates.javascript.js',
+            'public/js/values.javascript.js'
+          ]
+        }
+      }
+    },
+    concat: {
+      angular: {
+        files: {
+          'public/js/angular.js': [
+            'assets/js/vendor/angular.min.js',
+            'assets/js/vendor/angular-route.min.js',
+            'assets/js/vendor/angular-sanitize.min.js'
+          ]
+        }
+      }
+    },
+    yaat: {
+      CGH: {
+        files: {
+          'public/js/templates.javascript.js': 'index.html'
+        }
+      }
+    },
+    values: {
+      CGH: {
+        options: {
+          constant: true,
+          files: {
+            'public/js/values.javascript.js': {
+              'help.json': makeHelpIndex
+            }
+          }
+        },
+        files: {
+          'public/js/values.javascript.js': [ 'posts/*.yml', 'posts/help/*.md' ]
+        }
       }
     }
   });
@@ -56,13 +101,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-angular-values');
+  grunt.loadNpmTasks('grunt-yet-another-angular-templates');
 
   grunt.registerTask('default', [
     'clean',
     'less',
     'copy-index',
-    'make-help-index',
-    'convert-ymls',
+    'values',
     'connect',
     'watch'
   ]);
@@ -71,14 +117,12 @@ module.exports = function(grunt) {
     '_production',
     'clean',
     'less',
-    'make-help-index',
-    'convert-ymls',
-    'analyze',
+    'values',
+    'yaat',
     'uglify',
     'concat',
-    'hash',
-    'compress',
-    'clean:templates'
+    'clean:javascript',
+    'compress'
   ]);
 
   grunt.registerTask('make', [
@@ -91,20 +135,15 @@ module.exports = function(grunt) {
     'watch'
   ]);
 
-  grunt.JSONStringify = function(obj) {
-    return JSON.stringify(obj, null, 2);
-  };
-
   grunt.registerTask('_production', 'Update configs for production mode.',
     function() {
     var less = grunt.config('less') || {};
     less.options = less.options || {};
     less.options.cleancss = true;
     grunt.config('less', less);
-    grunt.JSONStringify = function(obj) {
-      return JSON.stringify(obj);
-    }
     grunt.log.ok('Updated Grunt configs.');
+    grunt.file.copy('index.production.html', 'public/index.html');
+    grunt.log.ok('Copied index.production.html to public/index.html.');
   });
 
   grunt.registerTask('copy-index', 'Copy index page', function() {
@@ -126,210 +165,7 @@ module.exports = function(grunt) {
     })
   });
 
-  var htmlparser = require('htmlparser2');
-  htmlparser.void_elements = ['area', 'base', 'br', 'col', 'embed', 'hr',
-    'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track',
-    'wbr'];
-
-  grunt.registerTask('hash', 'Hash filenames of assets', function() {
-    var prod_index = '';
-    var index = grunt.file.read('public/index.html');
-    var crypto = require('crypto'), fs = require('fs');
-    var parser = new htmlparser.Parser({
-      onopentag: function(name, attribs) {
-        if ((name === 'link' && attribs.rel === 'stylesheet') ||
-          name === 'script') {
-          var src_tag = 'src', ext = '';
-          if (name === 'link') src_tag = 'href';
-          var old_filename = 'public' + attribs[src_tag];
-          if (fs.existsSync(old_filename)) {
-            var js = fs.readFileSync(old_filename);
-            shasum = crypto.createHash('sha1');
-            shasum.update(js);
-            var hash = shasum.digest('hex');
-            var dot = attribs[src_tag].lastIndexOf('.');
-            if (dot === -1) dot = undefined;
-            var new_src = attribs[src_tag].slice(0, dot);
-            new_src += '-' + hash + attribs[src_tag].slice(dot);
-            var new_filename = 'public' + new_src;
-            fs.renameSync(old_filename, new_filename);
-            grunt.log.ok('File ' + old_filename + ' renamed to ' +
-              new_filename);
-            attribs[src_tag] = new_src;
-          }
-        }
-        prod_index += '<' + name;
-        for (var attrib in attribs) {
-          prod_index += ' ' + attrib + '="' + attribs[attrib] + '"';
-        }
-        prod_index += '>';
-      },
-      ontext: function(text) {
-        prod_index += text;
-      },
-      onclosetag: function(name) {
-        if (htmlparser.void_elements.indexOf(name.toLowerCase()) > -1) return;
-        prod_index += '</' + name + '>';
-      },
-      onprocessinginstruction: function(name, data) {
-        prod_index += '<' + data + '>';
-      },
-      oncomment: function(data) {
-        prod_index += '<!--' + data + '-->';
-      },
-      onend: function() {
-        prod_index = prod_index.trim() + '\n';
-        grunt.file.write('public/index.html', prod_index);
-        grunt.log.ok('File public/index.html generated.');
-      }
-    });
-    parser.write(index);
-    parser.end();
-  });
-
-  grunt.registerTask('analyze', 'Analyze index.html', function() {
-    var index = grunt.file.read('index.html');
-
-    var templates = 'CGH.run([\'$templateCache\', function($templateCache){';
-    var tpl = { name: '', content: '' };
-    var prod_index = '';
-    var prod_tasks = {
-      concat: { options: {}, dest: {}, src: {} },
-      uglify: { options: {}, dest: {}, src: {} }
-    };
-    var tasks = Object.keys(prod_tasks);
-    var skip_this_tag = false;
-
-    var parser = new htmlparser.Parser({
-      onopentag: function(name, attribs) {
-        var is_script = (name === 'script');
-        if (is_script) {
-          tpl.name = '';
-          tpl.content = '';
-
-          if (attribs.hasOwnProperty('development')) {
-            skip_this_tag = true;
-          }
-          if (attribs.hasOwnProperty('production')) {
-            attribs.src = attribs.production;
-            delete attribs.production;
-          }
-        }
-        if (is_script) {
-          for (var i = 0; i < tasks.length; i++) {
-            var task = tasks[i];
-            var target_name = attribs[task];
-            if (!target_name) continue;
-            prod_tasks[task].dest[target_name] =
-              prod_tasks[task].dest[target_name] || [];
-            prod_tasks[task].src[target_name] =
-              prod_tasks[task].src[target_name] || [];
-            if (attribs.dest) {
-              if (attribs.options) {
-                prod_tasks[task].options[target_name] =
-                  JSON.parse(attribs.options);
-              }
-              prod_tasks[task].dest[target_name].push(attribs.dest);
-            }
-            if (attribs.src || attribs['real-src']) {
-              var src = attribs['real-src'] || ('assets' + attribs.src);
-              src = src.replace(/[\n\s]{2,}/g, '');
-              prod_tasks[task].src[target_name].push(src);
-            }
-            if (attribs.dest) {
-              attribs = { src: attribs.dest };
-            } else {
-              skip_this_tag = true;
-            }
-          }
-        }
-        if (is_script && attribs.type === 'text/ng-template') {
-          tpl.name = attribs.id;
-        } else {
-          if (skip_this_tag === false) {
-            prod_index += '<' + name;
-            for (var attrib in attribs) {
-              prod_index += ' ' + attrib + '="' + attribs[attrib] + '"';
-            }
-            prod_index += '>';
-          }
-        }
-      },
-      ontext: function(text) {
-        if (tpl.name !== '') {
-          tpl.content += text;
-        } else {
-          if (skip_this_tag === false) {
-            prod_index += text;
-          }
-        }
-      },
-      onclosetag: function(name) {
-        if (name === 'script' && tpl.name !== '') {
-          tpl.content = tpl.content.replace(/^\s{2,}/mg, '');
-          templates += '$templateCache.put(' + JSON.stringify(tpl.name) +
-            ',' + JSON.stringify(tpl.content.trim()) + ');';
-        } else {
-          if (htmlparser.void_elements.indexOf(name.toLowerCase()) > -1)
-            return;
-          if (skip_this_tag === false) {
-            prod_index += '</' + name + '>';
-          } else {
-            skip_this_tag = false;
-          }
-        }
-      },
-      onprocessinginstruction: function(name, data) {
-        prod_index += '<' + data + '>';
-      },
-      oncomment: function(data) {
-        prod_index += '\n  <!--' + data + '-->\n';
-      },
-      onend: function() {
-        prod_index = prod_index.replace(/^\s*$/mg, '');
-        prod_index = prod_index.replace(/(<link.+?>)\n{2,}/mg, '$1\n');
-        prod_index = prod_index.replace(/<\/script>\n{2,}/mg, '</script>\n');
-        prod_index = prod_index.replace(/-->\n{2,}/g, '-->\n');
-        prod_index = prod_index.replace(/^\s{2}<\//mg, '</');
-        prod_index = prod_index.replace(/<\/(.+?)></g, '</$1>\n\n<');
-        prod_index = prod_index.trim() + '\n';
-        grunt.file.write('public/index.html', prod_index);
-        grunt.log.ok('File public/index.html generated.');
-
-        templates += '}])';
-        grunt.file.write('public/js/templates.js', ';' + templates + ';');
-
-        for (var i = 0; i < tasks.length; i++) {
-          var task = tasks[i];
-          var task_config = grunt.config(task) || {};
-          for (var pu in prod_tasks[task].src) {
-            var files = {};
-            for (var dest in prod_tasks[task].dest[pu]) {
-              files['public' + prod_tasks[task].dest[pu][dest]] =
-                prod_tasks[task].src[pu];
-            }
-            task_config[pu] = {
-              options: prod_tasks[task].options[pu],
-              files: files
-            };
-          }
-          if (Object.keys(task_config).length === 0) {
-            task_config = {
-              no_need: {}
-            };
-          }
-          grunt.config(task, task_config);
-          // console.log(JSON.stringify(task_config, null, 2));
-          grunt.log.ok('Modified ' + task + ' tasks.');
-        }
-      }
-    });
-    parser.write(index);
-    parser.end();
-  });
-
-  grunt.registerTask('make-help-index', 'Generate help index JSON file',
-    function() {
+  function makeHelpIndex() {
     var path = require('path');
     var help_dir = 'posts/help';
     var help_files = grunt.file.expand({
@@ -351,182 +187,9 @@ module.exports = function(grunt) {
         slug: slug,
         title: title
       });
-      grunt.file.write(path.join('public', 'api', 'help', slug + '.json'),
-        grunt.JSONStringify({
-          slug: slug,
-          title: title,
-          content: file
-        }) + '\n');
     });
-    grunt.file.write(path.join('public', 'api', 'help.json'),
-      grunt.JSONStringify(index) + '\n');
-    grunt.log.ok('Updated help index.');
-  });
-
-  grunt.registerTask('convert-ymls', 'Convert YAML files to JSON files',
-    function() {
-    var path = require('path');
-    var ymls = grunt.file.expand({
-      cwd: 'posts'
-    }, '*.yml');
-    ymls.forEach(function(yml) {
-      var from = path.join('posts', yml);
-      var to = path.join('public', 'api', path.basename(yml, '.yml') +
-        '.json');
-      var file = grunt.file.readYAML(from);
-      if (file === null) file = [];
-      grunt.file.write(to, grunt.JSONStringify(file) + '\n');
-      grunt.log.ok('Converted ' + from + ' to ' + to);
-    });
-  });
-
-  grunt.registerTask('download-angular', 'Download Angular',
-    function(version) {
-    var http = require('http');
-    var fs = require('fs');
-    var path = require('path');
-    var finish = this.async();
-    var base = 'http://code.angularjs.org/';
-    var urls = [];
-    var url_index = 0;
-    var needs = [
-      'angular.js',
-      'angular-route.js',
-      'angular-sanitize.js',
-    ];
-    var need_latest = false;
-    if (version === 'latest') {
-      version = '';
-      need_latest = true;
-    }
-
-    function get_versions(callback) {
-      grunt.log.write('Getting list of Angular versions... ');
-      http.get(base, function(response) {
-        var list = '';
-        response.on('data', function(data) {
-          list += data;
-        });
-        response.on('end', function() {
-          var versions =
-            list.replace(/(<([^>]+)>)/ig, '').match(/\d+\.\d+\.[^\/]+/g);
-          var max_width = 0;
-          versions.sort(function(a, b) {
-            if (a.length > max_width) max_width = a.length;
-            var _a = a.split(/[^\d]+/), _b = b.split(/[^\d]+/),
-              _l = Math.min(_a.length, _b.length);
-            for (var i = 0; i < _l; i++) {
-              if (+_a[i] === +_b[i]) {
-                continue;
-              } else if (+_a[i] > +_b[i]) {
-                return 1;
-              } else {
-                return -1;
-              }
-            }
-            return 0;
-          });
-          var vers_l = versions.length;
-          var item_width = max_width + 1;
-          var columns = process.stdout.columns;
-          var cols = Math.floor(columns / item_width);
-          var start = Math.max(vers_l - 3 * cols, 0);
-          process.stdout.clearLine();
-          process.stdout.cursorTo(0);
-          if (need_latest) {
-            if (callback) callback(versions[vers_l - 1]);
-            return;
-          }
-          console.log('List of some versions of Angular available for ' +
-            'download:');
-          for (var i = start; i < vers_l; i++) {
-            var ver = versions[i];
-            process.stdout.write(ver + Array(item_width -
-              ver.length + 1).join(' '));
-            if ((i - start) % cols === cols - 1 && i !== vers_l - 1) {
-              process.stdout.write('\n');
-            }
-          }
-          process.stdout.write('\n');
-          var readline = require('readline');
-          var rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout
-          });
-          rl.setPrompt('Enter one version number to download: ');
-          rl.prompt();
-          rl.write(versions[vers_l - 1]);
-          rl.on('line', function(v) {
-            v = v.trim();
-            if (versions.indexOf(v) === -1) {
-              rl.prompt();
-            } else {
-              rl.close()
-              if (callback) callback(v);
-            }
-          });
-        });
-      });
-    }
-    function numfmt(n) {
-      return n.toString().split('').reverse().join('')
-              .replace(/(\d{3})/g, '$1,').split('')
-              .reverse().join('').replace(/^,/, '');
-    }
-    function download(callback) {
-      var url = urls[url_index];
-      var filename = path.basename(url);
-      var file = fs.createWriteStream('assets/js/vendor/' + filename);
-      grunt.log.write('Start downloading ' + url + '...');
-      http.get(url, function(response) {
-        if (response.statusCode !== 200) {
-          process.stdout.write('\n');
-          throw new Error('Fail to download. Status: ' + response.statusCode);
-        }
-        var total = parseInt(response.headers['content-length']);
-        var acc = 0;
-        response.on('data', function(data) {
-          file.write(data);
-          acc += data.length;
-          process.stdout.clearLine();
-          process.stdout.cursorTo(0);
-          process.stdout.write((acc / total * 100).toFixed(2) + '%, ' +
-            numfmt(acc) + ' of ' + numfmt(total) + ' bytes of ' + filename +
-            ' downloaded... ');
-        });
-        response.on('end', function() {
-          process.stdout.clearLine();
-          process.stdout.cursorTo(0);
-          grunt.log.ok('Downloaded ' + url);
-
-          url_index++;
-          if (urls[url_index]) {
-            download(callback);
-          } else {
-            callback();
-          }
-        });
-      }).on('error', function(error) {
-        grunt.fail.fatal(error);
-      });
-    }
-    function to_download(callback) {
-      base += version + '/';
-      needs.forEach(function(need) {
-        urls.push(base + need);
-        urls.push(base + need.replace(/\.js$/, '.min.js'));
-      });
-      download(callback);
-    }
-    if (!version) {
-      get_versions(function(v) {
-        version = v;
-        to_download(finish);
-      });
-    } else {
-      to_download(finish);
-    }
-  });
+    return index;
+  }
 
   grunt.registerTask('push', 'Tell server to update website.', function() {
     var finish = this.async();

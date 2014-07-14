@@ -1,7 +1,7 @@
 var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]).
 
-config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
+config([   '$routeProvider', '$locationProvider', '$injector',
+  function( $routeProvider ,  $locationProvider ,  $injector ) {
   $routeProvider.
   when('/', {
     templateUrl: 'main',
@@ -40,7 +40,13 @@ config(['$routeProvider', '$locationProvider',
     title: '404 Page Not Found',
     templateUrl: '_404'
   });
-  $locationProvider.html5Mode(true);
+  var isDEV = false;
+  try { isDEV = !!$injector.get('DEVELOPMENT'); } catch(e) {}
+  if (isDEV) {
+    $locationProvider.html5Mode(false);
+  } else {
+    $locationProvider.html5Mode(true);
+  }
 }]).
 
 run(['$location', '$rootScope', '$route',
@@ -196,72 +202,65 @@ filter('buttonify', function() {
 
 /* factories */
 
-factory('Repositories', ['$http', function($http) {
-  return $http.get('/api/repositories.json');
-}]).
-
-factory('Builds', ['$http', function($http) {
-  return $http.get('/api/builds.json');
-}]).
-
-factory('Sites', ['$http', function($http) {
-  return $http.get('/api/sites.json');
-}]).
-
-factory('Panoramas', ['$http', function($http) {
-  return $http.get('/api/panoramas.json');
-}]).
-
-factory('Links', ['$http', function($http) {
+factory('Links', [
+           'PostsLinksYml',
+  function( PostsLinksYml ) {
   var COLUMNS = 3;
-  return $http.get('/api/links.json').then(function(response) {
-    var links = response.data;
-    if (typeof links !== 'object') return links;
+  var links = PostsLinksYml;
+  if (typeof links !== 'object') return links;
 
-    var links_keys = Object.keys(links);
-    var length = links_keys.length;
-    var floor = Math.floor(length / COLUMNS);
-    var ceil = Math.ceil(length / COLUMNS);
-    var mod = length % COLUMNS;
-    var count = 0;
+  var links_keys = Object.keys(links);
+  var length = links_keys.length;
+  var floor = Math.floor(length / COLUMNS);
+  var ceil = Math.ceil(length / COLUMNS);
+  var mod = length % COLUMNS;
+  var count = 0;
 
-    var new_links = [];
-    for (var i = 0; i < COLUMNS; i++) {
-      new_links[i] = new_links[i] || [];
-      var ceil_or_floor = ceil;
-      if (i >= mod) ceil_or_floor = floor;
-      for (var j = 0; j < ceil_or_floor; j++) {
-        var name = links_keys[count];
-        new_links[i][name] = links[name];
-        count++;
-      }
+  var new_links = [];
+  for (var i = 0; i < COLUMNS; i++) {
+    new_links[i] = new_links[i] || [];
+    var ceil_or_floor = ceil;
+    if (i >= mod) ceil_or_floor = floor;
+    for (var j = 0; j < ceil_or_floor; j++) {
+      var name = links_keys[count];
+      new_links[i][name] = links[name];
+      count++;
     }
-    return new_links;
-  });
+  }
+  return new_links;
 }]).
 
-factory('Helps', ['$http', function($http) {
-  return $http.get('/api/help.json');
-}]).
-
-service('HelpTopics', ['$http', function($http) {
+service('HelpTopics', [
+           '$http', '$rootElement', '$injector',
+  function( $http ,  $rootElement ,  $injector ) {
   var self = this;
-  self.number_of_objects = 10;
-  self.help_topics = [];
-  self.help_topic_objs = [];
-  self.get = function(help_topic, callback) {
+
+  this.number_of_objects = 10;
+  this.help_topics = [];
+  this.help_topic_objs = [];
+
+  this.betterName = function(name) {
+    return name.match(/[A-Za-z0-9]+/g).map(function(s) {
+      return s[0].toUpperCase() + s.slice(1).toLowerCase();
+    }).join('');
+  };
+
+  this.get = function(help_topic, callback) {
+    help_topic = this.betterName(help_topic);
     var index = self.help_topics.indexOf(help_topic);
     if (index === -1) {
-      $http.get('/api/help/' + help_topic + '.json')
-        .success(function(help_topic) {
-        self.help_topics.unshift(help_topic.slug);
-        self.help_topic_objs.unshift(help_topic);
-        self.help_topics.splice(self.number_of_objects);
-        self.help_topic_objs.splice(self.number_of_objects);
-        if (callback) callback(help_topic);
+      var module = angular.module($rootElement.attr('ng-app'));
+      var constants = module._invokeQueue.filter(function(item){
+        return item[1] === 'constant' && item[2][0].indexOf(help_topic) > -1;
       });
+      var content = $injector.get(constants[0][2][0]);
+      self.help_topics.unshift(help_topic);
+      self.help_topic_objs.unshift(content);
+      self.help_topics.splice(self.number_of_objects);
+      self.help_topic_objs.splice(self.number_of_objects);
+      if (callback) callback(help_topic, content);
     } else {
-      if (callback) callback(self.help_topic_objs[index]);
+      if (callback) callback(help_topic, self.help_topic_objs[index]);
     }
   };
 }]).
@@ -284,16 +283,16 @@ service('SharedMethods', [function() {
 
 /* controllers */
 
-controller('MainController', ['$scope', 'Repositories', 'SharedMethods',
-  function($scope, Repositories, SharedMethods) {
+controller('MainController', [
+           '$scope', 'PostsRepositoriesYml', 'SharedMethods',
+  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ) {
   angular.extend($scope, SharedMethods);
-  Repositories.then(function(response) {
-    $scope.items = response.data;
-  });
+  $scope.items = PostsRepositoriesYml;
 }]).
 
-controller('BuildsController', ['$scope', 'Builds',
-  function($scope, Builds) {
+controller('BuildsController', [
+           '$scope', 'PostsBuildsYml',
+  function( $scope ,  PostsBuildsYml ) {
   $scope.cryptos = [
     {
       key: 'md5sum',
@@ -311,31 +310,26 @@ controller('BuildsController', ['$scope', 'Builds',
     }
     return $scope.cryptos[0];
   };
-  Builds.success(function(builds) {
-    $scope.builds = builds;
-  });
+  $scope.builds = PostsBuildsYml;
 }]).
 
-controller('SitesController', ['$scope', 'Sites', 'SharedMethods',
-  function($scope, Sites, SharedMethods) {
+controller('SitesController', [
+           '$scope', 'PostsSitesYml', 'SharedMethods',
+  function( $scope ,  PostsSitesYml ,  SharedMethods ) {
   angular.extend($scope, SharedMethods);
-  Sites.then(function(response) {
-    $scope.items = response.data;
-  });
+  $scope.items = PostsSitesYml;
 }]).
 
-controller('PanoramasController', ['$scope', 'Panoramas', 'SharedMethods',
-  function($scope, Panoramas, SharedMethods) {
+controller('PanoramasController', [
+           '$scope', 'PostsPanoramasYml', 'SharedMethods',
+  function( $scope ,  PostsPanoramasYml ,  SharedMethods ) {
   angular.extend($scope, SharedMethods);
   $scope.first_link = function(buttons) {
     var keys = SharedMethods.keys(buttons);
     if (!(keys instanceof Array)) return null;
     return buttons[keys[0]];
   };
-  Panoramas.then(function(response) {
-    var panoramas = response.data;
-    $scope.panoramas = panoramas;
-  });
+  $scope.panoramas = PostsPanoramasYml;
 }]).
 
 controller('LinksController', ['$scope', 'Links', 'SharedMethods',
@@ -358,28 +352,24 @@ controller('LinksController', ['$scope', 'Links', 'SharedMethods',
     return $scope.targets[0];
   };
   $scope.keys = SharedMethods.keys;
-  Links.then(function(links) {
-    $scope.links = links;
-  });
+  $scope.links = Links;
 }]).
 
-controller('HelpController', ['$scope', 'Helps', 'HelpTopics',
-  '$routeParams', '$rootScope',
-  function($scope, Helps, HelpTopics, $routeParams, $rootScope) {
+controller('HelpController', [
+           '$scope', 'HelpJson', 'HelpTopics', '$routeParams', '$rootScope',
+  function( $scope,   HelpJson,   HelpTopics,   $routeParams,   $rootScope) {
   var help_topic = $routeParams.help_topic;
 
-  // this variable determines whether to show the index page
-  // and prevents to show index page if help topic is loading
-  $scope.help_topic = help_topic;
-
-  Helps.success(function(helps) {
-    $scope.helps = helps;
+  HelpJson.forEach(function(h) {
+    h.name = HelpTopics.betterName(h.slug);
   });
 
+  $scope.helps = HelpJson;
+
   if (help_topic) {
-    HelpTopics.get(help_topic, function(help_topic) {
-      $scope.help_topic = help_topic;
-      $rootScope.title = help_topic.title;
+    HelpTopics.get(help_topic, function(name, content) {
+      $scope.help_topic_name = name;
+      $scope.help_topic_content = content;
     });
   }
 }]).
