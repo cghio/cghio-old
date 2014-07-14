@@ -31,6 +31,7 @@
     "grunt-contrib-less": "~0.9.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-angular-values": "0.0.0",
-    "grunt-yet-another-angular-templates": "0.0.1"
+    "grunt-yet-another-angular-templates": "0.0.1",
+    "grunt-rename-assets": "0.0.0"
   }
 }

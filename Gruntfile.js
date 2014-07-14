@@ -92,6 +92,26 @@ module.exports = function(grunt) {
           'public/js/values.javascript.js': [ 'posts/*.yml', 'posts/help/*.md' ]
         }
       }
+    },
+    rename: {
+      assets: {
+        options: {
+          callback: function(befores, afters) {
+            var publicdir = require('fs').realpathSync('public');
+            var path = require('path');
+            var index = grunt.file.read('public/index.html'), before, after;
+            for (var i = 0; i < befores.length; i++) {
+              before = path.relative(publicdir, befores[i]);
+              after = path.relative(publicdir, afters[i]);
+              index = index.replace(before, after);
+            }
+            grunt.file.write('public/index.html', index);
+          }
+        },
+        files: [
+          { src: [ 'public/css/*.css', 'public/js/*.js' ] }
+        ]
+      }
     }
   });
 
@@ -102,6 +122,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-angular-values');
+  grunt.loadNpmTasks('grunt-rename-assets');
   grunt.loadNpmTasks('grunt-yet-another-angular-templates');
 
   grunt.registerTask('default', [
@@ -122,6 +143,7 @@ module.exports = function(grunt) {
     'uglify',
     'concat',
     'clean:javascript',
+    'rename',
     'compress'
   ]);
 
