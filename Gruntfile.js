@@ -1,3 +1,33 @@
+var fs   = require('fs');
+var path = require('path');
+
+function connectMiddlewares(connect, options, middlewares) {
+  middlewares.unshift(function(req, res, next) {
+    var file = '.' + req.url;
+    if (file.slice(-1) === '/') file += 'index.html';
+    var dot = file.lastIndexOf('.');
+    var ext = dot > -1 ? file.slice(dot + 1) : '';
+    var index = 0, content;
+    var p1 = path.join('assets', file), p2 = path.join('public', file);
+    var paths = [ p1 + '.gz', p1, p2 + '.gz', p2 ];
+    while (1) {
+      try {
+        if (paths[index]) content = fs.readFileSync(paths[index]);
+        break;
+      } catch(e) {
+        index++;
+      }
+    }
+    if (content === undefined) return next();
+    if (paths[index].slice(-3) === '.gz') {
+      res.setHeader('Content-Encoding', 'gzip');
+    }
+    res.setHeader('Content-Type', connect.mime.types[ext]);
+    res.end(content);
+  });
+  return middlewares;
+}
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -6,7 +36,7 @@ module.exports = function(grunt) {
         options: {
           hostname: '*',
           port: 33333,
-          base: [ 'assets', 'public' ]
+          middleware: connectMiddlewares
         }
       }
     },
