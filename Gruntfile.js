@@ -170,6 +170,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'clean',
+    'make-font-datauri',
     'less',
     'copy-index',
     'values',
@@ -181,6 +182,7 @@ module.exports = function(grunt) {
   grunt.registerTask('production', [
     '_production',
     'clean',
+    'make-font-datauri',
     'less',
     'values',
     'yaat',
@@ -216,6 +218,23 @@ module.exports = function(grunt) {
   grunt.registerTask('copy-index', 'Copy index page', function() {
     grunt.file.copy('index.html', 'public/index.html');
     grunt.log.ok('Copied index.html to public/index.html.');
+  });
+
+  grunt.registerTask('make-font-datauri', function() {
+    var path = require('path'), fs = require('fs');
+    var font = path.join(__dirname, 'public', 'fonts', 'Ubuntu.woff');
+    var b64  = fs.readFileSync(font).toString('base64');
+    var f = '';
+    f += "@font-face {" + '\n'
+    f += "  font-family: 'Ubuntu';" + '\n'
+    f += "  font-style: normal;" + '\n'
+    f += "  font-weight: 400;" + '\n'
+    f += "  src: local('Ubuntu'), url(data:application/x-font-woff;charset=utf-8;base64," +
+      b64 + ") format('woff');" + '\n'
+    f += "}" + '\n'
+    var d = path.join(__dirname, 'assets', 'css', 'generated', 'fonts.css');
+    grunt.file.write(d, f);
+    grunt.log.ok('Updated ' + d.replace(__dirname + '/', '').cyan + '.');
   });
 
   grunt.registerTask('compress', 'Compress assets files', function() {
