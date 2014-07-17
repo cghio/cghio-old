@@ -33,6 +33,6 @@
     "grunt-angular-values": "0.0.0",
     "grunt-yet-another-angular-templates": "0.0.1",
     "grunt-rename-assets": "0.0.1",
-    "grunt-webp-compress": "0.0.2"
+    "grunt-webp-compress": "0.0.3"
   }
 }
