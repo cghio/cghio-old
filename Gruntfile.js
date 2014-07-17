@@ -143,6 +143,7 @@ module.exports = function(grunt) {
     'less',
     'copy-index',
     'values',
+    'cwebp',
     'connect',
     'watch'
   ]);

@@ -106,9 +106,9 @@ directive('nav', ['$location', function($location) {
         if (!left && !right) return;
 
         if (!length) return;
-        var url = $location.url();
+        var url = $location.url().replace(/^\/#/, '');
         for (var i = 0; i < length; i++) {
-          var href = links[i].getAttribute('href');
+          var href = links[i].getAttribute('href').replace(/^\/#/, '');
           if (href.length > 1) {
             if (url.substr(0, href.length) !== href) continue;
           } else {
@@ -121,7 +121,7 @@ directive('nav', ['$location', function($location) {
         if (left) next = links[--i] || links[length - 1];
         if (right) next = links[++i] || links[0];
         if (next) {
-          $location.path(next.getAttribute('href'));
+          $location.path(next.getAttribute('href').replace(/^\/#/, ''));
           $scope.$apply();
         }
       };
