@@ -12,7 +12,8 @@ module.exports = function(grunt) {
     },
     clean: {
       public: [ 'public/css', 'public/js' ],
-      javascript: [ 'public/js/*.javascript.js' ]
+      javascript: [ 'public/js/*.javascript.js' ],
+      webp: [ 'public/images/*.webp' ]
     },
     less: {
       cghio: {
@@ -112,6 +113,17 @@ module.exports = function(grunt) {
           { src: [ 'public/css/*.css', 'public/js/*.js' ] }
         ]
       }
+    },
+    cwebp: {
+      images: {
+        options: {
+          arguments: [ '-q', 50 ],
+          concurrency: 20
+        },
+        files: [
+          { src: [ 'public/images/*.jpg', 'public/images/*.png' ] }
+        ]
+      }
     }
   });
 
@@ -123,6 +135,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-angular-values');
   grunt.loadNpmTasks('grunt-rename-assets');
+  grunt.loadNpmTasks('grunt-webp-compress');
   grunt.loadNpmTasks('grunt-yet-another-angular-templates');
 
   grunt.registerTask('default', [
@@ -143,6 +156,7 @@ module.exports = function(grunt) {
     'uglify',
     'concat',
     'clean:javascript',
+    'cwebp',
     'rename',
     'compress'
   ]);

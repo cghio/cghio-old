@@ -49,8 +49,8 @@ config([   '$routeProvider', '$locationProvider', '$injector',
   }
 }]).
 
-run(['$location', '$rootScope', '$route',
-  function($location, $rootScope, $route) {
+run([      '$location', '$rootScope', '$route',
+  function( $location ,  $rootScope ,  $route ) {
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     var route = current.$$route || $route.routes[null];
     $rootScope.title = route.title;
@@ -202,6 +202,22 @@ filter('buttonify', function() {
 
 /* factories */
 
+factory('WebP', [
+           '$q',
+  function( $q ) {
+  var deferred = $q.defer();
+  // from Modernizr:
+  var image = new Image();
+  var func = function (event) {
+    var result = event.type === 'load' ? image.width == 1 : false;
+    deferred.resolve(result);
+  }
+  image.onerror = func;
+  image.onload = func;
+  image.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
+  return deferred.promise;
+}]).
+
 factory('Links', [
            'PostsLinksYml',
   function( PostsLinksYml ) {
@@ -284,10 +300,13 @@ service('SharedMethods', [function() {
 /* controllers */
 
 controller('MainController', [
-           '$scope', 'PostsRepositoriesYml', 'SharedMethods',
-  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ) {
+           '$scope', 'PostsRepositoriesYml', 'SharedMethods', 'WebP',
+  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ,  WebP ) {
   angular.extend($scope, SharedMethods);
-  $scope.items = PostsRepositoriesYml;
+  WebP.then(function(supported) {
+    if (supported) $scope.webp = '.webp';
+    $scope.items = PostsRepositoriesYml;
+  });
 }]).
 
 controller('BuildsController', [
@@ -314,22 +333,28 @@ controller('BuildsController', [
 }]).
 
 controller('SitesController', [
-           '$scope', 'PostsSitesYml', 'SharedMethods',
-  function( $scope ,  PostsSitesYml ,  SharedMethods ) {
+           '$scope', 'PostsSitesYml', 'SharedMethods', 'WebP',
+  function( $scope ,  PostsSitesYml ,  SharedMethods ,  WebP ) {
   angular.extend($scope, SharedMethods);
-  $scope.items = PostsSitesYml;
+  WebP.then(function(supported) {
+    if (supported) $scope.webp = '.webp';
+    $scope.items = PostsSitesYml;
+  });
 }]).
 
 controller('PanoramasController', [
-           '$scope', 'PostsPanoramasYml', 'SharedMethods',
-  function( $scope ,  PostsPanoramasYml ,  SharedMethods ) {
+           '$scope', 'PostsPanoramasYml', 'SharedMethods', 'WebP',
+  function( $scope ,  PostsPanoramasYml ,  SharedMethods ,  WebP ) {
   angular.extend($scope, SharedMethods);
   $scope.first_link = function(buttons) {
     var keys = SharedMethods.keys(buttons);
     if (!(keys instanceof Array)) return null;
     return buttons[keys[0]];
   };
-  $scope.panoramas = PostsPanoramasYml;
+  WebP.then(function(supported) {
+    if (supported) $scope.webp = '.webp';
+    $scope.panoramas = PostsPanoramasYml;
+  });
 }]).
 
 controller('LinksController', ['$scope', 'Links', 'SharedMethods',
