@@ -55,6 +55,44 @@ run([      '$location', '$rootScope', '$route',
     var route = current.$$route || $route.routes[null];
     $rootScope.title = route.title;
   });
+  doc = angular.element(document).on('keypress', function(event) {
+    var key = event.which || event.keyCode;
+    var verticalLinks = false;
+    if (key === 59 || key === 39) verticalLinks = true;
+    var keyd;
+    if (key === 59 || key === 91) keyd = 1;
+    if (key === 39 || key === 93) keyd = 2;
+    if (!keyd) return;
+    var links, linksLength;
+    if (verticalLinks) {
+      links = document.querySelector('.vertical-links');
+    } else {
+      links = document.querySelector('.horizontal-links');
+    }
+    if (links) links = links.querySelectorAll('a');
+    linksLength = links ? links.length : 0;
+    if (!linksLength) return;
+    links = Array.prototype.slice.call(links);
+    links = links.map(function(item) {
+      return item.getAttribute('href').replace(/^\/#/, '');
+    });
+    var url = $location.url().replace(/^\/#/, '');
+    var index = links.indexOf(url);
+    if (index === -1) {
+      links.forEach(function(link, i) {
+        if (url.slice(0, link.length) === link) index = i;
+      });
+    }
+    if (keyd === 1) {
+      index--;
+    } else {
+      index++;
+    }
+    if (index < 0) index = links.length - 1;
+    if (index > links.length - 1) index = 0;
+    $location.path(links[index]);
+    $rootScope.$apply();
+  });
 }]).
 
 /* directives */
@@ -97,34 +135,6 @@ directive('nav', ['$location', function($location) {
         var navbar = document.getElementById(attrs.navbarId);
         navbar.className = navbar.className.replace(/\bin\b/g, 'collapse');
       });
-      var links = angular.element(element).find('a');
-      var length = links.length;
-      document.onkeypress = function(event) {
-        var key = typeof event.which === 'number' ? 'which' : 'keyCode';
-        var left = event[key] === 91;
-        var right = event[key] === 93;
-        if (!left && !right) return;
-
-        if (!length) return;
-        var url = $location.url().replace(/^\/#/, '');
-        for (var i = 0; i < length; i++) {
-          var href = links[i].getAttribute('href').replace(/^\/#/, '');
-          if (href.length > 1) {
-            if (url.substr(0, href.length) !== href) continue;
-          } else {
-            if (url !== href) continue;
-          }
-          break;
-        }
-
-        var next;
-        if (left) next = links[--i] || links[length - 1];
-        if (right) next = links[++i] || links[0];
-        if (next) {
-          $location.path(next.getAttribute('href').replace(/^\/#/, ''));
-          $scope.$apply();
-        }
-      };
     }
   };
 }]).
