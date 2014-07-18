@@ -54,8 +54,11 @@ run([      '$location', '$rootScope', '$route',
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     var route = current.$$route || $route.routes[null];
     $rootScope.title = route.title;
+    window.scrollTo(0, 0);
   });
   doc = angular.element(document).on('keypress', function(event) {
+    var tag = document.activeElement.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
     var key = event.which || event.keyCode;
     var verticalLinks = false;
     if (key === 59 || key === 39) verticalLinks = true;
@@ -90,6 +93,8 @@ run([      '$location', '$rootScope', '$route',
     }
     if (index < 0) index = links.length - 1;
     if (index > links.length - 1) index = 0;
+
+    event.preventDefault();
     $location.path(links[index]);
     $rootScope.$apply();
   });

@@ -35,16 +35,16 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/#/">cgh.io</a>
+              <a tabindex="-1" class="navbar-brand" href="/#/">cgh.io</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
               <ul class="nav navbar-nav">
-                <li navbar-link><a href="/#/builds">Builds</a></li>
-                <li navbar-link><a href="/#/sites">Sites</a></li>
-                <li navbar-link><a href="/#/panoramas">Panos</a></li>
-                <li navbar-link><a href="/#/links">Links</a></li>
-                <li navbar-link><a href="/#/help">Help</a></li>
-                <li navbar-link><a href="/#/about">About</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/builds">Builds</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/sites">Sites</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/panoramas">Panos</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/links">Links</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/help">Help</a></li>
+                <li navbar-link><a tabindex="-1" href="/#/about">About</a></li>
               </ul>
             </div>
           </div>
@@ -163,7 +163,7 @@
             <span class="glyphicon glyphicon-search"></span>
           </span>
           <input type="text" class="form-control" placeholder="Filter"
-            ng-model="keyword" autofocus="autofocus">
+            ng-model="keyword">
         </div>
       </div>
       <div class="form-group col-sm-8 text-right small">
@@ -197,8 +197,7 @@
       <div class="col-sm-4">
         <div class="list-group vertical-links">
           <a class="list-group-item" href="/#/help/{{help.slug}}"
-            ng-if="helps.length"
-            ng-repeat="help in helps"
+            ng-if="helps.length" tabindex="-1" ng-repeat="help in helps"
             ng-class="{active:help.name===help_topic_name}">
             {{help.title}}
           </a>
