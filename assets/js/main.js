@@ -257,8 +257,8 @@ factory('Links', [
 }]).
 
 service('HelpTopics', [
-           '$http', '$rootElement', '$injector',
-  function( $http ,  $rootElement ,  $injector ) {
+           '$http', '$injector',
+  function( $http ,  $injector ) {
   var self = this;
 
   this.number_of_objects = 10;
@@ -275,8 +275,7 @@ service('HelpTopics', [
     help_topic = this.betterName(help_topic);
     var index = self.help_topics.indexOf(help_topic);
     if (index === -1) {
-      var module = angular.module($rootElement.attr('ng-app'));
-      var constants = module._invokeQueue.filter(function(item){
+      var constants = CGH._invokeQueue.filter(function(item){
         return item[1] === 'constant' && item[2][0].indexOf(help_topic) > -1;
       });
       var content = $injector.get(constants[0][2][0]);
