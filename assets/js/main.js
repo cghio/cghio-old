@@ -53,7 +53,9 @@ run([      '$location', '$rootScope', '$route',
   function( $location ,  $rootScope ,  $route ) {
   $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
     var route = current.$$route || $route.routes[null];
-    $rootScope.title = route.title;
+    var title = route.title || '';
+    if (title) title += ' — ';
+    document.title = title + 'cgh.io';
     window.scrollTo(0, 0);
   });
   doc = angular.element(document).on('keypress', function(event) {
@@ -106,13 +108,6 @@ directive('body', [function() {
   return {
     restrict: 'E',
     templateUrl: 'index'
-  };
-}]).
-
-directive('title', [function() {
-  return {
-    restrict: 'E',
-    template: '{{(title ? title + " &mdash; " : "") + "cgh.io"}}',
   };
 }]).
 

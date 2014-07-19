@@ -86,7 +86,8 @@ module.exports = function(grunt) {
           'public/js/cghio.js': [
             'assets/js/main.js',
             'public/js/templates.javascript.js',
-            'public/js/values.javascript.js'
+            'public/js/values.javascript.js',
+            'assets/js/init.js',
           ]
         }
       }
