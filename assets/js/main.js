@@ -250,6 +250,9 @@ factory('Links', [
     for (var j = 0; j < ceil_or_floor; j++) {
       var name = links_keys[count];
       new_links[i][name] = links[name];
+      new_links[i][name].forEach(function(item) {
+        item.__group__ = name;
+      });
       count++;
     }
   }

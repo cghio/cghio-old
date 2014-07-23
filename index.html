@@ -180,6 +180,7 @@
     <div class="row">
       <div class="col-sm-4" ng-repeat="link_col in links">
         <div class="panel panel-default"
+          ng-class="{nolinks:!(link_col[link_row_name] | filter:keyword).length}"
           ng-repeat="link_row_name in keys(link_col)">
           <div class="panel-heading">{{link_row_name}}</div>
           <div class="list-group">

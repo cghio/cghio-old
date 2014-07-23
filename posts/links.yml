@@ -13,6 +13,16 @@ JavaScript:
     url: http://emberjs.com/
   - title: Mongoose
     url: http://mongoosejs.com/
+Web Developer:
+  - title: CommitStrip
+    url: http://www.commitstrip.com/en/
+  - title: Smashing Magazine
+    url: http://www.smashingmagazine.com/
+Videos:
+  - title: egghead.io AngularJS video tutorials
+    url: https://egghead.io/
+  - title: phpacademy
+    url: https://phpacademy.org/
 Sublime Text:
   - title: Package Control
     url: https://sublime.wbond.net/installation
