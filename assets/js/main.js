@@ -36,6 +36,10 @@ config([   '$routeProvider', '$locationProvider', '$injector',
     title: 'About',
     templateUrl: 'about'
   }).
+  when('/cv', {
+    title: 'CV',
+    templateUrl: 'cv'
+  }).
   otherwise({
     title: '404 Page Not Found',
     templateUrl: '_404'
