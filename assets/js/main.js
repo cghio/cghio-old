@@ -2,6 +2,15 @@ var CGH = angular.module('CGH', [ 'ngRoute', 'ngSanitize' ]).
 
 config([   '$routeProvider', '$locationProvider', '$injector',
   function( $routeProvider ,  $locationProvider ,  $injector ) {
+
+  var when = $routeProvider.when;
+  $routeProvider.when = function(path, route) {
+    route.resolve = route.resolve || {};
+    route.resolve.WebPCheck = [ 'WebP', function(WebP) { return WebP; } ];
+    when(path, route);
+    return this;
+  };
+
   $routeProvider.
   when('/', {
     templateUrl: 'main',
@@ -38,12 +47,14 @@ config([   '$routeProvider', '$locationProvider', '$injector',
   }).
   when('/cv', {
     title: 'CV',
-    templateUrl: 'cv'
+    templateUrl: 'cv',
+    controller: 'CVController'
   }).
   otherwise({
     title: '404 Page Not Found',
     templateUrl: '_404'
   });
+
   var isDEV = false;
   try { isDEV = !!$injector.get('DEVELOPMENT'); } catch(e) {}
   if (isDEV) {
@@ -224,7 +235,9 @@ factory('WebP', [
   var image = new Image();
   var func = function (event) {
     var result = event.type === 'load' ? image.width == 1 : false;
-    deferred.resolve(result);
+    deferred.resolve(function($scope) {
+      $scope.webp = result ? '.webp' : '';
+    });
   }
   image.onerror = func;
   image.onload = func;
@@ -311,33 +324,29 @@ service('SharedMethods', [function() {
   this.target = function target_on_url(url) {
     return /^https?:\/\//.test(url) ? '_blank' : '_self';
   };
+  this.apply = function($scope) {
+    $scope.keys = this.keys;
+    $scope.split = this.split;
+    $scope.target = this.target;
+  };
 }]).
 
 /* controllers */
 
 controller('MainController', [
-           '$scope', 'PostsRepositoriesYml', 'SharedMethods', 'WebP',
-  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ,  WebP ) {
-  angular.extend($scope, SharedMethods);
-  WebP.then(function(supported) {
-    if (supported) $scope.webp = '.webp';
-    $scope.items = PostsRepositoriesYml;
-  });
+           '$scope', 'PostsRepositoriesYml', 'SharedMethods', 'WebPCheck',
+  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ,  WebPCheck ) {
+  SharedMethods.apply($scope);
+  WebPCheck($scope);
+  $scope.items = PostsRepositoriesYml;
 }]).
 
 controller('BuildsController', [
            '$scope', 'PostsBuildsYml',
   function( $scope ,  PostsBuildsYml ) {
   $scope.cryptos = [
-    {
-      key: 'md5sum',
-      name: 'MD5',
-      active: true
-    },
-    {
-      key: 'shasum',
-      name: 'SHA-1',
-    }
+    { key: 'md5sum', name: 'MD5', active: true },
+    { key: 'shasum', name: 'SHA-1' }
   ];
   $scope.currentCrypto = function() {
     for (var i = 0; i < $scope.cryptos.length; i++) {
@@ -349,42 +358,31 @@ controller('BuildsController', [
 }]).
 
 controller('SitesController', [
-           '$scope', 'PostsSitesYml', 'SharedMethods', 'WebP',
-  function( $scope ,  PostsSitesYml ,  SharedMethods ,  WebP ) {
-  angular.extend($scope, SharedMethods);
-  WebP.then(function(supported) {
-    if (supported) $scope.webp = '.webp';
-    $scope.items = PostsSitesYml;
-  });
+           '$scope', 'PostsSitesYml', 'SharedMethods', 'WebPCheck',
+  function( $scope ,  PostsSitesYml ,  SharedMethods ,  WebPCheck ) {
+  SharedMethods.apply($scope);
+  WebPCheck($scope);
+  $scope.items = PostsSitesYml;
 }]).
 
 controller('PanoramasController', [
-           '$scope', 'PostsPanoramasYml', 'SharedMethods', 'WebP',
-  function( $scope ,  PostsPanoramasYml ,  SharedMethods ,  WebP ) {
-  angular.extend($scope, SharedMethods);
+           '$scope', 'PostsPanoramasYml', 'SharedMethods', 'WebPCheck',
+  function( $scope ,  PostsPanoramasYml ,  SharedMethods ,  WebPCheck ) {
+  SharedMethods.apply($scope);
+  WebPCheck($scope);
   $scope.first_link = function(buttons) {
     var keys = SharedMethods.keys(buttons);
     if (!(keys instanceof Array)) return null;
     return buttons[keys[0]];
   };
-  WebP.then(function(supported) {
-    if (supported) $scope.webp = '.webp';
-    $scope.panoramas = PostsPanoramasYml;
-  });
+  $scope.panoramas = PostsPanoramasYml;
 }]).
 
 controller('LinksController', ['$scope', 'Links', 'SharedMethods',
   function($scope, Links, SharedMethods) {
   $scope.targets = [
-    {
-      name: 'the same',
-      target: '_self'
-    },
-    {
-      name: 'new',
-      target: '_blank',
-      active: true
-    }
+    { name: 'the same', target: '_self' },
+    { name: 'new',      target: '_blank', active: true }
   ];
   $scope.target = function() {
     for (var i = 0; i < $scope.targets.length; i++) {
@@ -413,6 +411,12 @@ controller('HelpController', [
       $scope.help_topic_content = content;
     });
   }
+}]).
+
+controller('CVController', [
+           '$scope', 'WebPCheck',
+  function( $scope ,  WebPCheck ) {
+  WebPCheck($scope);
 }]).
 
 run(['$window', function($window) {
