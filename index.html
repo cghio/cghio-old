@@ -69,7 +69,9 @@
     <div class="row">
       <div class="col-sm-5 col-md-4" ng-repeat="column in items">
         <div class="thumbnail" ng-repeat="item in column">
-          <img ng-if="item.image" ng-src="{{item.image}}{{webp}}" alt="{{item.title}}">
+          <a href="{{item.image}}{{webp}}" target="_blank">
+            <img ng-if="item.image" ng-src="{{item.image}}{{webp}}" alt="{{item.title}}">
+          </a>
           <div class="caption">
             <h4>
               <span ng-bind="item.title"></span>
@@ -77,7 +79,7 @@
                 ng-repeat="tag in item.tags.split(' ')"></span>
             </h4>
             <p ng-repeat="desc in split(item.desc)" ng-bind="desc"></p>
-            <p class="btn-group btn-group-sm">
+            <p class="btn-group btn-group-sm" ng-show="keys(item.buttons).length">
               <a ng-repeat="name in keys(item.buttons)"
                 ng-init="url = item.buttons[name]" target="{{target(url)}}"
                 href="{{url}}" class="btn btn-default"

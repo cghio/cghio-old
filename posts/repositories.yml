@@ -1,4 +1,11 @@
 -
+  - title: grunt-webp-compress
+    tags: Grunt
+    desc: |
+      Convert images to WebP format with the encoder tool cwebp.
+    buttons:
+      Source: https://github.com/caiguanhao/grunt-webp-compress
+      NPM: https://www.npmjs.org/package/grunt-webp-compress
   - title: xen-monitor
     tags: Angular.js Socket.IO
     desc: |
@@ -6,8 +13,6 @@
     image: /images/xen-monitor.png
     buttons:
       Homepage: https://github.com/caiguanhao/xen-monitor
-      X: http://x.cgh.io/
-      X2: http://x2.cgh.io/
   - title: xen-config
     tags: Shell
     desc: |
@@ -36,6 +41,13 @@
     buttons:
       Homepage: https://github.com/qnn/qnn-weixin
 -
+  - title: js-obfuscator
+    tags: Grunt
+    desc: |
+      Obfuscate JavaScript files via javascriptobfuscator.com.
+    buttons:
+      Source: https://github.com/caiguanhao/js-obfuscator
+      NPM: https://www.npmjs.org/package/js-obfuscator
   - title: llks-monitor
     tags: Angular.js Socket.IO
     desc: |
@@ -65,6 +77,11 @@
     buttons:
       More: https://github.com/qnn/qnnshop
 -
+  - title: Document Generator
+    tags: Angular.js Node.js PyQt
+    desc: |
+      Generate Word documents from template and user input data.
+    image: /images/document-generator.png
   - title: Maintainer
     tags: Ember.js Node.js
     desc: |
