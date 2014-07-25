@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="this is caiguanhao's homepage.">
   <meta name="author" content="caiguanhao">
-  <link rel="stylesheet" href="/css/cghio.css">
   <!--[if gt IE 9]><!-->
+  <link rel="stylesheet" href="/css/cghio.css">
   <script src="/js/vendor/angular.js"></script>
   <script src="/js/vendor/angular-route.js"></script>
   <script src="/js/vendor/angular-sanitize.js"></script>
@@ -16,12 +16,12 @@
   <script src="/js/vendor/markdown.js"></script>
   <script src="/js/main.js"></script>
   <script src="/js/values.javascript.js"></script>
-  <script src="/js/init.js"></script>
-  <script src="http://localhost:35729/livereload.js"></script>
   <script>
-    CGH.constant('DEVELOPMENT', true);
+    (function() {
+      var lr = 'http://' + window.location.hostname + ':35729/livereload.js';
+      document.writeln('<' + 'script src="' + lr + '"></' + 'script>');
+    })();
   </script>
-  <!--<![endif]-->
   <script type="text/ng-template" id="index">
     <div id="wrap">
       <header>
@@ -349,25 +349,28 @@
       removed.</p>
     <p>You can go back to <a href="/#/">home page</a>.</p>
   </script>
+  <script src="/js/init.js"></script>
+  <script>
+    CGH.constant('DEVELOPMENT', true);
+  </script>
+  <!--<![endif]-->
 </head>
 
 <body>
   <!--[if lte IE 9]>
-    <div class="ie-warnings">
-      <b>Your browser is out of date.</b>
-      <br>
-      Please upgrade to IE 10 or use Chrome or Firefox browser.
-      <br>
-      Download Chrome from:
+    <div style="text-align: center; line-height: 40px;">
+      <b>Your browser is out of date. Revisit this page with the latest version of Google Chrome.</b>
+      <br>Download Chrome from:
       <a href="https://www.google.com/chrome/">Google</a> |
-      <a href="http://dl.pconline.com.cn/download/51614-1.html">
-        PCOnline (Windows)
-      </a>
-      <br>
-      Download Firefox from:
-      <a href="http://www.mozilla.org/en-US/firefox/new/">Mozilla</a>
-      <br>
-      You can also view this page on your iPhone or Android.
+      <a href="http://d.cgh.io/ChromeStandaloneSetup.exe">
+        Chrome Standalone Setup for Windows</a>
+      <br>You can also view this page on your iPhone or Android.
+      <br><br>
+      <b>你的浏览器已过时，请安装使用最新版 Google Chrome 浏览器。安装完后再在新浏览器上访问此页。</b>
+      <br>立即下载：
+      <a href="https://www.google.com/chrome/">Google 官网</a> |
+      <a href="http://d.cgh.io/ChromeStandaloneSetup.exe">Windows 下的离线安装包</a>
+      <br>另外你也可以使用 iPhone 或 Android 移动设备访问此页。
     </div>
   <![endif]-->
 </body>
