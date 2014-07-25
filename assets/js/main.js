@@ -397,8 +397,8 @@ controller('LinksController', ['$scope', 'Links', 'SharedMethods',
 }]).
 
 controller('HelpController', [
-           '$scope', 'HelpJson', 'HelpTopics', '$routeParams', '$rootScope',
-  function( $scope,   HelpJson,   HelpTopics,   $routeParams,   $rootScope) {
+           '$scope', 'HelpJson', 'HelpTopics', '$routeParams',
+  function( $scope,   HelpJson,   HelpTopics,   $routeParams ) {
   var help_topic = $routeParams.help_topic;
 
   HelpJson.forEach(function(h) {
