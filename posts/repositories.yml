@@ -1,4 +1,10 @@
 -
+  - title: learn-to-go
+    tags: go
+    desc: |
+      Some small programs written in golang like weather, lyrics and github-notify.
+    buttons:
+      Source: https://github.com/caiguanhao/learn-to-go
   - title: grunt-webp-compress
     tags: Grunt
     desc: |
@@ -10,7 +16,6 @@
     tags: Angular.js Socket.IO
     desc: |
       Gather real-time network statistics from XenServer virtual machines.
-    image: /images/xen-monitor.png
     buttons:
       Homepage: https://github.com/caiguanhao/xen-monitor
   - title: xen-config
@@ -33,13 +38,6 @@
       The new caiguanhao homepage uses Angular.js framework.
     buttons:
       Source: https://github.com/cghio/cghio
-  - title: qnn-weixin
-    tags: Node.js
-    desc: |
-      A full-featured Weixin application to create menus, query stores,
-      customize responses.
-    buttons:
-      Homepage: https://github.com/qnn/qnn-weixin
 -
   - title: js-obfuscator
     tags: Grunt
@@ -52,7 +50,6 @@
     tags: Angular.js Socket.IO
     desc: |
       Gather statistics from multiple LLKS accounts.
-    image: /images/llks-monitor.png
     buttons:
       Homepage: https://github.com/caiguanhao/llks-monitor
   - title: CGHAssemble
@@ -66,7 +63,6 @@
       Designed for those probably every-day Windows users
       who know how to edit templates and HTML/CSS/JS files but don't know
       much about the commands.
-    image: /images/CGHAssemble.png
     buttons:
       Homepage: https://github.com/caiguanhao/CGHAssemble
       Downloads: /builds
@@ -76,18 +72,23 @@
       A simple online shop application supports Alipay payment.
     buttons:
       More: https://github.com/qnn/qnnshop
+  - title: qnn-weixin
+    tags: Node.js
+    desc: |
+      A full-featured Weixin application to create menus, query stores,
+      customize responses.
+    buttons:
+      Homepage: https://github.com/qnn/qnn-weixin
 -
   - title: Document Generator
     tags: Angular.js Node.js PyQt
     desc: |
       Generate Word documents from template and user input data.
-    image: /images/document-generator.png
   - title: Maintainer
     tags: Ember.js Node.js
     desc: |
       Maintainer is a single-page web application managing routine scripts
       that may run on local or remote server.
-    image: /images/Maintainer-600px.png
     buttons:
       Homepage: https://github.com/caiguanhao/Maintainer
   - title: Portablizer
