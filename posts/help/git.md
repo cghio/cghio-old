@@ -75,6 +75,26 @@ title: "Git commands"
       sleep 1
       eval "$commd"
     }
+    gds() {
+        git diff --raw --abbrev=40 $@ | awk '{
+        orig="git cat-file -s "$3" 2>/dev/null"; orig | getline origsize;
+        curr="git cat-file -s "$4" 2>/dev/null"; curr | getline currsize;
+        if (length(origsize) == 0) origsize = 0;
+        if (length(currsize) == 0) currsize = 0;
+        if (origsize == 0) {
+          percent="N/A";
+        } else {
+          per=(currsize-origsize)/origsize*100
+          if (per<-100||per>100) {
+            percent=sprintf("%.0f%%", per)
+          } else {
+            percent=sprintf("%.2f%%", per)
+          }
+        }
+        printf "%-9d%-9d%-11s%s\n", origsize, currsize, percent, $6;
+        close(orig); close(curr);
+        }' | sort -nrk 3
+    }
     GITLOGFORMAT="%C(bold blue)%h%C(reset) (%ar) %s"
     alias ga='git add'
     alias gaa='git add -A .'
@@ -112,6 +132,7 @@ title: "Git commands"
     alias gsa='git stash apply'
     alias gsc='becarefulto "git stash clear"'
     alias gsd='git stash drop'
+    alias gsh='git show'
     alias gsl='git stash list'
     alias gsp='git stash pop'
     alias gss='git stash save'
