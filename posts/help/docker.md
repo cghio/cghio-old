@@ -5,12 +5,10 @@ title: "Docker"
 
 ### Install
 
-```
-apt-get install docker.io
+    apt-get install docker.io
 
-# give docker permission to other user
-gpasswd -a [username] docker
-```
+    # give docker permission to other user
+    gpasswd -a [username] docker
 
 ### Aliases
 
