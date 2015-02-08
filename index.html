@@ -67,8 +67,8 @@
     <div class="row">
       <div class="col-sm-5 col-md-4" ng-repeat="column in items">
         <div class="thumbnail" ng-repeat="item in column">
-          <a href="{{item.image}}{{webp}}" target="_blank">
-            <img ng-if="item.image" ng-src="{{item.image}}{{webp}}" alt="{{item.title}}">
+          <a href="{{item.image}}" target="_blank">
+            <img ng-if="item.image" ng-src="{{item.image}}" alt="{{item.title}}">
           </a>
           <div class="caption">
             <h4>
@@ -134,7 +134,7 @@
         <a href="{{link}}" target="{{target(link)}}"
           remove-unless="link" title="{{pano.title}}">
           <span class="img-tape"
-            style="background-image: url({{pano.image}}{{webp}});"></span>
+            style="background-image: url({{pano.image}});"></span>
         </a>
       </div>
       <div class="col-sm-6">
@@ -284,7 +284,7 @@
   <script type="text/ng-template" id="cv">
     <div class="row">
       <div class="col-sm-3 col-md-2">
-        <div class="portrait"><img alt="caiguanhao" ng-src="/images/me.png{{webp}}"></div>
+        <div class="portrait"><img alt="caiguanhao" ng-src="/images/me.png"></div>
       </div>
       <div class="col-sm-10">
         <h1>蔡冠豪 <small>Cai Guanhao (Choi Goon-ho)</small></h1>

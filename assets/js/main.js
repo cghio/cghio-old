@@ -6,7 +6,6 @@ config([   '$routeProvider', '$locationProvider', '$injector',
   var when = $routeProvider.when;
   $routeProvider.when = function(path, route) {
     route.resolve = route.resolve || {};
-    route.resolve.WebPCheck = [ 'WebP', function(WebP) { return WebP; } ];
     when(path, route);
     return this;
   };
@@ -47,8 +46,7 @@ config([   '$routeProvider', '$locationProvider', '$injector',
   }).
   when('/cv', {
     title: 'CV',
-    templateUrl: 'cv',
-    controller: 'CVController'
+    templateUrl: 'cv'
   }).
   otherwise({
     title: '404 Page Not Found',
@@ -227,24 +225,6 @@ filter('buttonify', function() {
 
 /* factories */
 
-factory('WebP', [
-           '$q',
-  function( $q ) {
-  var deferred = $q.defer();
-  // from Modernizr:
-  var image = new Image();
-  var func = function (event) {
-    var result = event.type === 'load' ? image.width == 1 : false;
-    deferred.resolve(function($scope) {
-      $scope.webp = result ? '.webp' : '';
-    });
-  }
-  image.onerror = func;
-  image.onload = func;
-  image.src = 'data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoBAAEAAwA0JaQAA3AA/vuUAAA=';
-  return deferred.promise;
-}]).
-
 factory('Links', [
            'PostsLinksYml',
   function( PostsLinksYml ) {
@@ -334,10 +314,9 @@ service('SharedMethods', [function() {
 /* controllers */
 
 controller('MainController', [
-           '$scope', 'PostsRepositoriesYml', 'SharedMethods', 'WebPCheck',
-  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ,  WebPCheck ) {
+           '$scope', 'PostsRepositoriesYml', 'SharedMethods',
+  function( $scope ,  PostsRepositoriesYml ,  SharedMethods ) {
   SharedMethods.apply($scope);
-  WebPCheck($scope);
   $scope.items = PostsRepositoriesYml;
 }]).
 
@@ -358,18 +337,16 @@ controller('BuildsController', [
 }]).
 
 controller('SitesController', [
-           '$scope', 'PostsSitesYml', 'SharedMethods', 'WebPCheck',
-  function( $scope ,  PostsSitesYml ,  SharedMethods ,  WebPCheck ) {
+           '$scope', 'PostsSitesYml', 'SharedMethods',
+  function( $scope ,  PostsSitesYml ,  SharedMethods ) {
   SharedMethods.apply($scope);
-  WebPCheck($scope);
   $scope.items = PostsSitesYml;
 }]).
 
 controller('PanoramasController', [
-           '$scope', 'PostsPanoramasYml', 'SharedMethods', 'WebPCheck',
-  function( $scope ,  PostsPanoramasYml ,  SharedMethods ,  WebPCheck ) {
+           '$scope', 'PostsPanoramasYml', 'SharedMethods',
+  function( $scope ,  PostsPanoramasYml ,  SharedMethods ) {
   SharedMethods.apply($scope);
-  WebPCheck($scope);
   $scope.first_link = function(buttons) {
     var keys = SharedMethods.keys(buttons);
     if (!(keys instanceof Array)) return null;
@@ -411,12 +388,6 @@ controller('HelpController', [
       $scope.help_topic_content = content;
     });
   }
-}]).
-
-controller('CVController', [
-           '$scope', 'WebPCheck',
-  function( $scope ,  WebPCheck ) {
-  WebPCheck($scope);
 }]).
 
 run(['$window', function($window) {

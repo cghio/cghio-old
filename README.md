@@ -29,10 +29,6 @@ server {
   root /srv/cghio/public;
   try_files $uri $uri/ /index.html =404;
   gzip_static on;
-  include mime.types;
-  types {
-    image/webp webp;
-  }
 }
 ```
 
