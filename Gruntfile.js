@@ -8,7 +8,7 @@ function connectMiddlewares(connect, options, middlewares) {
     var dot = file.lastIndexOf('.');
     var ext = dot > -1 ? file.slice(dot + 1) : '';
     var index = 0, content;
-    var p1 = path.join('assets', file), p2 = path.join('public', file);
+    var p1 = path.join('assets', file), p2 = path.join('dist', file);
     var paths = [ p1 + '.gz', p1, p2 + '.gz', p2 ];
     while (1) {
       try {
@@ -40,14 +40,22 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      public: {
+        expand: true,
+        cwd: 'public',
+        src: '**',
+        dest: 'dist/'
+      }
+    },
     clean: {
-      public: [ 'public/css', 'public/js' ],
-      javascript: [ 'public/js/*.javascript.js' ]
+      dist: [ 'dist/*' ],
+      javascript: [ 'dist/js/*.javascript.js' ]
     },
     less: {
       cghio: {
         files: {
-          'public/css/cghio.css': [ 'assets/css/app.less' ]
+          'dist/css/cghio.css': [ 'assets/css/app.less' ]
         }
       }
     },
@@ -74,7 +82,7 @@ module.exports = function(grunt) {
     uglify: {
       vendors: {
         files: {
-          'public/js/vendors.js': [
+          'dist/js/vendors.js': [
             'assets/js/vendor/fastclick.js',
             'assets/js/vendor/markdown.js'
           ]
@@ -82,10 +90,10 @@ module.exports = function(grunt) {
       },
       app: {
         files: {
-          'public/js/cghio.js': [
+          'dist/js/cghio.js': [
             'assets/js/main.js',
-            'public/js/templates.javascript.js',
-            'public/js/values.javascript.js',
+            'dist/js/templates.javascript.js',
+            'dist/js/values.javascript.js',
             'assets/js/init.js',
           ]
         }
@@ -94,7 +102,7 @@ module.exports = function(grunt) {
     concat: {
       angular: {
         files: {
-          'public/js/angular.js': [
+          'dist/js/angular.js': [
             'assets/js/vendor/angular.min.js',
             'assets/js/vendor/angular-route.min.js',
             'assets/js/vendor/angular-sanitize.min.js'
@@ -105,7 +113,7 @@ module.exports = function(grunt) {
     yaat: {
       CGH: {
         files: {
-          'public/js/templates.javascript.js': 'index.html'
+          'dist/js/templates.javascript.js': 'index.html'
         }
       }
     },
@@ -114,13 +122,13 @@ module.exports = function(grunt) {
         options: {
           constant: true,
           files: {
-            'public/js/values.javascript.js': {
+            'dist/js/values.javascript.js': {
               'help.json': makeHelpIndex
             }
           }
         },
         files: {
-          'public/js/values.javascript.js': [ 'posts/*.yml', 'posts/help/*.md' ]
+          'dist/js/values.javascript.js': [ 'posts/*.yml', 'posts/help/*.md' ]
         }
       }
     },
@@ -128,24 +136,25 @@ module.exports = function(grunt) {
       assets: {
         options: {
           callback: function(befores, afters) {
-            var publicdir = require('fs').realpathSync('public');
+            var distdir = require('fs').realpathSync('dist');
             var path = require('path');
-            var index = grunt.file.read('public/index.html'), before, after;
+            var index = grunt.file.read('dist/index.html'), before, after;
             for (var i = 0; i < befores.length; i++) {
-              before = path.relative(publicdir, befores[i]);
-              after = path.relative(publicdir, afters[i]);
+              before = path.relative(distdir, befores[i]);
+              after = path.relative(distdir, afters[i]);
               index = index.replace(before, after);
             }
-            grunt.file.write('public/index.html', index);
+            grunt.file.write('dist/index.html', index);
           }
         },
         files: [
-          { src: [ 'public/css/*.css', 'public/js/*.js' ] }
+          { src: [ 'dist/css/*.css', 'dist/js/*.js' ] }
         ]
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -158,6 +167,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'clean',
+    'copy',
     'make-font-datauri',
     'less',
     'copy-index',
@@ -167,8 +177,9 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('production', [
-    '_production',
     'clean',
+    '_production',
+    'copy',
     'make-font-datauri',
     'less',
     'values',
@@ -197,18 +208,18 @@ module.exports = function(grunt) {
     less.options.cleancss = true;
     grunt.config('less', less);
     grunt.log.ok('Updated Grunt configs.');
-    grunt.file.copy('index.production.html', 'public/index.html');
-    grunt.log.ok('Copied index.production.html to public/index.html.');
+    grunt.file.copy('index.production.html', 'dist/index.html');
+    grunt.log.ok('Copied index.production.html to dist/index.html.');
   });
 
   grunt.registerTask('copy-index', 'Copy index page', function() {
-    grunt.file.copy('index.html', 'public/index.html');
-    grunt.log.ok('Copied index.html to public/index.html.');
+    grunt.file.copy('index.html', 'dist/index.html');
+    grunt.log.ok('Copied index.html to dist/index.html.');
   });
 
   grunt.registerTask('make-font-datauri', function() {
     var path = require('path'), fs = require('fs');
-    var font = path.join(__dirname, 'public', 'fonts', 'Ubuntu.woff');
+    var font = path.join(__dirname, 'dist', 'fonts', 'Ubuntu.woff');
     var b64  = fs.readFileSync(font).toString('base64');
     var f = '';
     f += "@font-face {" + '\n'
@@ -228,7 +239,7 @@ module.exports = function(grunt) {
     var fs = require('fs');
     var exec = require('child_process').exec;
     exec('gzip -f1k css/*.css js/*.js', {
-      cwd: fs.realpathSync('public')
+      cwd: fs.realpathSync('dist')
     }, function(error, stdout, stderr) {
       if (stderr) grunt.fail.fatal(stderr);
       if (error) grunt.fail.fatal(error);
