@@ -1,0 +1,4 @@
+frontend:
+  build: .
+  volumes:
+    - '/srv/cgh.io/dist:/cgh.io/dist'
